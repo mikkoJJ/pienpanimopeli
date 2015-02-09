@@ -11,12 +11,12 @@ Brew.Preloader = function () {
 
 Brew.Preloader.prototype = {
     
-    create: function {
+    create: function() {
     
         //add necessary game states. 
         //REMEMBER: The state's JS file will have to be included in the HTML file as well.
         this.state.add('Main', Brew.Main);
-    }
+    },
     
     /**
      * Preloads the assets for the Preloader.

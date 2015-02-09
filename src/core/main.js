@@ -16,6 +16,6 @@ Brew.Main.prototype = {
     
     
     update: function () {
-        
+        console.log("JEJE");
     }
 };
