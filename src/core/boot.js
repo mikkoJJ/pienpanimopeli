@@ -1,3 +1,4 @@
+(function() {
 /**
  * The purpose of the Boot state is to load any assets the actual
  * Preloader might need. For example a loading icon or similar.
@@ -32,6 +33,8 @@ Brew.Booter.prototype = {
         this.state.add('Preloader', Brew.Preloader, true);
     }
 };
+
+})();
 
 // Here we actually start the game, ie. boot up the Booter
 (function () {

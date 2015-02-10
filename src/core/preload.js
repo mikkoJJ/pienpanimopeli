@@ -1,3 +1,4 @@
+(function() {
 /**
  * The preloader state loads all game assets from the server so that it is
  * quickly accessible for the game. It will show a loading screen while it does it.
@@ -31,6 +32,10 @@ Brew.Preloader.prototype = {
         
         this.progress.anchor.set(0.5);
         this.progress.fixedToCamera = true;
+        
+        this.load.image('floor', 'assets/sprites/floor.png');
+        
+        Brew.game.plugins.add(new Phaser.Plugin.Isometric(Brew.game));
     },
     
     /**
@@ -52,3 +57,5 @@ Brew.Preloader.prototype = {
         this.state.start('Main');
     }
 };
+
+})();

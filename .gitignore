@@ -2,3 +2,4 @@ dploy.yaml
 rdyup.js
 node_modules/
 deploy.sh
+/nbproject/
