@@ -4,13 +4,15 @@ A newsgame prototype about managing small breweries in Finland.
 
 You can play the current deployed version of the game at [mikkojakonen.net/pienpanimo](http://mikkojakonen.net/pienpanimo)
 
-Code released under the MIT Licence. See `LICENCE`.
+Code released under the MIT Licence. See [LICENCE](/LICENCE).
 
 ## Structure
 
-* The game js modules are contained in the `src/` folder.
-* External libraries are contained in the `libs/` folder.
-* Assets (graphics, sounds and text content) are contained in the `assets/` folder and loaded in the `Preloader` state.
+The game js modules are contained in the `src/` folder.
+
+External libraries are contained in the `libs/` folder.
+
+Assets (graphics, sounds and text content) are contained in the `assets/` folder and loaded in the `Preloader` state.
     
 ### States
 
