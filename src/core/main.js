@@ -1,9 +1,10 @@
 (function() { 
 
-var 
-    isoGroup
-    ;
-
+var settings = {
+    tileSize: 38 
+};
+    
+    
 /**
  * This is the main game state that starts when all assets are loaded.
  * 
@@ -17,13 +18,32 @@ Brew.Main = function () {
 Brew.Main.prototype = {
 
     create: function() {
-        isoGroup = this.add.group();
+        this.isoGroup = this.add.group();
         this.__makeFloor();
+        
+        this.cursorPosition = 
+        this.cursor = this.add.isoSprite(0, 0, 0, 'cursor', 0, this.isoGroup);
+        //this.cursor.anchor.setTo(0.5);
     },
     
     
     update: function () {
+        /*if ( this.game.input.activePointer.isDown ) {
+            //this.game.iso.anchor.x += 0.001;
+        }*/
         
+        //check mouse position and put the cursor on the correct place:
+        var _pos = new Phaser.Plugin.Isometric.Point3();
+        this.game.iso.unproject(this.game.input.activePointer.position, _pos);
+        
+        this.isoGroup.forEach(function(tile) {
+            var inBounds = tile.isoBounds.containsXY(_pos.x, _pos.y);
+            if(inBounds) {
+                this.cursor.isoX = tile.isoX;
+                this.cursor.isoY = tile.isoY;
+            }
+            
+        }, this);
     },
     
     
@@ -34,14 +54,13 @@ Brew.Main.prototype = {
      */
     __makeFloor: function () {
         var tile;
-        for (var xx = 0; xx < 256; xx += 38) {
-            for (var yy = 0; yy < 256; yy += 38) {
-                // Create a tile using the new game.add.isoSprite factory method at the specified position.
-                // The last parameter is the group you want to add it to (just like game.add.sprite)
-                tile = this.add.isoSprite(xx, yy, 0, 'floor', 0, isoGroup);
-                tile.anchor.set(0.5, 0);
+        for (var xx = 0; xx < 15 * settings.tileSize; xx += settings.tileSize) {
+            for (var yy = 0; yy < 15 * settings.tileSize; yy += settings.tileSize) {
+                tile = this.add.isoSprite(xx, yy, 0, 'floor', 0, this.isoGroup);
+                //tile.anchor.set(0.5, 0.5);
             }
         }
     }
 };
+    
 })();
