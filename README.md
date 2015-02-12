@@ -22,4 +22,8 @@ Assets (graphics, sounds and text content) are contained in the `assets/` folder
 
 ### Deployment
 
-The `deploy/` folder contains a version of the game that's ready to be deployed on a web server. In practice, the main game modules in `src/` have been minified into one JS file for better performance.
+The `build.js` script is used to create a web server deployable version of the project. It minifies the modules from `src/` into a single JS file and copies it and other relevant files into `deploy/`.
+
+To use the build script, install NodeJS and the modules `node-minify` and `ncp`, then call
+
+`node build.js`
