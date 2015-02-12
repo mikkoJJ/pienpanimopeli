@@ -38,6 +38,7 @@ new compressor.minify({
         'src/core/boot.js',
         'src/core/preload.js',
         'src/core/main.js',
+        'src/util/gui.js'
     ],
     fileOut: 'deploy/js/pienpanimopeli.min.js',
     callback: function(err, min) {

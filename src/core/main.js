@@ -28,9 +28,9 @@ Brew.Main.prototype = {
     
     
     update: function () {
-        /*if ( this.game.input.activePointer.isDown ) {
-            //this.game.iso.anchor.x += 0.001;
-        }*/
+        if ( this.game.input.activePointer.isDown ) {
+            Brew.gui.alert('Tämä on <span style="color: red">TESTI</span>!');
+        }
         
         //check mouse position and put the cursor on the correct place:
         var _pos = new Phaser.Plugin.Isometric.Point3();
