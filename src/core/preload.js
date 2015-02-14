@@ -37,6 +37,9 @@ Brew.Preloader.prototype = {
         this.load.image('cursor', 'assets/sprites/select.png');
         
         Brew.game.plugins.add(new Phaser.Plugin.Isometric(Brew.game));
+        
+         this.load.image('letter', 'assets/sprites/letter.png');
+        //TODO: parempi kuva
     },
     
     /**

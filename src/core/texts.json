@@ -1,0 +1,36 @@
+{ "letters":[
+            {
+                "title":"sakko",
+                "content":"Sait sakot!",
+                "due": 500
+            }
+           
+], 
+ "order": [
+     {
+                "title":"tilaus",
+                "content":"Sait tilauksen!",
+                "maarat": {
+                    "type":"Lager",
+                    "litres":28
+                }
+            },
+     {
+                "title":"laiton",
+                "content":"Laiton tilaus",
+                "maarat": {
+                    "type":"Lager",
+                    "litres":28
+                }
+            },
+     {
+         "title":"toinen",
+         "content":"tässä on tilaus",
+         "maarat":{
+             "type":"IPA",
+             "liters":500
+         }
+     }
+ ]
+
+}

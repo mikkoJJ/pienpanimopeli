@@ -17,6 +17,11 @@
             display: 'none'
         },
         
+        letterStyle: {
+            position: 'relative',
+            display: 'none'
+        },
+        
         //CSS style for buttons
         buttonStyle: {
             font: '20pt ',
@@ -60,15 +65,43 @@
         this._currentWindow = $('<div><div/>')
             .css(settings.alertStyle)
             .html(message)
-            .append(this.__makeButton('OK', this.__okPressed, this))
+            .append(this.__makeButton('OPEN', this.__openPressed, this))
+        //    .append(this.__makeButton('OK', this.__okPressed, this))
             .appendTo(settings.dom)
             .show('bounce', { times: 3 })
         ;
         
         this._okCallback = callback;
         this._okCallbackCtx = callbackCtx;
-    };    
-      
+    };
+    
+    /*
+    * alert for single order.
+    */
+    GUI.prototype.newOrder = function(message, callback, callbackCtx) {
+          //create the DOM element and show it with an animation:
+        this._currentWindow = $('<div><div/>')
+            .css(settings.alertStyle)
+            .html(message)
+        //    .append(this.__makeButton('OPEN', this.__openPressed(message), this))
+            .append(this.__makeButton('OK', this.__okPressed, this))
+            .appendTo(settings.dom)
+            .show('bounce', { times: 3 })
+        ;
+        
+        this._okCallback = callback;
+        this._okCallbackCtx = callbackCtx  
+    };
+    
+    GUI.prototype.__openPressed = function() {
+         this._currentWindow = $('<div><div/>')
+            .css(settings.alertStyle)
+            .html("tekstiä")
+            .append(this.__makeButton('OK', this.__okPressed, this))
+            .appendTo(settings.dom)
+            .show('bounce', { times: 3 })
+        ;  
+    };
 
     /**
      * Makes a DOM 'OK'-button to be added into windows.
@@ -93,7 +126,8 @@
     GUI.prototype.__okPressed = function() {
         this._currentWindow.hide('puff', { percent: 110 }, 'fast');
         this._guiInUse = false;
-        if( this._okCallback ) this._okCallback.call(this._okCallbackCtx);    
+        if( this._okCallback ) this._okCallback.call(this._okCallbackCtx);   
+        
     };
     
     
