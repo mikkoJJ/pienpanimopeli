@@ -40,6 +40,7 @@ Brew.Preloader.prototype = {
         
          this.load.image('letter', 'assets/sprites/letter.png');
         //TODO: parempi kuva
+        
     },
     
     /**

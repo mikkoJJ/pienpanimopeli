@@ -63,9 +63,26 @@ Brew.Main.prototype = {
              $.getJSON('src/core/texts.json', function (data) {
                     output = data.order[Math.floor(Math.random() * data.order.length)].content;
                 });
-            
-
+        
+        
+          // on page load...
+         this.moveProgressBar(1);
         },
+    
+    // SIGNATURE PROGRESS
+    moveProgressBar: function (jako) {
+      console.log("moveProgressBar");
+        var getPercent = ($('.progress-wrap').data('progress-percent') / jako);
+        var getProgressWrapWidth = $('.progress-wrap').width();
+        var progressTotal = getPercent * getProgressWrapWidth;
+        var animationLength = 250;
+        
+        // on page load, animate percentage bar to data percentage length
+        // .stop() used to prevent animation queueing
+        $('.progress-bar').stop().animate({
+            left: progressTotal
+        }, animationLength);
+    },
 
     /*
     * sekuntimittari
@@ -82,7 +99,7 @@ Brew.Main.prototype = {
                 });
                 Brew.gui.newOrder(output)
  
-                 var list = [];
+                var list = [];
                 list[i] = tilaus;
                 i++;
                 if (list.length > 3) {
@@ -98,8 +115,14 @@ Brew.Main.prototype = {
     //   if ( this.game.input.activePointer.isDown ) {
     //       Brew.gui.alert('Tämä on <span style="color: red">TESTI</span>!');
     //   }
+         this.moveProgressBar(counter*10); //sidottu toistaiseksi sekunteihin
+
+                // on browser resize...
+    $(window).resize(function() {
+        moveProgressBar();
+    });
         
-            if (image.input.pointerDown(this.game.input.activePointer.id)) {    
+        if (image.input.pointerDown(this.game.input.activePointer.id)) {    
                        Brew.gui.alert("klikkasit kirjettä");
                    }
                    
