@@ -43,7 +43,7 @@ Game activities are divided into states (derived from `Phaser.State`) to properl
 
 ## Coding aestethics
 
-Namespaces and class names are named `Capitalized`. Object names, public members and helper variables are named in `lowercase`. Private members of objects are named with two preceding `__underscores`, and should not be called from outside the class. Constants are named in `UPPERCASE`. 
+Namespaces and class names are `Capitalized`. Object names, public members and helper variables are in `lowercase`. Private members of objects are named with two preceding `__underscores`, and should not be called from outside the class. Constants are named in `UPPERCASE`. 
 
 The contents of each javascript file should be wrapped inside a lambda function and then where applicable made public by adding to the `Brew` namespace. For example:
 
