@@ -10,6 +10,10 @@ External libraries are contained in the `libs/` folder.
 
 Assets (graphics, sounds and text content) are contained in the `assets/` folder and loaded in the `Preloader` state.
 
+Documentation and other files humans may find useful are in the `docs/` folder.
+
+A minifiead and ready-to-upload version of the project is contained in the `deploy/` folder.
+
 ## External libraries
 
 The external libraries required by the game are:
@@ -47,10 +51,10 @@ The contents of each javascript file should be wrapped inside a lambda function 
 (function() {
 
 //the contents
-var private;
+var hidden;
 
-var public = { };
-Brew.public = public;
+var shown = { };
+Brew.shown = shown;
 
 })();
 ```
