@@ -1,23 +1,21 @@
 (function () {
 
-    var Messages = function () {
-    };
-    
+    var Messages = function () {};
+
     var sakot;
 
     Messages.prototype = {
 
         update: function () {
-          //  alert(Brew.game.time.elapsed);
+            //  alert(Brew.game.time.elapsed);
         },
 
         getMessage: function () {
-        //    game.cache.getJSON('texts.json', function (data) {
-        //        sakot = data.letters[0].content;
-        //    });
-            return "moi";
+            var data = Brew.game.cache.getJSON('texts');
+            sakot = data.letters[0].content;
+            return sakot;
         }
-    };   
+    };
 
     Brew.Messages = Messages;
 })();
