@@ -38,6 +38,8 @@ Brew.Preloader.prototype = {
         
         Brew.game.plugins.add(new Phaser.Plugin.Isometric(Brew.game));
         
+    //    this.load.json('texts', 'assets/json/texts.json');
+        
          this.load.image('letter', 'assets/sprites/letter.png');
         //TODO: parempi kuva
         

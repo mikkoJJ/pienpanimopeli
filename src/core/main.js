@@ -1,54 +1,57 @@
-(function() { 
 
-var settings = {
-    tileSize: 38 
-};
+(function () {
 
-//helper variables:
-var letter,
-    scoreText, 
-    output, 
-    timer, 
-    counter = 0,
-    sakot, i=0
-;
+    var settings = {
+        tileSize: 38
+    };
 
-    
-/**
- * This is the main game state that starts when all assets are loaded.
- * 
- * @class Brew.Main
- * @constructor
- */
-Brew.Main = function () {
-    return;
-};
+    //helper variables:
+    var letter,
+        scoreText,
+        output,
+        timer,
+        counter = 0,
+        sakot, i = 0,
+        budget;
 
-Brew.Main.prototype = {
 
-    create: function() {
-        this.isoGroup = this.add.group();
-        this.__makeFloor();
+    /**
+     * This is the main game state that starts when all assets are loaded.
+     *
+     * @class Brew.Main
+     * @constructor
+     */
+    Brew.Main = function () {
+        return;
+    };
 
-        this.cursorPosition = 
-        this.cursor = this.add.isoSprite(0, 0, 0, 'cursor', 0, this.isoGroup);
-        //this.cursor.anchor.setTo(0.5);
+    Brew.Main.prototype = {
 
-        letter = this.add.sprite(this.width, this.height, 'letter');
-        letter.scale.set(0.2,0.2);
-        letter.anchor.setTo(0, 0);
-     //   letter.anchor.set(0.5);
-        letter.inputEnabled = true;
-      //  letter.events.onInputDown.add(this.listener, this);
+        create: function () {
+            
+            this.messages = new Brew.Messages();
+            
+            this.isoGroup = this.add.group();
+            this.__makeFloor();
 
-        letter.inputEnabled = true;
-        letter.input.start();
+            this.cursorPosition =
+                this.cursor = this.add.isoSprite(0, 0, 0, 'cursor', 0, this.isoGroup);
+            //this.cursor.anchor.setTo(0.5);
 
-        //aputeksti kehitysvaiheelle
-         scoreText = this.add.text(
+            letter = this.add.sprite(this.width, this.height, 'letter');
+            letter.scale.set(0.2, 0.2);
+            letter.anchor.setTo(0, 0);
+            //   letter.anchor.set(0.5);
+            letter.inputEnabled = true;
+            //  letter.events.onInputDown.add(this.listener, this);
+
+            letter.inputEnabled = true;
+            letter.input.start();
+
+            //aputeksti kehitysvaiheelle
+            scoreText = this.add.text(
                 this.world.centerX + 300,
-                this.world.height / 5, "",
-                {
+                this.world.height / 5, "", {
                     size: "32px",
                     fill: "#FFF",
                     align: "center"
@@ -57,107 +60,117 @@ Brew.Main.prototype = {
             );
             scoreText.anchor.set(0.5);
             scoreText.setText("Seconds");
-        //   scoreText.anchor.setTo(0, 1); 
+            //   scoreText.anchor.setTo(0, 1); 
 
             timer = this.time.create(false);
             timer.loop(Phaser.Timer.SECOND, this.updateCounter, this);
             timer.start();
 
-            $.getJSON('src/core/texts.json', function (data) {
-                sakot = data.letters[0].content;
-            });
 
-             $.getJSON('src/core/texts.json', function (data) {
-                    output = data.order[Math.floor(Math.random() * data.order.length)].content;
-                });
+      //      $.getJSON('src/core/texts.json', function (data) {
+    //            output = data.order[Math.floor(Math.random() * data.order.length)].content;
+    //        });
 
 
-          // on page load...
-         this.moveProgressBar(1);
-    },
+            // on page load...
+            budget = 1000;
+            this.moveProgressBar(1000);
+        },
 
-    // SIGNATURE PROGRESS
-    moveProgressBar: function (jako) {
-      console.log("moveProgressBar");
-        var getPercent = ($('.progress-wrap').data('progress-percent') / jako);
-        var getProgressWrapWidth = $('.progress-wrap').width();
-        var progressTotal = getPercent * getProgressWrapWidth;
-        var animationLength = 250;
 
-        // on page load, animate percentage bar to data percentage length
-        // .stop() used to prevent animation queueing
-        $('.progress-bar').stop().animate({
-            left: progressTotal
-        }, animationLength);
-    },
+        // SIGNATURE PROGRESS
+        moveProgressBar: function (jako) {
+            //    console.log("moveProgressBar");
+            var getPercent = ($('.progress-wrap').data('progress-percent') / 500);
+            //jaettuna sadalla = noin puolet
+            var getProgressWrapWidth = $('.progress-wrap').width();
+            var progressTotal = getPercent * getProgressWrapWidth;
+            var animationLength = 250;
 
-    /*
-    * sekuntimittari
-    */
-    updateCounter: function () {
-        counter++;
+            // on page load, animate percentage bar to data percentage length
+            // .stop() used to prevent animation queueing
+            $('.progress-bar').stop().animate({
+                left: progressTotal
+            }, animationLength);
+        },
 
-     //   console.log(counter);
-        if (counter < 5) {
-            scoreText.setText(counter);
-        } else {
-            var tilaus = $.getJSON('src/core/texts.json', function (data) {
-                output = data.order[Math.floor(Math.random() * data.order.length)].content;
-            });
-            Brew.gui.newOrder(output)
+        /*
+         * sekuntimittari
+         */
+        updateCounter: function () {
+            counter++;
+            this.moveProgressBar(counter * 1000);
 
-            var list = [];
-            list[i] = tilaus;
-            i++;
-            if (list.length > 3) {
-                Brew.gui.alert(sakot);
-                timer.pause();
+            //   console.log(counter);
+            if (counter < 5) {
+                scoreText.setText(counter);
+            } else {
+    
+            //    var tilaus = game.cache.getJSON('texts.json', function (data) {
+            //        output = data.order[Math.floor(Math.random() * data.order.length)].content;
+            //    });
+                output = this.messages.getMessage();
+                Brew.gui.newOrder(output)
+                    //        budget = budget + 500;
+                    //        this.moveProgressBar(counter);
+
+                var list = [];
+                list[i] = this.messages.getMessage();
+                i++;
+                if (list.length > 1) {
+                    //    budget = budget - 500;
+                    this.moveProgressBar(100);
+                    Brew.gui.alert("Sait sakot! " + sakot, function () {}, this);
+                    timer.pause();
+                }
+                console.log(list.length);
+                counter = 0;
             }
-            console.log(list.length);
-            counter = 0;
-        }
-    },
+        },
 
-    update: function () {
-        this.moveProgressBar(counter*10); //sidottu toistaiseksi sekunteihin
+        update: function () {
+            //this.moveProgressBar(counter*100); //sidottu toistaiseksi sekunteihin
 
-        // on browser resize...
-        $(window).resize(function() {
-            moveProgressBar();
-        });
+            // on browser resize...
+            //    $(window).resize(function() {
+            //        this.moveProgressBar(1);
+            //    });
 
-        if (letter.input.pointerDown(this.game.input.activePointer.id)) {    
-            Brew.gui.alert("klikkasit kirjettä");
-        }
-
-        //check mouse position and put the cursor on the correct place:
-        var _pos = new Phaser.Plugin.Isometric.Point3();
-        this.game.iso.unproject(this.game.input.activePointer.position, _pos);
-
-        this.isoGroup.forEach(function(tile) {
-        var inBounds = tile.isoBounds.containsXY(_pos.x, _pos.y);
-        if(inBounds) {
-            this.cursor.isoX = tile.isoX;
-            this.cursor.isoY = tile.isoY;
-        }
-
-        }, this);
-    },
+            if (letter.input.pointerDown(this.game.input.activePointer.id)) {
+                Brew.gui.alert("klikkasit kirjettä");
+            }
+            
+            this.messages.update();
 
 
-    /**
-     * Creates the ground of play area.
-     * 
-     * @private
-     */
-    __makeFloor: function () {
-        var tile;
-        for (var xx = 0; xx < 15 * settings.tileSize; xx += settings.tileSize) {
-            for (var yy = 0; yy < 15 * settings.tileSize; yy += settings.tileSize) {
-                tile = this.add.isoSprite(xx, yy, 0, 'floor', 0, this.isoGroup);
+            //check mouse position and put the cursor on the correct place:
+            var _pos = new Phaser.Plugin.Isometric.Point3();
+            this.game.iso.unproject(this.game.input.activePointer.position, _pos);
+
+            this.isoGroup.forEach(function (tile) {
+                var inBounds = tile.isoBounds.containsXY(_pos.x, _pos.y);
+                if (inBounds) {
+                    this.cursor.isoX = tile.isoX;
+                    this.cursor.isoY = tile.isoY;
+                }
+
+            }, this);
+        },
+
+
+        /**
+         * Creates the ground of play area.
+         *
+         * @private
+         */
+        __makeFloor: function () {
+            var tile;
+            for (var xx = 0; xx < 15 * settings.tileSize; xx += settings.tileSize) {
+                for (var yy = 0; yy < 15 * settings.tileSize; yy += settings.tileSize) {
+                    tile = this.add.isoSprite(xx, yy, 0, 'floor', 0, this.isoGroup);
+                }
             }
         }
-    }
-};
+    };
 
 })();
