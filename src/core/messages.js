@@ -3,6 +3,10 @@
     var Messages = function () {};
 
     var sakot;
+    
+    /*
+    Viestityypit: sakko, tilaus, ohje
+    */
 
     Messages.prototype = {
 

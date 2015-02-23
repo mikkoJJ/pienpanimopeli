@@ -1,4 +1,3 @@
-
 (function () {
 
     var settings = {
@@ -12,7 +11,8 @@
         timer,
         counter = 0,
         sakot, i = 0,
-        budget;
+        budget,
+        bottle;
 
 
     /**
@@ -28,9 +28,11 @@
     Brew.Main.prototype = {
 
         create: function () {
-            
+
             this.messages = new Brew.Messages();
-            
+            this.beer = new Brew.Beer();
+            //   this.storage = new Brew.Storage();
+
             this.isoGroup = this.add.group();
             this.__makeFloor();
 
@@ -60,23 +62,35 @@
             );
             scoreText.anchor.set(0.5);
             scoreText.setText("Seconds");
-            //   scoreText.anchor.setTo(0, 1); 
 
-            timer = this.time.create(false);
-            timer.loop(Phaser.Timer.SECOND, this.updateCounter, this);
-            timer.start();
-
-
-      //      $.getJSON('src/core/texts.json', function (data) {
-    //            output = data.order[Math.floor(Math.random() * data.order.length)].content;
-    //        });
-
+            this.time.events.loop(Phaser.Timer.SECOND, this.updateCounter, this);
 
             // on page load...
             budget = 1000;
             this.moveProgressBar(1000);
+
+            lager = this.beer;
+            lager.name = "olut"
+            lager.amount = 50;
+
+            bottle = this.add.sprite(100, 100, 'testObject');
+            bottle.inputEnabled = true;
+            bottle.input.enableDrag(false, true);
+      //      bottle.events.onInputDown.add(this.sell, {
+    //            param1: lager
+    //        }, this);
+
+            //      this.beer.name = "lager";
+            //        this.beer.amount = 20;
+            //        bottle.beer = this.beer;
+
+
         },
 
+     /*   sell: function (lager) {
+            lager.sell(this, 10);
+        },
+*/
 
         // SIGNATURE PROGRESS
         moveProgressBar: function (jako) {
@@ -105,14 +119,15 @@
             if (counter < 5) {
                 scoreText.setText(counter);
             } else {
-    
-            //    var tilaus = game.cache.getJSON('texts.json', function (data) {
-            //        output = data.order[Math.floor(Math.random() * data.order.length)].content;
-            //    });
+
+                //    var tilaus = game.cache.getJSON('texts.json', function (data) {
+                //        output = data.order[Math.floor(Math.random() * data.order.length)].content;
+                //    });
                 output = this.messages.getMessage();
-                Brew.gui.newOrder(output)
-                    //        budget = budget + 500;
-                    //        this.moveProgressBar(counter);
+                //        output = this.beer.getBeer();
+                //    Brew.gui.newOrder(output)
+                //        budget = budget + 500;
+                //        this.moveProgressBar(counter);
 
                 var list = [];
                 list[i] = this.messages.getMessage();
@@ -120,10 +135,10 @@
                 if (list.length > 1) {
                     //    budget = budget - 500;
                     this.moveProgressBar(100);
-                    Brew.gui.alert("Sait sakot! " + sakot, function () {}, this);
-                    timer.pause();
+                    //       Brew.gui.alert("Sait sakot! " + sakot, function () {}, this);
+                    //      timer.pause();
                 }
-                console.log(list.length);
+                //    console.log(list.length);
                 counter = 0;
             }
         },
@@ -139,9 +154,17 @@
             if (letter.input.pointerDown(this.game.input.activePointer.id)) {
                 Brew.gui.alert("klikkasit kirjettä");
             }
-            
-            this.messages.update();
 
+            if (bottle.input.pointerDown(this.game.input.activePointer.id)) {
+               //ei toimi, koska dragattaessa pointer on down koko ajan eli sell ehtii tapahtua useamman kerran ennen kuin irrotetaan ote 
+            //    this.beer.getBeer();
+             //   bottle.beer.sell(5);
+            //    bottle.beer.cook(10)
+                lager.sell(25);
+                Brew.gui.alert(lager.amount);
+            }
+
+            this.messages.update();
 
             //check mouse position and put the cursor on the correct place:
             var _pos = new Phaser.Plugin.Isometric.Point3();
