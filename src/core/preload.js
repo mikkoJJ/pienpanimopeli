@@ -43,7 +43,8 @@
             this.load.json('texts', 'assets/json/texts.json');
 
             this.load.image('letter', 'assets/sprites/letter.png');
-            this.load.image('testObject', 'assets/sprites/testObject.png');
+            this.load.image('sell', 'assets/sprites/sell.png');
+            this.load.image('cook', 'assets/sprites/cook.png');
             //TODO: paremmat kuvat
 
         },

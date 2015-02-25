@@ -11,7 +11,8 @@
         timer,
         counter = 0,
         sakot, i = 0,
-        budget,
+        budget = 50,
+        money,
         bottle;
 
 
@@ -31,7 +32,6 @@
 
             this.messages = new Brew.Messages();
             this.beer = new Brew.Beer();
-            //   this.storage = new Brew.Storage();
 
             this.isoGroup = this.add.group();
             this.__makeFloor();
@@ -44,11 +44,11 @@
             letter.scale.set(0.2, 0.2);
             letter.anchor.setTo(0, 0);
             //   letter.anchor.set(0.5);
-            letter.inputEnabled = true;
             //  letter.events.onInputDown.add(this.listener, this);
 
             letter.inputEnabled = true;
             letter.input.start();
+            letter.events.onInputDown.add(this.cook, this);
 
             //aputeksti kehitysvaiheelle
             scoreText = this.add.text(
@@ -65,47 +65,46 @@
 
             this.time.events.loop(Phaser.Timer.SECOND, this.updateCounter, this);
 
-            // on page load...
-            budget = 1000;
-            this.moveProgressBar(1000);
-
             lager = this.beer;
             lager.name = "olut"
             lager.amount = 50;
 
-            bottle = this.add.sprite(100, 100, 'testObject');
+            bottle = this.add.sprite(100, 100, 'sell');
             bottle.inputEnabled = true;
             bottle.input.enableDrag(false, true);
-      //      bottle.events.onInputDown.add(this.sell, {
-    //            param1: lager
-    //        }, this);
+            bottle.events.onInputDown.add(this.sell, this);
 
             //      this.beer.name = "lager";
             //        this.beer.amount = 20;
-            //        bottle.beer = this.beer;
+            bottle.beer = this.beer;
 
+            var kettle = this.add.sprite(150, 150, 'cook');
+            kettle.inputEnabled = true;
+            kettle.input.enableDrag(false, true);
+            kettle.events.onInputDown.add(this.cook, this);
+
+            Brew.Budget.create();
+            Brew.Budget.moveProgressBar();
+            Brew.Budget.update(50);
 
         },
 
-     /*   sell: function (lager) {
-            lager.sell(this, 10);
+        //budjetin hallinnointia
+        sell: function () {
+            Brew.Budget.update(budget + 10);
+            budget = budget + 10;
+            bottle.beer.sell(10);
+            if (budget + 10 == 100) Brew.gui.alert("voitit pelin!" + bottle.beer.amount);
+
         },
-*/
 
-        // SIGNATURE PROGRESS
-        moveProgressBar: function (jako) {
-            //    console.log("moveProgressBar");
-            var getPercent = ($('.progress-wrap').data('progress-percent') / 500);
-            //jaettuna sadalla = noin puolet
-            var getProgressWrapWidth = $('.progress-wrap').width();
-            var progressTotal = getPercent * getProgressWrapWidth;
-            var animationLength = 250;
+        //budjetin hallinnointia
+        cook: function () {
+            Brew.Budget.update(budget - 10);
+            budget = budget - 10;
+            bottle.beer.cook(10)
+            if (budget - 10 == 0) Brew.gui.alert("hävisit pelin!" + bottle.beer.amount);
 
-            // on page load, animate percentage bar to data percentage length
-            // .stop() used to prevent animation queueing
-            $('.progress-bar').stop().animate({
-                left: progressTotal
-            }, animationLength);
         },
 
         /*
@@ -113,28 +112,19 @@
          */
         updateCounter: function () {
             counter++;
-            this.moveProgressBar(counter * 1000);
 
             //   console.log(counter);
             if (counter < 5) {
                 scoreText.setText(counter);
             } else {
-
-                //    var tilaus = game.cache.getJSON('texts.json', function (data) {
-                //        output = data.order[Math.floor(Math.random() * data.order.length)].content;
-                //    });
                 output = this.messages.getMessage();
-                //        output = this.beer.getBeer();
-                //    Brew.gui.newOrder(output)
-                //        budget = budget + 500;
-                //        this.moveProgressBar(counter);
 
                 var list = [];
                 list[i] = this.messages.getMessage();
                 i++;
                 if (list.length > 1) {
                     //    budget = budget - 500;
-                    this.moveProgressBar(100);
+                    //    this.moveProgressBar(100);
                     //       Brew.gui.alert("Sait sakot! " + sakot, function () {}, this);
                     //      timer.pause();
                 }
@@ -144,25 +134,11 @@
         },
 
         update: function () {
-            //this.moveProgressBar(counter*100); //sidottu toistaiseksi sekunteihin
-
-            // on browser resize...
-            //    $(window).resize(function() {
-            //        this.moveProgressBar(1);
-            //    });
-
             if (letter.input.pointerDown(this.game.input.activePointer.id)) {
-                Brew.gui.alert("klikkasit kirjettä");
+
+                //            Brew.gui.alert("klikkasit kirjettä");
             }
 
-            if (bottle.input.pointerDown(this.game.input.activePointer.id)) {
-               //ei toimi, koska dragattaessa pointer on down koko ajan eli sell ehtii tapahtua useamman kerran ennen kuin irrotetaan ote 
-            //    this.beer.getBeer();
-             //   bottle.beer.sell(5);
-            //    bottle.beer.cook(10)
-                lager.sell(25);
-                Brew.gui.alert(lager.amount);
-            }
 
             this.messages.update();
 
