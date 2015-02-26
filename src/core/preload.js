@@ -37,6 +37,7 @@
 
             this.load.image('floor', 'assets/sprites/floor.png');
             this.load.image('cursor', 'assets/sprites/select.png');
+            this.load.image('bottle', 'assets/sprites/bottle.png');
 
             Brew.game.plugins.add(new Phaser.Plugin.Isometric(Brew.game));
 

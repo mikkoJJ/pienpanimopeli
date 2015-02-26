@@ -33,11 +33,23 @@
     /**
      */
     var Budget = function () {};
-    
+
     Budget.prototype.update = function (percent) {
+        var message;
+        if (percent <= 0) {
+            percent = 0;
+            message = "Menetit kaikki rahasi ja hävisit pelin."
+        }
+        else if (percent >= 100) {
+            percent = 100;
+            message = "Voitit pelin!";
+        } else message = "";
+
         div.data('percent', percent);
         this.moveProgressBar();
-        console.log(div.data('percent'));
+   //     console.log(div.data('percent'));
+        return message;
+
     };
 
     Budget.prototype.moveProgressBar = function () {
