@@ -60,8 +60,10 @@
                         .html(message)
                    )
             .click(function() {
-                $(this).toggleClass('brew-message-extended');
-                $(this).children('.brew-message-body').toggle('slide', {easing: 'easeOutQuad'}, 200);
+                var $this = $(this);
+                $this.toggleClass('brew-message-extended', 200, 'easeOutQuad');
+                //else $this.switchClass('brew-message-extended', null, 200, 'easeOutQuad');
+                $this.children('.brew-message-body').toggle('slide', {easing: 'easeOutQuad'}, 200);
             })
             .appendTo(this._messageWindow)
             ;
