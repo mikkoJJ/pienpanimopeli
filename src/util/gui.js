@@ -3,35 +3,6 @@
     var settings = {
         //the div under which windows are placed:
         dom: '#game',
-        
-        //CSS style for alert windows:
-        alertStyle: {
-            font: '20pt',
-            background: 'white',
-            width: '400px',
-            padding: '10px',
-            border: '#20c55f 3px solid',
-            margin: 'auto',
-            position: 'relative',
-            top: '-360px',
-            display: 'none'
-        },
-        
-        letterStyle: {
-            position: 'relative',
-            display: 'none'
-        },
-        
-        //CSS style for buttons
-        buttonStyle: {
-            font: '20pt ',
-            width: '50px',
-            margin: 'auto',
-            background: '#20c55f',
-            'text-align': 'center',
-            color: 'white',
-            cursor: 'pointer'
-        }
     };
     
     
@@ -56,52 +27,21 @@
      * @param   {Object}   callbackCtx the context in which to call the callback function, ie. what 'this' will refer to
      */
     GUI.prototype.alert = function(message, callback, callbackCtx) {
-        
-        //only allow one alert at a time
-        if( this._guiInUse ) return;
-        this._guiInUse = true;
-        
-        //create the DOM element and show it with an animation:
-        this._currentWindow = $('<div><div/>')
-            .css(settings.alertStyle)
+        var _w = $('<div><div/>')
+            .addClass('brew-window')
             .html(message)
-            .append(this.__makeButton('OPEN', this.__openPressed, this))
-        //    .append(this.__makeButton('OK', this.__okPressed, this))
+            .append(this.__makeButton('OK', function() {
+                var p = $(this).parent();
+                if( p.data('callback') ) p.data('callback').call(p.data('callbackCtx'));
+                p.hide('drop', 200, 'easeInBack', function() { this.remove() });
+            }))
             .appendTo(settings.dom)
-            .show('bounce', { times: 3 })
+            .show('drop', 200, 'easeOutBack')
+            .data('callback', callback)
+            .data('callbackCtx', callbackCtx)
         ;
-        
-        this._okCallback = callback;
-        this._okCallbackCtx = callbackCtx;
     };
     
-    /*
-    * alert for single order.
-    */
-    GUI.prototype.newOrder = function(message, callback, callbackCtx) {
-          //create the DOM element and show it with an animation:
-        this._currentWindow = $('<div><div/>')
-            .css(settings.alertStyle)
-            .html(message)
-        //    .append(this.__makeButton('OPEN', this.__openPressed(message), this))
-            .append(this.__makeButton('OK', this.__okPressed, this))
-            .appendTo(settings.dom)
-            .show('bounce', { times: 3 })
-        ;
-        
-        this._okCallback = callback;
-        this._okCallbackCtx = callbackCtx  
-    };
-    
-    GUI.prototype.__openPressed = function() {
-         this._currentWindow = $('<div><div/>')
-            .css(settings.alertStyle)
-            .html("tekstiä")
-            .append(this.__makeButton('OK', this.__okPressed, this))
-            .appendTo(settings.dom)
-            .show('bounce', { times: 3 })
-        ;  
-    };
 
     /**
      * Makes a DOM 'OK'-button to be added into windows.
@@ -110,24 +50,11 @@
      */
     GUI.prototype.__makeButton = function(text, callback, callbackCtx) {
         return $('<div></div>')
-            .css(settings.buttonStyle)
+            .addClass('brew-button')
+            .addClass('jotain')
             .text(text)
-            .click($.proxy(callback, callbackCtx))
+            .click(callback)
         ;
-    };
-    
-    
-    /**
-     * A function to return to when the user has clicked OK in an alert
-     * window.
-     * 
-     * @private
-     */
-    GUI.prototype.__okPressed = function() {
-        this._currentWindow.hide('puff', { percent: 110 }, 'fast');
-        this._guiInUse = false;
-        if( this._okCallback ) this._okCallback.call(this._okCallbackCtx);   
-        
     };
     
     

@@ -1,0 +1,30 @@
+#game{
+    overflow: hidden;
+}
+
+.brew-window {
+    font-family: 'Press Start 2P';
+    font-size: 14pt;
+    background: #f2decb;
+    width: 400px;
+    height: 60px;
+    padding: 10px;
+    margin: auto;
+    position: relative;
+    top: -360px;
+    display: none;
+}
+        
+.brew-letter {
+    position: relative;
+    display: none;
+}  
+
+.brew-button {
+    width: 140px;
+    margin: 10px;
+    float: right;
+    background: #BFA776;
+    text-align: center;
+    cursor: pointer;
+}

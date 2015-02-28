@@ -31,7 +31,6 @@
     Brew.Main.prototype = {
 
         create: function () {
-
             this.messages = new Brew.Messages();
             this.beer = new Brew.Beer();
 
@@ -44,15 +43,13 @@
                 this.cursor = this.add.isoSprite(0, 0, 0, 'cursor', 0, this.isoGroup);
             //this.cursor.anchor.setTo(0.5);
 
-            letter = this.add.sprite(this.width, this.height, 'letter');
+            letter = this.add.button(this.width, this.height, 'letter', function() {
+                Brew.gui.alert("jotain");
+            }, this);
             letter.scale.set(0.2, 0.2);
             letter.anchor.setTo(0, 0);
             //   letter.anchor.set(0.5);
             //  letter.events.onInputDown.add(this.listener, this);
-
-            letter.inputEnabled = true;
-            letter.input.start();
-            letter.events.onInputDown.add(this.cook, this);
 
             //aputeksti kehitysvaiheelle
             scoreText = this.add.text(
@@ -105,7 +102,7 @@
                 budget = budget + 10;
                 sale.beer.sell(10);
                 if (budget >= 100) {
-                    Brew.gui.newOrder("Liikevoittosi on ilmiömäinen. " + message);
+                    Brew.gui.alert("Liikevoittosi on ilmiömäinen. " + message);
               //      sale.inputEnabled = false;
                 }
                 storage.getFirstExists(true).destroy();
@@ -119,7 +116,7 @@
                 budget = budget - 50;
                 var message = Brew.Budget.update(budget);
             //    this.messages.getMessage();
-                Brew.gui.newOrder("Ylitit vuosittaisen tuotantokiintiösi ja sait sakot! " + message);
+                Brew.gui.alert("Ylitit vuosittaisen tuotantokiintiösi ja sait sakot! " + message);
             } else {
                 budget = budget - 1;
                 var message = Brew.Budget.update(budget);
@@ -127,7 +124,7 @@
                 if (budget <= 0) {
                 //    Brew.gui.alert("hävisit pelin!" + bottle.beer.amount);
                     kettle.inputEnabled = false;
-                    Brew.gui.newOrder(message)
+                    Brew.gui.alert(message)
                 }
                 var b = this.add.isoSprite(0, this.game.rnd.integerInRange(0, 500), 0, 'bottle');
           //      b.body.moves = true;
@@ -163,12 +160,7 @@
             }
         },
 
-        update: function () {
-            if (letter.input.pointerDown(this.game.input.activePointer.id)) {
-            //    console.log("sdklfjash");
-                //            Brew.gui.alert("klikkasit kirjettä");
-            }
-            
+        update: function () {            
             scoreText.setText("Beer in storage: " + this.beer.amount + " litres")
 
             this.messages.update();

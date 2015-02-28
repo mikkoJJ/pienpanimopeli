@@ -26,26 +26,28 @@
          */
         preload: function () {
             this.progress = this.game.add.text(this.game.width / 2,
-                this.game.height / 2,
-                'Ladataan: 0 %', {
-                    font: '40pt bold Arial',
-                    fill: '#FFFFFF'
-                });
+            this.game.height / 2,
+            'Loading: 0 %', {
+                font: '40pt bold "Press Start 2P"',
+                fill: '#FFFFFF'
+            });
 
             this.progress.anchor.set(0.5);
             this.progress.fixedToCamera = true;
+            
+            Brew.game.plugins.add(new Phaser.Plugin.Isometric(Brew.game));
 
             this.load.image('floor', 'assets/sprites/floor.png');
             this.load.image('cursor', 'assets/sprites/select.png');
             this.load.image('bottle', 'assets/sprites/bottle.png');
-
-            Brew.game.plugins.add(new Phaser.Plugin.Isometric(Brew.game));
 
             this.load.json('texts', 'assets/json/texts.json');
 
             this.load.image('letter', 'assets/sprites/letter.png');
             this.load.image('sell', 'assets/sprites/sell.png');
             this.load.image('cook', 'assets/sprites/cook.png');
+            
+            console.log('PRELOAD: Images loaded');
             //TODO: paremmat kuvat
 
         },
