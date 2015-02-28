@@ -74,10 +74,8 @@
             sale.inputEnabled = true;
             sale.events.onInputDown.add(this.sell, this);
             sale.beer = this.beer;
-
-            kettle = this.add.isoSprite(250, 100, 0, 'cook');
-            kettle.inputEnabled = true;
-            kettle.events.onInputDown.add(this.cook, this);
+            
+            kettle = new Kettle(this.game, 250, 100, 0);
 
             Brew.Budget.create();
             Brew.Budget.moveProgressBar();
@@ -96,6 +94,7 @@
             Brew.gui.addMessage('Sakko', 'Myit liikaa olutta!');
             Brew.gui.addMessage('Viesti', 'Haluan ostaa olutta! t: Nalle');
         },
+        
 
         //selling beer
         sell: function () {
@@ -112,31 +111,8 @@
             }
 
         },
-
-        //cooking beer; update budget and beer amount
-        cook: function () {
-            if (storage.length >= 15) {   
-                budget = budget - 50;
-                var message = Brew.Budget.update(budget);
-            //    this.messages.getMessage();
-                Brew.gui.alert("Ylitit vuosittaisen tuotantokiintiösi ja sait sakot! " + message);
-            } else {
-                budget = budget - 1;
-                var message = Brew.Budget.update(budget);
-                sale.beer.cook(10)
-                if (budget <= 0) {
-                //    Brew.gui.alert("hävisit pelin!" + bottle.beer.amount);
-                    kettle.inputEnabled = false;
-                    Brew.gui.alert(message)
-                }
-                var b = this.add.isoSprite(0, this.game.rnd.integerInRange(0, 500), 0, 'bottle');
-          //      b.body.moves = true;
-                b.inputEnabled = true;
-                b.input.enableDrag(false, true);
-                storage.add(b);
-            }
-        },
-
+        
+        
         /*
          * sekuntimittari
          */
@@ -198,4 +174,42 @@
         }
     };
 
+    
+    var Kettle = function(game, x, y, z) {
+        //call super constructor
+        Phaser.Plugin.Isometric.IsoSprite.call(this, game, x, y, z, 'cook');
+        
+        this.inputEnabled = true;
+        this.events.onInputDown.add(this.cook, this);
+        
+        game.add.existing(this);
+    };
+    
+    Kettle.prototype = Object.create(Phaser.Plugin.Isometric.IsoSprite.prototype);
+    Kettle.prototype.constructor = Kettle;
+    
+    //cook some beer in the kettle
+    Kettle.prototype.cook = function () {
+        if (storage.length >= 15) {   
+            budget = budget - 50;
+            var message = Brew.Budget.update(budget);
+            Brew.gui.alert("Ylitit vuosittaisen tuotantokiintiösi ja sait sakot! " + message);
+        } else {
+            budget = budget - 1;
+            var message = Brew.Budget.update(budget);
+            sale.beer.cook(10)
+            if (budget <= 0) {
+            //    Brew.gui.alert("hävisit pelin!" + bottle.beer.amount);
+                this.inputEnabled = false;
+                Brew.gui.alert(message)
+            }
+            var b = this.game.add.isoSprite(0, this.game.rnd.integerInRange(0, 500), 0, 'bottle');
+            b.inputEnabled = true;
+            b.input.enableDrag(false, true);
+            storage.add(b);
+        }
+    };
+    
+    Brew.Kettle = Kettle;
+    
 })();

@@ -14,12 +14,12 @@
 
 .brew-alert {
     width: 400px;
-    height: 60px;
     padding: 10px;
     margin: auto;
     position: relative;
     top: -360px;
     display: none;
+    overflow: auto;
 }
         
 .brew-letter {

@@ -97,7 +97,7 @@
     /** @private */
     GUI.prototype.__closeOpenMessages = function() {
         $('.brew-message-open').each(function() { 
-            $(this).toggleClass('brew-message-open', settings.messagesAnimationSpeed);
+            $(this).toggleClass('brew-message-open', settings.messagesAnimationSpeed, 'easeOutBounce');
             $(this).children('.brew-message-body').toggle('fold', {direction: 'up', easing: 'easeOutQuad'}, settings.messagesAnimationSpeed);
         });
     };
@@ -109,12 +109,12 @@
         
         if( !$this.hasClass('brew-message-open') ) {
             $('.brew-message-open').each(function() { 
-                $(this).toggleClass('brew-message-open', settings.messagesAnimationSpeed);
+                $(this).toggleClass('brew-message-open', settings.messagesAnimationSpeed, 'easeOutBounce');
                 $(this).children('.brew-message-body').toggle('fold', {direction: 'up', easing: 'easeOutQuad'}, settings.messagesAnimationSpeed);
             });
         }
         
-        $this.toggleClass('brew-message-open', settings.messagesAnimationSpeed);
+        $this.toggleClass('brew-message-open', settings.messagesAnimationSpeed, 'easeOutBounce');
         $this.children('.brew-message-body').toggle('fold', {direction: 'up', easing: 'easeOutQuad'}, settings.messagesAnimationSpeed);
     };
     
