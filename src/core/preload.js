@@ -48,8 +48,10 @@
             this.load.image('cook', 'assets/sprites/cook.png');
             
             console.log('PRELOAD: Images loaded');
-            //TODO: paremmat kuvat
-
+            
+            Brew.gui = new Brew.GUI();
+            
+            console.log('PRELOAD: GUI initialized');
         },
 
         /**

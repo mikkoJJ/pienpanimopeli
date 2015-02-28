@@ -44,7 +44,7 @@
             //this.cursor.anchor.setTo(0.5);
 
             letter = this.add.button(this.width, this.height, 'letter', function() {
-                Brew.gui.alert("jotain");
+                Brew.gui.toggleMessages();
             }, this);
             letter.scale.set(0.2, 0.2);
             letter.anchor.setTo(0, 0);
@@ -91,7 +91,10 @@
             bottle.input.enableDrag(false, true);
             storage.add(bottle);
 
-
+            Brew.gui.addMessage('Tilaus', '3 tynnyriä tummaa olutta.');
+            Brew.gui.addMessage('Tilaus', '3 tynnyriä lageria.');
+            Brew.gui.addMessage('Sakko', 'Myit liikaa olutta!');
+            Brew.gui.addMessage('Viesti', 'Haluan ostaa olutta! t: Nalle');
         },
 
         //selling beer

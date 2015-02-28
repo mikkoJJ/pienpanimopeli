@@ -1,11 +1,18 @@
-#game{
+#game {
     overflow: hidden;
+    position: relative;
 }
 
 .brew-window {
     font-family: 'Press Start 2P';
     font-size: 14pt;
     background: #f2decb;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
+.brew-alert {
     width: 400px;
     height: 60px;
     padding: 10px;
@@ -27,4 +34,42 @@
     background: #BFA776;
     text-align: center;
     cursor: pointer;
+}
+
+.brew-messages {
+    font-size: 20px;
+    position: absolute;
+    left: -5px;
+    top: 100px;
+    width: 200px;
+    display: none;
+}
+
+.brew-messages h2 {
+    font-size: 20px;
+    padding: 0;
+    margin: 0;
+    position: relative;
+    z-index: 10;
+}
+
+.brew-message {
+    margin: 5px;
+    padding: 10px 4px 0px 4px; 
+    cursor: pointer;
+    z-index: 2;
+}
+
+.brew-message-extended {
+    padding-bottom: -35px;
+}
+
+.brew-message-body {
+    font-size: 15px;
+    display: none;
+    padding: 30px 0px 10px 0px;
+    position: relative;
+    top: -30px;
+    width: 400px;
+    z-index: 1;
 }

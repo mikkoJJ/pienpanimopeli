@@ -6,7 +6,6 @@
     };
     
     
-    
     /**
      * The GUI object handles creating UI windows to show to the user. These are created as 
      * HTML DOM elements shown on top of the actual game.
@@ -14,7 +13,10 @@
      * @class Brew.GUI
      */
     var GUI = function() {
-        this._guiInUse = false;
+        this._messageWindow = $('<div><div/>')
+            .addClass('brew-messages')
+            .appendTo(settings.dom)
+        ;
     };
     
     
@@ -27,8 +29,8 @@
      * @param   {Object}   callbackCtx the context in which to call the callback function, ie. what 'this' will refer to
      */
     GUI.prototype.alert = function(message, callback, callbackCtx) {
-        var _w = $('<div><div/>')
-            .addClass('brew-window')
+       $('<div><div/>')
+            .addClass('brew-window brew-alert')
             .html(message)
             .append(this.__makeButton('OK', function() {
                 var p = $(this).parent();
@@ -40,6 +42,37 @@
             .data('callback', callback)
             .data('callbackCtx', callbackCtx)
         ;
+    };
+    
+    
+    /**
+     * Adds a message to the message display.
+     * 
+     * @param   {String} header a header for the message
+     * @param   {String} message the message content
+     */
+    GUI.prototype.addMessage = function(header, message) {
+        $('<div><div/>')
+            .addClass('brew-window brew-message')
+            .html('<h2>' + header + '<h2>')
+            .append($('<div><div/>')
+                        .addClass('brew-message-body brew-window')
+                        .html(message)
+                   )
+            .click(function() {
+                $(this).toggleClass('brew-message-extended');
+                $(this).children('.brew-message-body').toggle('slide', {easing: 'easeOutQuad'}, 200);
+            })
+            .appendTo(this._messageWindow)
+            ;
+    };
+    
+    
+    /**
+     * Show/hide the messages display.
+     */
+    GUI.prototype.toggleMessages = function() {
+        this._messageWindow.toggle('slide', {easing: 'easeOutBounce'}, 200);
     };
     
 
@@ -59,5 +92,4 @@
     
     
     Brew.GUI = GUI;
-    Brew.gui = new GUI();
 })();
