@@ -3,6 +3,8 @@
     var settings = {
         //the div under which windows are placed:
         dom: '#game',
+        messagesAnimationSpeed: 100,
+        messagesHoverSpeed: 100
     };
     
     
@@ -58,31 +60,24 @@
             .append($('<div><div/>')
                         .addClass('brew-message-body brew-window')
                         .html(message)
-                   )
-            .click(function() {
-                var $this = $(this);
-                $this.toggleClass('brew-message-extended', 200, 'easeOutQuad');
-                //else $this.switchClass('brew-message-extended', null, 200, 'easeOutQuad');
-                $this.children('.brew-message-body').toggle('slide', {easing: 'easeOutQuad'}, 200);
-            })
+            )
+            .click(this.__messageWindowClicked)
+            .hover(this.__messageWindowHover, this.__messageWindowHover) 
             .appendTo(this._messageWindow)
             ;
     };
-    
+
     
     /**
      * Show/hide the messages display.
      */
     GUI.prototype.toggleMessages = function() {
+        this.__closeOpenMessages();
         this._messageWindow.toggle('slide', {easing: 'easeOutBounce'}, 200);
     };
     
 
-    /**
-     * Makes a DOM 'OK'-button to be added into windows.
-     * 
-     * @private
-     */
+    /** Makes a DOM 'OK'-button to be added into windows.  @private */
     GUI.prototype.__makeButton = function(text, callback, callbackCtx) {
         return $('<div></div>')
             .addClass('brew-button')
@@ -91,6 +86,38 @@
             .click(callback)
         ;
     };
+    
+    
+    /** @private */
+    GUI.prototype.__messageWindowHover = function() {
+        $(this).toggleClass('brew-message-extended', settings.messagesHoverSpeed);
+    };
+    
+    
+    /** @private */
+    GUI.prototype.__closeOpenMessages = function() {
+        $('.brew-message-open').each(function() { 
+            $(this).toggleClass('brew-message-open', settings.messagesAnimationSpeed);
+            $(this).children('.brew-message-body').toggle('fold', {direction: 'up', easing: 'easeOutQuad'}, settings.messagesAnimationSpeed);
+        });
+    };
+    
+    
+    /** @private */
+    GUI.prototype.__messageWindowClicked = function() {
+        var $this = $(this);
+        
+        if( !$this.hasClass('brew-message-open') ) {
+            $('.brew-message-open').each(function() { 
+                $(this).toggleClass('brew-message-open', settings.messagesAnimationSpeed);
+                $(this).children('.brew-message-body').toggle('fold', {direction: 'up', easing: 'easeOutQuad'}, settings.messagesAnimationSpeed);
+            });
+        }
+        
+        $this.toggleClass('brew-message-open', settings.messagesAnimationSpeed);
+        $this.children('.brew-message-body').toggle('fold', {direction: 'up', easing: 'easeOutQuad'}, settings.messagesAnimationSpeed);
+    };
+    
     
     
     Brew.GUI = GUI;
