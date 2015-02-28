@@ -175,6 +175,17 @@
     };
 
     
+    
+    /**
+     * Kettle IsoSprite that handles the cooking of beer.
+     * 
+     * @class Kettle
+     * @augments Phaser.Plugin.Isometric.IsoSprite
+     * @param {Phaser.Game} game reference to the currently used game object
+     * @param {Number}      x    iso X position
+     * @param {Number}      y    iso X position
+     * @param {Number}      z    iso X position
+     */
     var Kettle = function(game, x, y, z) {
         //call super constructor
         Phaser.Plugin.Isometric.IsoSprite.call(this, game, x, y, z, 'cook');
