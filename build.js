@@ -4,7 +4,13 @@
  * @author Mikko J Jakonen
  * @version 1.1 (28.2.2015)
  */
-var OUTPUT_FILE = 'js/pienpanimopeli.min.js';
+var OUTPUT_FILE = 'js/pienpanimopeli.min.js',
+    COPIED_FILES = [
+        'brewgui.css',
+        'assets',
+        'lib'
+    ]
+    ;
 
 var compressor = require('node-minify'),
     fs = require('fs'),
@@ -13,20 +19,14 @@ var compressor = require('node-minify'),
     dateString = date.getDate() + '.' + (date.getMonth() + 1) + '.' + date.getFullYear()
     ;
 
-//1: ------------------- straight up copy assets and libs:
-ncp('assets', 'deploy/assets', function(err) {
-    if(err) {
-        return console.log(err);
-    }
-    console.log('Copied assets.');
-});
-
-ncp('lib', 'deploy/lib', function(err) {
-    if(err) {
-        return console.log(err);
-    }
-    console.log('Copied lib.');
-});
+//1: ------------------- copy copied files:
+for( var i = 0; i < COPIED_FILES.length; i++ ) {
+    ncp(COPIED_FILES[i], 'deploy/' + COPIED_FILES[i], function(err) {
+        if(err) return console.log(err);
+        
+        console.log('File/dir copied');
+    });
+}
 
 
 //2: --------------------- read js module info from index.html
@@ -35,9 +35,7 @@ fs.readFile('index.html', 'utf8', function(err, data) {
         return console.log(err);
     }
     
-    var input_files = data.match(/(src\/[^"]+)/g);
-    console.log(input_files);
-    
+    var input_files = data.match(/(src\/[^"]+)/g);    
     
     //3: ---------------------- minify modules from src/:
     new compressor.minify({
