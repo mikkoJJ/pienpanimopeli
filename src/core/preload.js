@@ -47,6 +47,7 @@
             this.load.image('letter', 'assets/sprites/letter.png');
             this.load.image('sell', 'assets/sprites/sell.png');
             this.load.image('cook', 'assets/sprites/cook.png');
+            this.load.image('beercase', 'assets/sprites/kori.png');
             
             console.log('PRELOAD: Images loaded');
             
