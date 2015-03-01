@@ -14,12 +14,12 @@
 
 .brew-alert {
     width: 400px;
-    height: 60px;
     padding: 10px;
     margin: auto;
     position: relative;
     top: -360px;
     display: none;
+    overflow: auto;
 }
         
 .brew-letter {
@@ -62,6 +62,7 @@
     cursor: pointer;
     z-index: 2;
     position: relative;
+    overflow: visible;
 }
 
 .brew-message-extended {
@@ -70,8 +71,8 @@
 
 .brew-message-open {
     left: 0px;
-    width: 250px;
-    height: 100px;
+    width: 290px;
+    height: 140px;
 }
 
 .brew-message-body {
@@ -82,4 +83,5 @@
     display: none;
     position: relative;
     z-index: 1;
+    clear: both;
 }
