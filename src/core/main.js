@@ -188,7 +188,7 @@
      */
     var Kettle = function(game, x, y, z) {
         //call super constructor
-        Phaser.Plugin.Isometric.IsoSprite.call(this, game, x, y, z, 'cook');
+        Phaser.Plugin.Isometric.IsoSprite.call(this, game, x, y, z, 'kettle');
         
         this.inputEnabled = true;
         this.events.onInputDown.add(this.cook, this);
