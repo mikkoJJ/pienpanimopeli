@@ -73,14 +73,18 @@
         
         if ( buttonText ) {
             _w.append(
-                this.__makeButton(buttonText, function() {
-                   var $this = $(this);
-                   if ( $this.data('callback') ) $this.data('callback').call($this.data('callbackCtx'), $this.parent().data('messageData'));
-                   $this.parent().hide('fold', 200, 'easeInBack', function() { $(this).remove() });
-               })
-               .css({display: 'none'})
-               .data('callback', buttonCallback)
-               .data('callbackCtx', buttonCallbackCtx)
+                this.__makeButton(buttonText, function(e) {
+                    var $this = $(this);
+                    var remove = true;
+                
+                    if ( $this.data('callback') ) remove = $this.data('callback').call($this.data('callbackCtx'), $this.parent().data('messageData'));
+
+                    if ( remove !== false ) $this.parent().hide('fold', 200, 'easeInBack', function() { $(this).remove() });
+                    else e.stopPropagation();
+                })
+                .css({display: 'none'})
+                .data('callback', buttonCallback)
+                .data('callbackCtx', buttonCallbackCtx)
             )
         }
     };

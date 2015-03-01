@@ -5,3 +5,4 @@ deploy.sh
 /nbproject/
 lib/phaser.js
 lib/phaser.map
+*.psd
