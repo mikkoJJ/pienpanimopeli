@@ -50,11 +50,15 @@
     /**
      * Adds a message to the message display.
      * 
-     * @param   {String} header a header for the message
-     * @param   {String} message the message content
+     * @param {String} header a header for the message
+     * @param {String} message the message content
+     * @param {Function} buttonCallback callback to call when button pressed.
+     * @param {String} buttonText text to show on a button on the message, null to have no button
+     * @param {Brew.Order|Object} data message data to use.
+     * @param {Object} buttonCallbackCtx context in which to call the button callback
      */
-    GUI.prototype.addMessage = function(header, message) {
-        $('<div><div/>')
+    GUI.prototype.addMessage = function( header, message, data, buttonText, buttonCallback, buttonCallbackCtx ) {
+        var _w = $('<div><div/>')
             .addClass('brew-window brew-message')
             .html('<h2>' + header + '<h2>')
             .append($('<div><div/>')
@@ -63,8 +67,22 @@
             )
             .click(this.__messageWindowClicked)
             .hover(this.__messageWindowHover, this.__messageWindowHover) 
+            .data('messageData', data)
             .appendTo(this._messageWindow)
             ;
+        
+        if ( buttonText ) {
+            _w.append(
+                this.__makeButton(buttonText, function() {
+                   var $this = $(this);
+                   if ( $this.data('callback') ) $this.data('callback').call($this.data('callbackCtx'), $this.parent().data('messageData'));
+                   $this.parent().hide('fold', 200, 'easeInBack', function() { $(this).remove() });
+               })
+               .css({display: 'none'})
+               .data('callback', buttonCallback)
+               .data('callbackCtx', buttonCallbackCtx)
+            )
+        }
     };
 
     
@@ -78,7 +96,7 @@
     
 
     /** Makes a DOM 'OK'-button to be added into windows.  @private */
-    GUI.prototype.__makeButton = function(text, callback, callbackCtx) {
+    GUI.prototype.__makeButton = function(text, callback) {
         return $('<div></div>')
             .addClass('brew-button')
             .addClass('jotain')
@@ -98,7 +116,7 @@
     GUI.prototype.__closeOpenMessages = function() {
         $('.brew-message-open').each(function() { 
             $(this).toggleClass('brew-message-open', settings.messagesAnimationSpeed, 'easeOutBounce');
-            $(this).children('.brew-message-body').toggle('fold', {direction: 'up', easing: 'easeOutQuad'}, settings.messagesAnimationSpeed);
+            $(this).children('.brew-message-body, .brew-button').toggle('fold', {direction: 'up', easing: 'easeOutQuad'}, settings.messagesAnimationSpeed);
         });
     };
     
@@ -110,12 +128,12 @@
         if( !$this.hasClass('brew-message-open') ) {
             $('.brew-message-open').each(function() { 
                 $(this).toggleClass('brew-message-open', settings.messagesAnimationSpeed, 'easeOutBounce');
-                $(this).children('.brew-message-body').toggle('fold', {direction: 'up', easing: 'easeOutQuad'}, settings.messagesAnimationSpeed);
+                $(this).children('.brew-message-body, .brew-button').toggle('fold', {direction: 'up', easing: 'easeOutQuad'}, settings.messagesAnimationSpeed);
             });
         }
         
         $this.toggleClass('brew-message-open', settings.messagesAnimationSpeed, 'easeOutBounce');
-        $this.children('.brew-message-body').toggle('fold', {direction: 'up', easing: 'easeOutQuad'}, settings.messagesAnimationSpeed);
+        $this.children('.brew-message-body, .brew-button').toggle('fold', {direction: 'up', easing: 'easeOutQuad'}, settings.messagesAnimationSpeed);
     };
     
     
