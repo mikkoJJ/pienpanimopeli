@@ -40,7 +40,8 @@
             this.load.image('floor', 'assets/sprites/floor.png');
             this.load.image('cursor', 'assets/sprites/select.png');
             this.load.image('bottle', 'assets/sprites/bottle.png');
-
+            this.load.image('kettle', 'assets/sprites/kettle.png');
+            
             this.load.json('texts', 'assets/json/texts.json');
 
             this.load.image('letter', 'assets/sprites/letter.png');
