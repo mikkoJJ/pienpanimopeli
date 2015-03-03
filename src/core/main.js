@@ -37,9 +37,12 @@
             this.isoGroup = this.add.group();
             this.__makeFloor();
 
-            storage = this.add.group();
+            storage = new Brew.Storage(this.game);
+            storage.base.x = 2 * settings.tileSize;
+            storage.base.y = 2 * settings.tileSize;
+            storage.amount = 10;
 
-            this.cursorPosition =
+            this.cursorPosition = 
                 this.cursor = this.add.isoSprite(0, 0, 0, 'cursor', 0, this.isoGroup);
             //this.cursor.anchor.setTo(0.5);
 
@@ -52,43 +55,23 @@
             //  letter.events.onInputDown.add(this.listener, this);
 
             //aputeksti kehitysvaiheelle
-            scoreText = this.add.text(
+            /*scoreText = this.add.text(
                 this.world.centerX + 300,
                 this.world.height / 5, "", {
                     size: "32px",
                     fill: "#FFF",
                     align: "center"
                 }
-
             );
             scoreText.anchor.set(0.5);
-            scoreText.setText("Beer in storage: ");
+            scoreText.setText("Beer in storage: ");*/
 
             this.time.events.loop(Phaser.Timer.SECOND * 5, this.updateCounter, this);
-
-            lager = new Brew.Beer();
-            lager.name = "lager";
-            lager.amount = 1;
-            this.beer = lager;
-            
-            sale = this.add.isoSprite(150, 100, 0, 'sell');
-            sale.inputEnabled = true;
-            //     sale.events.onInputDown.add(this.sell, this);
-            sale.beer = this.beer;
-
             kettle = new Kettle(this.game, 250, 100, 0);
 
             Brew.Budget.create();
             Brew.Budget.moveProgressBar();
             Brew.Budget.update(50);
-
-            bottle = this.add.isoSprite(0, 0, 0, 'beercase');
-            //      pullo.body.moves = true;'
-            bottle.moves = true;
-            //ei toimi kummatkaan
-            bottle.inputEnabled = true;
-            bottle.input.enableDrag(false, true);
-            storage.add(bottle);
 
             //tilaukset debuggausta varten
             var iso = new Order("lageria", 200, "iso tilaus");
@@ -105,24 +88,20 @@
 
         //selling beer
         sell: function (order) {
-            if (storage.length < order.amount) return false;
+            if (storage.amount < order.amount) return false;
             else {
                 budget = budget + order.price * order.amount;
                 var message = Brew.Budget.update(budget);
-                sale.beer.sell(order.amount);
+                storage.amount -= order.amount;
                 if (budget >= 100) {
                     Brew.gui.alert("Liikevoittosi on ilmiömäinen. " + message);
                     sale.inputEnabled = false;
                     kettle.inputEnabled = false;
                 }
                 var j = 0;
-                while (j < order.amount) {
-                    storage.getFirstExists(true).destroy();
-                    j++;
-                }
             }
             if (order.buyer == "Nalle") {
-                Brew.gui.alert("Yksityishenkilölle myyminen on laitonta! Menetit lupasi ja hävisit pelin.");
+                Brew.gui.alert("Yksityishenkilölle myyminen on laitonta!");
             }
         },
 
@@ -211,24 +190,20 @@
             budget = budget - 1;
             var message = Brew.Budget.update(budget);
             this.inputEnabled = false;
-            sale.beer.cook(10);
-            scoreText.setText("Cooking...");
+            //scoreText.setText("Cooking...");
             Brew.game.time.events.add(Phaser.Timer.SECOND * 4, this.cook, this);
+            Brew.game.add.tween(this).to({isoZ: this.isoZ + 2}, Phaser.Timer.SECOND/8, Phaser.Easing.Default, true, 0, 16, true);
         }
 
     };
 
     //cook some beer in the kettle
     Kettle.prototype.cook = function () {
-        for (var i = 0; i < 10; i++) {
-            var b = this.game.add.isoSprite(0, this.game.rnd.integerInRange(0, 500), 0, 'bottle');
-            b.inputEnabled = true;
-            b.input.enableDrag(false, true);
-            storage.add(b);
-            scoreText.setText("Olutta: " + lager.amount + " koria");
-            this.inputEnabled = true;
-        }
-        if (storage.length >= 50) {
+        storage.amount += 10;
+        //scoreText.setText("Olutta: " + storage.amount + " pulloa");
+        this.inputEnabled = true;
+        
+        if (storage.amount >= 50) {
             budget = budget - 50;
             var message = Brew.Budget.update(budget);
             Brew.gui.alert("Ylitit vuosittaisen tuotantokiintiösi ja sait sakot! " + message);
