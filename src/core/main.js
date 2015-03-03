@@ -15,8 +15,9 @@
         sale,
         kettle,
         bottle,
-        storage;
-
+        storage,
+        lager
+        ;
 
     /**
      * This is the main game state that starts when all assets are loaded.
@@ -32,7 +33,6 @@
 
         create: function () {
             this.messages = new Brew.Messages();
-            this.beer = new Brew.Beer();
 
             this.isoGroup = this.add.group();
             this.__makeFloor();
@@ -66,10 +66,11 @@
 
             this.time.events.loop(Phaser.Timer.SECOND * 5, this.updateCounter, this);
 
-            lager = this.beer;
-            lager.name = "lager"
+            lager = new Brew.Beer();
+            lager.name = "lager";
             lager.amount = 1;
-
+            this.beer = lager;
+            
             sale = this.add.isoSprite(150, 100, 0, 'sell');
             sale.inputEnabled = true;
             //     sale.events.onInputDown.add(this.sell, this);
@@ -81,7 +82,7 @@
             Brew.Budget.moveProgressBar();
             Brew.Budget.update(50);
 
-            bottle = this.add.isoSprite(0, 0, 0, 'bottle');
+            bottle = this.add.isoSprite(0, 0, 0, 'beercase');
             //      pullo.body.moves = true;'
             bottle.moves = true;
             //ei toimi kummatkaan
@@ -129,6 +130,7 @@
          * control orders
          */
         updateCounter: function () {
+            //   console.log(this.time.totalElapsedSeconds());
             //   if (i > 5) return;
             var order = new Order().random();
             var list = [];
@@ -141,7 +143,7 @@
         },
 
         update: function () {
-            scoreText.setText("Olutta: " + this.beer.amount + " koria")
+       //     scoreText.setText("Olutta: " + this.beer.amount + " koria")
 
             this.messages.update();
 
@@ -192,7 +194,7 @@
         Phaser.Plugin.Isometric.IsoSprite.call(this, game, x, y, z, 'kettle');
 
         this.inputEnabled = true;
-        this.events.onInputDown.add(this.cook, this);
+        this.events.onInputDown.add(this.check, this);
 
         game.add.existing(this);
     };
@@ -200,27 +202,36 @@
     Kettle.prototype = Object.create(Phaser.Plugin.Isometric.IsoSprite.prototype);
     Kettle.prototype.constructor = Kettle;
 
+
+    //check if there is enoug money for cook
+    Kettle.prototype.check = function () {
+        if (budget - 1 <= 0) {
+            Brew.gui.alert("Rahasi eivät riitä uuden erän valmistamiseen.");
+        } else {
+            budget = budget - 1;
+            var message = Brew.Budget.update(budget);
+            this.inputEnabled = false;
+            sale.beer.cook(10);
+            scoreText.setText("Cooking...");
+            Brew.game.time.events.add(Phaser.Timer.SECOND * 4, this.cook, this);
+        }
+
+    };
+
     //cook some beer in the kettle
     Kettle.prototype.cook = function () {
+        for (var i = 0; i < 10; i++) {
+            var b = this.game.add.isoSprite(0, this.game.rnd.integerInRange(0, 500), 0, 'bottle');
+            b.inputEnabled = true;
+            b.input.enableDrag(false, true);
+            storage.add(b);
+            scoreText.setText("Olutta: " + lager.amount + " koria");
+            this.inputEnabled = true;
+        }
         if (storage.length >= 50) {
             budget = budget - 50;
             var message = Brew.Budget.update(budget);
             Brew.gui.alert("Ylitit vuosittaisen tuotantokiintiösi ja sait sakot! " + message);
-        } else {
-            budget = budget - 1;
-            var message = Brew.Budget.update(budget);
-            sale.beer.cook(10)
-            if (budget <= 0) {
-                //    Brew.gui.alert("hävisit pelin!" + bottle.beer.amount);
-                this.inputEnabled = false;
-                Brew.gui.alert(message)
-            }
-            for (var i = 0; i < 10; i++) {
-                var b = this.game.add.isoSprite(0, this.game.rnd.integerInRange(0, 500), 0, 'bottle');
-                b.inputEnabled = true;
-                b.input.enableDrag(false, true);
-                storage.add(b);
-            }
         }
     };
 
