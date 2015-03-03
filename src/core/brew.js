@@ -9,5 +9,5 @@ var Brew = {
      */
     game: null,      
 
-
+    noCursor: false
 };

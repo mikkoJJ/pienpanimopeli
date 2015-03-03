@@ -36,11 +36,11 @@
             this.progress.fixedToCamera = true;
             
             Brew.game.plugins.add(new Phaser.Plugin.Isometric(Brew.game));
-
+            /*
             this.load.image('floor', 'assets/sprites/floor.png');
             this.load.image('cursor', 'assets/sprites/select.png');
             this.load.image('bottle', 'assets/sprites/bottle.png');
-            this.load.image('kettle', 'assets/sprites/kettle.png');
+            this.load.image('kettle', 'assets/sprites/kettle_selected.png');
             
             this.load.json('texts', 'assets/json/texts.json');
 
@@ -48,6 +48,9 @@
             this.load.image('sell', 'assets/sprites/sell.png');
             this.load.image('cook', 'assets/sprites/cook.png');
             this.load.image('beercase', 'assets/sprites/kori.png');
+            */
+            this.load.atlasJSONHash('sprites', 'assets/sprites/brew_sprites.png', 'assets/sprites/brew_sprites_data.json');
+            this.load.json('texts', 'assets/json/texts.json');
             
             console.log('PRELOAD: Images loaded');
             

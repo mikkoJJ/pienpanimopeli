@@ -10,5 +10,5 @@ You can play the current deployed version of the game at [mikkojakonen.net/pienp
 
 ---
 
-Application plan and structure document [here](/docs/application.md
+Application plan and structure document [here](/docs/application.md)
 

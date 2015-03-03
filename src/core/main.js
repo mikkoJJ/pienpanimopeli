@@ -32,42 +32,28 @@
     Brew.Main.prototype = {
 
         create: function () {
+            this.game.iso.anchor.setTo(0.5, 0.2);
             this.messages = new Brew.Messages();
 
             this.isoGroup = this.add.group();
             this.__makeFloor();
 
-            storage = new Brew.Storage(this.game);
-            storage.base.x = 2 * settings.tileSize;
-            storage.base.y = 2 * settings.tileSize;
+            storage = new Brew.Storage(this.game, this.isoGroup);
+            storage.base.x = 0 * settings.tileSize;
+            storage.base.y = 1 * settings.tileSize;
             storage.amount = 10;
 
-            this.cursorPosition = 
-                this.cursor = this.add.isoSprite(0, 0, 0, 'cursor', 0, this.isoGroup);
-            //this.cursor.anchor.setTo(0.5);
+            this.cursor = this.add.isoSprite(0, 0, 0, 'sprites', 'select', this.isoGroup);
+            this.cursor.anchor.setTo(0.5, 0);
 
-            letter = this.add.button(this.width, this.height, 'letter', function () {
+            letter = this.add.button(50, 5, 'sprites', function () {
                 Brew.gui.toggleMessages();
-            }, this);
-            letter.scale.set(0.2, 0.2);
-            letter.anchor.setTo(0, 0);
-            //   letter.anchor.set(0.5);
-            //  letter.events.onInputDown.add(this.listener, this);
-
-            //aputeksti kehitysvaiheelle
-            /*scoreText = this.add.text(
-                this.world.centerX + 300,
-                this.world.height / 5, "", {
-                    size: "32px",
-                    fill: "#FFF",
-                    align: "center"
-                }
-            );
-            scoreText.anchor.set(0.5);
-            scoreText.setText("Beer in storage: ");*/
+            }, this, 'letter_open', 'letter', 'letter_open', 'letter_open');
+            letter.anchor.setTo(0.5, 0);
 
             this.time.events.loop(Phaser.Timer.SECOND * 5, this.updateCounter, this);
-            kettle = new Kettle(this.game, 250, 100, 0);
+            kettle = new Kettle(this.game, 3 * settings.tileSize + 10, 3 * settings.tileSize - 6, 0, this.isoGroup);
+            //kettle.anchor.set(0.5);
 
             Brew.Budget.create();
             Brew.Budget.moveProgressBar();
@@ -123,13 +109,18 @@
 
         update: function () {
        //     scoreText.setText("Olutta: " + this.beer.amount + " koria")
-
+            this.game.iso.topologicalSort(this.isoGroup);
             this.messages.update();
 
             //check mouse position and put the cursor on the correct place:
             var _pos = new Phaser.Plugin.Isometric.Point3();
             this.game.iso.unproject(this.game.input.activePointer.position, _pos);
 
+            if( Brew.noCursor ) {
+                this.cursor.isoX = this.cursor.isoY = -1000;
+                return;
+            }
+            
             this.isoGroup.forEach(function (tile) {
                 var inBounds = tile.isoBounds.containsXY(_pos.x, _pos.y);
                 if (inBounds) {
@@ -148,9 +139,10 @@
          */
         __makeFloor: function () {
             var tile;
-            for (var xx = 0; xx < 15 * settings.tileSize; xx += settings.tileSize) {
-                for (var yy = 0; yy < 15 * settings.tileSize; yy += settings.tileSize) {
-                    tile = this.add.isoSprite(xx, yy, 0, 'floor', 0, this.isoGroup);
+            for (var xx = 0; xx < 10 * settings.tileSize; xx += settings.tileSize) {
+                for (var yy = 0; yy < 10 * settings.tileSize; yy += settings.tileSize) {
+                    tile = this.add.isoSprite(xx, yy, 0, 'sprites', 'floor', this.isoGroup);
+                    tile.anchor.set(0.5, 0);
                 }
             }
         }
@@ -161,20 +153,31 @@
     /**
      * Kettle IsoSprite that handles the cooking of beer.
      *
-     * @class Kettle
+     * @class Brew.Kettle
      * @augments Phaser.Plugin.Isometric.IsoSprite
      * @param {Phaser.Game} game reference to the currently used game object
      * @param {Number}      x    iso X position
      * @param {Number}      y    iso X position
      * @param {Number}      z    iso X position
      */
-    var Kettle = function (game, x, y, z) {
+    var Kettle = function (game, x, y, z, group) {
         //call super constructor
-        Phaser.Plugin.Isometric.IsoSprite.call(this, game, x, y, z, 'kettle');
+        Phaser.Plugin.Isometric.IsoSprite.call(this, game, x, y, z, 'sprites', 'kettle', group);
 
         this.inputEnabled = true;
         this.events.onInputDown.add(this.check, this);
-
+        this.events.onInputOver.add(function() {
+            this.frameName = 'kettle_selected';
+            Brew.noCursor = true;
+        }, this);
+        this.events.onInputOut.add(function() {
+            this.frameName = 'kettle';
+            Brew.noCursor = false;
+        }, this);
+        
+        
+        this.name = 'kettle';
+        
         game.add.existing(this);
     };
 
@@ -222,7 +225,7 @@
 
     Order.prototype.random = function () {
         var types = ["lageria", "tummaa olutta", "portteria"];
-        var buyers = ["Kesko", "Hemingways", "Nalle"];
+        var buyers = ["Kesko", "Hemingways", "Vakiopaine", "Musta Kynnys", "Ale Pub", "S-Ryhmä", "Nalle"];
 
         return new Order(
             types[Brew.game.rnd.integerInRange(0, types.length - 1)],

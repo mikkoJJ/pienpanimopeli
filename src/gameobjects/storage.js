@@ -2,7 +2,7 @@
 
     var settings = {
         //the width of a tile in pixels
-        tileWidth: 35,
+        tileWidth: 38,
         
         //the height of one case in pixels
         caseHeight: 20,
@@ -14,7 +14,7 @@
         pileWidth: 4,
         
         //how many units of beer does one case represent
-        caseValue: 10,
+        caseValue: 1,
     };
     
     /**
@@ -26,9 +26,9 @@
      * 
      * @param {Phaser.Game} game reference to the game object to use.
      */
-    var Storage = function(game) {
+    var Storage = function(game, group) {
         this._game = game;
-        this._group = game.add.group();
+        this._group = group;
         this._amount = 0;
         this._cases = [];
         this._current = { x: 0, y: 0, z: 0 };
@@ -42,9 +42,10 @@
     
 
     Storage.prototype.addCase = function() {
-        var _case = this._game.add.isoSprite(0, 0, 0, 'beercase', null, this._group);
+        var _case = this._game.add.isoSprite(0, 0, 0, 'sprites', 'kori', this._group);
+        //_case.anchor.set(0.2, 0.2);
         _case.isoX = this.base.x + settings.tileWidth * this._current.x;
-        _case.isoY = this.base.x + settings.tileWidth * this._current.y;
+        _case.isoY = this.base.y + settings.tileWidth * this._current.y;
         _case.isoZ = this.base.z + settings.caseHeight * this._current.z;
         
         _case.casePosition = {x: this._current.x, y: this._current.y, z: this._current.z};
