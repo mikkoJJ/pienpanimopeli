@@ -74,13 +74,13 @@
             Brew.Budget.update(50);
 
             //tilaukset debuggausta varten
-            var iso = new Order("lageria", 200, "iso tilaus");
+            var iso = new Order("lageria", 200, "Kesko");
             var pieni = new Order("lageria", 1, "Hemingways");
             var laiton = new Order("lageria", 1, "Nalle");
 
-            Brew.gui.addMessage('Iso', iso.message(), iso, "Myy", this.sell);
-            Brew.gui.addMessage('Laiton', laiton.message(), laiton, "Myy", this.sell);
-            Brew.gui.addMessage('Pieni', pieni.message(), pieni, "Myy", this.sell);
+            Brew.gui.addMessage('Tilaus', iso.message(), iso, "Myy", this.sell);
+            Brew.gui.addMessage('Tilaus', laiton.message(), laiton, "Myy", this.sell);
+            Brew.gui.addMessage('Tilaus', pieni.message(), pieni, "Myy", this.sell);
             //    Brew.gui.addMessage('Tilaus', '3 tynnyriä lageria.');
             //    Brew.gui.addMessage('Sakko', 'Myit liikaa olutta!');
             //    Brew.gui.addMessage('Viesti', 'Haluan ostaa olutta! t: Nalle');
@@ -89,20 +89,20 @@
         //selling beer
         sell: function (order) {
             if (storage.amount < order.amount) return false;
-            else {
+            else if (order.buyer == "Nalle") {
+                Brew.gui.alert("Yksityishenkilölle myyminen on laitonta! Sait sakot.");
+                budget = budget - 10;
+                Brew.Budget.update(budget);
+            } else {
                 budget = budget + order.price * order.amount;
                 var message = Brew.Budget.update(budget);
                 storage.amount -= order.amount;
                 if (budget >= 100) {
                     Brew.gui.alert("Liikevoittosi on ilmiömäinen. " + message);
-                    sale.inputEnabled = false;
                     kettle.inputEnabled = false;
                 }
-                var j = 0;
             }
-            if (order.buyer == "Nalle") {
-                Brew.gui.alert("Yksityishenkilölle myyminen on laitonta!");
-            }
+
         },
 
         /*
@@ -202,9 +202,9 @@
         storage.amount += 10;
         //scoreText.setText("Olutta: " + storage.amount + " pulloa");
         this.inputEnabled = true;
-        
+
         if (storage.amount >= 50) {
-            budget = budget - 50;
+            budget = budget - 30;
             var message = Brew.Budget.update(budget);
             Brew.gui.alert("Ylitit vuosittaisen tuotantokiintiösi ja sait sakot! " + message);
         }
