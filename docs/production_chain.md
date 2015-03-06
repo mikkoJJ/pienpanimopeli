@@ -1,18 +1,18 @@
 Production Chain Objects
 ========================
 
-`Producer`
+`Brew.Producer`
 ----------
 
 A `Producer` is a generic object that represents one step in the production chain.
 
 ### Members
 
-#### `Producer.beer` {`Brew.Beer`}
+#### `Producer.beer`
 
 Every `Producer` has a reference to the `Beer` object that is being processed. It is instantiated in the first step of the process.
 
-#### `Producer.state` {`Number`} 
+#### `Producer.state` 
 
 A `Producer` is always in one of the following states: `IDLE`, `PROCESSING`, `DONE`. When done processing, it will stay in the `DONE` state until the next step in the chain is able to continue production (ie. reaches the `IDLE` state). 
 
@@ -24,10 +24,10 @@ Called by the game to keep the producer updating.
 
 The production steps derived from it are:
 
-`Lauterer`
+`Brew.Lauterer`
 
-`Fermenter`
+`Brew.Fermenter`
 
-`Maturer`
+`Brew.Maturer`
 
-`Bottler`
+`Brew.Bottler`
