@@ -48,6 +48,9 @@
         _case.isoY = this.base.y + settings.tileWidth * this._current.y;
         _case.isoZ = this.base.z + settings.caseHeight * this._current.z;
         
+        _case.inputEnabled = true;
+        _case.events.onInputDown.add(this.moveEmployee, this);
+        
         _case.casePosition = {x: this._current.x, y: this._current.y, z: this._current.z};
         
         if ( ++this._current.z >= settings.pileHeight ) {
@@ -61,6 +64,13 @@
         this._cases.push(_case);
     };
     
+    Storage.prototype.moveEmployee = function() {
+        Brew.game.add.tween(Brew.Person).to({
+            isoX: this._current.x + 130,
+            isoY: this._current.y,
+            isoZ: 0
+        }, 2000, Phaser.Easing.Linear.None, true, 0, 0, false);
+    };
     
     Storage.prototype.removeCase = function() {
         var _case = this._cases.pop();
