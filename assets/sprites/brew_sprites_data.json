@@ -2,7 +2,7 @@
 
 "bottle":
 {
-	"frame": {"x":2,"y":2,"w":39,"h":53},
+	"frame": {"x":392,"y":2,"w":39,"h":53},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":39,"h":53},
@@ -11,7 +11,7 @@
 },
 "cook":
 {
-	"frame": {"x":391,"y":2,"w":70,"h":40},
+	"frame": {"x":146,"y":2,"w":70,"h":40},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":70,"h":40},
@@ -20,7 +20,7 @@
 },
 "floor":
 {
-	"frame": {"x":2,"y":68,"w":70,"h":40},
+	"frame": {"x":74,"y":2,"w":70,"h":40},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":70,"h":40},
@@ -29,7 +29,7 @@
 },
 "kettle":
 {
-	"frame": {"x":74,"y":68,"w":176,"h":155},
+	"frame": {"x":134,"y":57,"w":176,"h":155},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":155},
@@ -38,7 +38,7 @@
 },
 "kettle_selected":
 {
-	"frame": {"x":252,"y":68,"w":176,"h":155},
+	"frame": {"x":312,"y":57,"w":176,"h":155},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":155},
@@ -47,7 +47,7 @@
 },
 "kori":
 {
-	"frame": {"x":319,"y":2,"w":70,"h":52},
+	"frame": {"x":320,"y":2,"w":70,"h":52},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":70,"h":52},
@@ -56,7 +56,7 @@
 },
 "letter":
 {
-	"frame": {"x":43,"y":2,"w":64,"h":64},
+	"frame": {"x":2,"y":57,"w":64,"h":64},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
@@ -65,16 +65,25 @@
 },
 "letter_open":
 {
-	"frame": {"x":109,"y":2,"w":64,"h":64},
+	"frame": {"x":68,"y":57,"w":64,"h":64},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
 	"sourceSize": {"w":64,"h":64},
 	"pivot": {"x":0.5,"y":0.5}
 },
+"mies":
+{
+	"frame": {"x":290,"y":2,"w":28,"h":51},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":28,"h":51},
+	"sourceSize": {"w":28,"h":51},
+	"pivot": {"x":0.5,"y":0.5}
+},
 "select":
 {
-	"frame": {"x":175,"y":2,"w":70,"h":40},
+	"frame": {"x":2,"y":2,"w":70,"h":40},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":70,"h":40},
@@ -83,7 +92,7 @@
 },
 "sell":
 {
-	"frame": {"x":247,"y":2,"w":70,"h":40},
+	"frame": {"x":218,"y":2,"w":70,"h":40},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":70,"h":40},
@@ -95,8 +104,8 @@
 	"version": "1.0",
 	"image": "brew_sprites.png",
 	"format": "RGBA8888",
-	"size": {"w":463,"h":225},
+	"size": {"w":490,"h":214},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:8eeb20e0c0ea89b85c96e835986c9518:79f12a182ece574aee336bd857e12b41:e325bcc26a2f8fec181af486dd8a3cc9$"
+	"smartupdate": "$TexturePacker:SmartUpdate:a8ea3bf58ae9c1e4116587d4ea427312:caada59fabf1b21969bb2badda1b222c:e325bcc26a2f8fec181af486dd8a3cc9$"
 }
 }

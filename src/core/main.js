@@ -6,18 +6,14 @@
 
     //helper variables:
     var letter,
-        scoreText,
-        output,
-        counter = 0,
-        sakot, i = 0,
+        i = 0,
         budget = 50,
-        money,
-        sale,
         kettle,
-        bottle,
+        kettle2,
         storage,
-        lager,
-        person;
+        person,
+        person2
+    ;
 
     /**
      * This is the main game state that starts when all assets are loaded.
@@ -59,18 +55,6 @@
             Brew.Budget.create();
             Brew.Budget.moveProgressBar();
             Brew.Budget.update(50);
-
-            //tilaukset debuggausta varten
-            var iso = new Order("lageria", 200, "Kesko");
-            var pieni = new Order("lageria", 1, "Hemingways");
-            var laiton = new Order("lageria", 1, "Nalle");
-
-            Brew.gui.addMessage('Tilaus', iso.message(), iso, "Myy", this.sell);
-            Brew.gui.addMessage('Tilaus', laiton.message(), laiton, "Myy", this.sell);
-            Brew.gui.addMessage('Tilaus', pieni.message(), pieni, "Myy", this.sell);
-            //    Brew.gui.addMessage('Tilaus', '3 tynnyriä lageria.');
-            //    Brew.gui.addMessage('Sakko', 'Myit liikaa olutta!');
-            //    Brew.gui.addMessage('Viesti', 'Haluan ostaa olutta! t: Nalle');
 
             person = new Person(this.game, 100, 100, 0, this.isoGroup);
             person2 = new Person(this.game, 0, 300, 0, this.isoGroup);
@@ -211,7 +195,7 @@
             Brew.gui.alert("Rahasi eivät riitä uuden erän valmistamiseen.");
         } else {
             budget = budget - 1;
-            var message = Brew.Budget.update(budget);
+            Brew.Budget.update(budget);
             this.inputEnabled = false;
             //scoreText.setText("Cooking...");
             Brew.game.time.events.add(Phaser.Timer.SECOND * 4, this.cook, this);
@@ -238,7 +222,7 @@
     Brew.Kettle = Kettle;
 
     var Person = function (game, x, y, z, group) {
-        Phaser.Plugin.Isometric.IsoSprite.call(this, game, x, y, z, 'sprites', 'bottle', group);
+        Phaser.Plugin.Isometric.IsoSprite.call(this, game, x, y, z, 'sprites', 'mies', group);
 
         this.inputEnabled = true;
         this.events.onInputDown.add(function () {
@@ -269,7 +253,7 @@
             types[Brew.game.rnd.integerInRange(0, types.length - 1)],
             Brew.game.rnd.integerInRange(1, 10),
             //     Brew.game.time.totalElapsedSeconds(), 
-            buyers[Brew.game.rnd.integerInRange(0, buyers.length - 1)])
+            buyers[Brew.game.rnd.integerInRange(0, buyers.length - 1)]);
     };
 
     Order.prototype.message = function () {

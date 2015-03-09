@@ -57,7 +57,7 @@
             if ( ++this._current.x >= settings.pileWidth ) {
                 this._current.y++;
                 this._current.x = 0;
-            };
+            }
             this._current.z = 0;
         }
         
@@ -90,12 +90,10 @@
         },
         
         set: function(newAmount) {
-            var oldAmount = this._amount;
-            
             var caseDifference = Math.floor(newAmount / settings.caseValue) - this._cases.length;
             
             if (caseDifference < 0) for (var i = caseDifference; i < 0; i++ ) this.removeCase(); 
-            else for (var i = 0; i < caseDifference; i++ ) this.addCase();
+            else for (var j = 0; j < caseDifference; j++ ) this.addCase();
             
             this._amount = newAmount;
         }

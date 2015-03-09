@@ -37,7 +37,7 @@
             .append(this.__makeButton('OK', function() {
                 var p = $(this).parent();
                 if( p.data('callback') ) p.data('callback').call(p.data('callbackCtx'));
-                p.hide('drop', 200, 'easeInBack', function() { this.remove() });
+                p.hide('drop', 200, 'easeInBack', function() { this.remove(); });
             }))
             .appendTo(settings.dom)
             .show('drop', 200, 'easeOutBack')
@@ -79,13 +79,13 @@
                 
                     if ( $this.data('callback') ) remove = $this.data('callback').call($this.data('callbackCtx'), $this.parent().data('messageData'));
 
-                    if ( remove !== false ) $this.parent().hide('fold', 200, 'easeInBack', function() { $(this).remove() });
+                    if ( remove !== false ) $this.parent().hide('fold', 200, 'easeInBack', function() { $(this).remove(); });
                     else e.stopPropagation();
                 })
                 .css({display: 'none'})
                 .data('callback', buttonCallback)
                 .data('callbackCtx', buttonCallbackCtx)
-            )
+            );
         }
     };
 
