@@ -12,8 +12,8 @@
         kettle2,
         storage,
         person,
-        person2
-    ;
+        person2,
+        floor;
 
     /**
      * This is the main game state that starts when all assets are loaded.
@@ -39,6 +39,12 @@
             storage.base.y = 1 * settings.tileSize;
             storage.amount = 10;
 
+            /*    var kattila = this.add.isoSprite(50, 200, 0, 'kattila');
+            kattila.scale.set(0.5, 0.5);
+
+            var paakattila = this.add.isoSprite(50, 0, 0, 'paa_kattila_luonnos');
+            paakattila.scale.set(0.5, 0.5);
+*/
             this.cursor = this.add.isoSprite(0, 0, 0, 'sprites', 'select', this.isoGroup);
             this.cursor.anchor.setTo(0.5, 0);
 
@@ -48,16 +54,21 @@
             letter.anchor.setTo(0.5, 0);
 
             this.time.events.loop(Phaser.Timer.SECOND * 5, this.updateCounter, this);
-            kettle = new Kettle(this.game, 3 * settings.tileSize + 10, 3 * settings.tileSize - 6, 0, this.isoGroup);
-            //kettle.anchor.set(0.5);
-            kettle2 = new Kettle(this.game, 3 * settings.tileSize + 10, 6 * settings.tileSize - 6, 0, this.isoGroup);
+            kettle = new Kettle(this.game, 4 * settings.tileSize + 20, 3 * settings.tileSize - 10, 0, this.isoGroup);
+            kettle.anchor.setTo(0.5, 0);
+            kettle2 = new Kettle(this.game, 4 * settings.tileSize + 20, 6 * settings.tileSize - 10, 0, this.isoGroup);
+            kettle2.anchor.setTo(0.5, 0);
 
             Brew.Budget.create();
             Brew.Budget.moveProgressBar();
             Brew.Budget.update(50);
 
-            person = new Person(this.game, 100, 100, 0, this.isoGroup);
-            person2 = new Person(this.game, 0, 300, 0, this.isoGroup);
+            person = new Person(this.game, 1 * settings.tileSize, 4 * settings.tileSize, 0, this.isoGroup);
+            person2 = new Person(this.game, 1 * settings.tileSize, 5 * settings.tileSize, 0, this.isoGroup);
+            person.anchor.setTo(0.5, 0);
+            person2.anchor.setTo(0.5, 0);
+
+            floor = new Brew.Floor;
 
         },
 
@@ -118,6 +129,7 @@
                 }
 
             }, this);
+            Brew.Floor.prototype.update();
         },
 
 
@@ -131,9 +143,16 @@
             for (var xx = 0; xx < 10 * settings.tileSize; xx += settings.tileSize) {
                 for (var yy = 0; yy < 10 * settings.tileSize; yy += settings.tileSize) {
                     tile = this.add.isoSprite(xx, yy, 0, 'sprites', 'floor', this.isoGroup);
+                    tile.inputEnabled = true;
+                    tile.events.onInputDown.add(this.call, {param: tile}, this);
                     tile.anchor.set(0.5, 0);
                 }
             }
+        },
+
+        call: function (tile) {
+            Brew.Floor.prototype.setElement(tile);
+            Brew.Floor.prototype.move(Brew.Person, tile);
         }
     };
 
@@ -157,6 +176,14 @@
         this.inputEnabled = true;
         this.events.onInputDown.add(this.moveEmployee, this);
         this.events.onInputDown.add(this.check, this);
+        this.events.onInputDown.add(function () {
+            Brew.Kettle = this;
+        }, this);
+        /*        this.events.onInputDown.add(Brew.Floor.prototype.move, {
+                    param1: Brew.Person,
+                    param2: this
+                }, Brew.Floor);*/
+
         this.events.onInputOver.add(function () {
             this.frameName = 'kettle_selected';
             Brew.noCursor = true;
@@ -169,6 +196,7 @@
         this.name = 'kettle';
 
         game.add.existing(this);
+        Brew.Floor.prototype.setElement(this);
     };
 
     Kettle.prototype = Object.create(Phaser.Plugin.Isometric.IsoSprite.prototype);
@@ -177,11 +205,8 @@
     //move employee to Kettle
     Kettle.prototype.moveEmployee = function () {
         this.Person = Brew.Person;
-        Brew.game.add.tween(Brew.Person).to({
-            isoX: this.isoX + 170,
-            isoY: this.isoY + 100,
-            isoZ: this.isoZ
-        }, 2000, Phaser.Easing.Linear.None, true, 0, 0, false);
+        Brew.Floor.Person = Brew.Person;
+    //    Brew.Floor.prototype.move(Brew.Person, this);
     };
 
 
