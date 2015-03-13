@@ -70,32 +70,13 @@
 
             floor = new Brew.Floor;
 
-
-            //arvot debuggausta varten
-            var suuri;
-            var pieni;
-            var aineet = $("#aineet").val();
-            var kulutus = $("#kulutus").val();
             $("#rahaa").text(budget);
-
-            $("#aineet")
-                .on("blur", function () {
-                    aineet = $(this).val();
-                });
-
+            
+            var kulutus = $("#kulutus").val();
             $("#kulutus")
                 .on("blur", function () {
                     kulutus = $(this).val();
                 });
-
-            var kattila = this.add.sprite(850, 10, 'sprites', 'cook');
-            kattila.inputEnabled = true;
-            kattila.events.onInputDown.add(function () {
-                budget = budget - parseInt(aineet);
-                Brew.Budget.update(budget);
-                $("#rahaa").text(budget);
-            }, this);
-            //   kattila.scale.set(0.5, 0.5);
 
             this.time.events.loop(Phaser.Timer.SECOND * 10, function () {
                 budget = budget - parseInt(kulutus);
@@ -110,6 +91,7 @@
             if (storage.amount < order.amount) return false;
             else if (order.buyer == "Nalle") {
                 budget = budget - 10;
+                $("#rahaa").text(budget);
                 var message = Brew.Budget.update(budget);
                 Brew.gui.alert("Yksityishenkilölle myyminen on laitonta! Sait sakot." + message);
             } else {
@@ -178,7 +160,9 @@
                 for (var yy = 0; yy < 10 * settings.tileSize; yy += settings.tileSize) {
                     tile = this.add.isoSprite(xx, yy, 0, 'sprites', 'floor', this.isoGroup);
                     tile.inputEnabled = true;
-                    tile.events.onInputDown.add(this.call, {param: tile}, this);
+                    tile.events.onInputDown.add(this.call, {
+                        param: tile
+                    }, this);
                     tile.anchor.set(0.5, 0);
                 }
             }
@@ -240,21 +224,29 @@
     Kettle.prototype.moveEmployee = function () {
         this.Person = Brew.Person;
         Brew.Floor.Person = Brew.Person;
-    //    Brew.Floor.prototype.move(Brew.Person, this);
+        //    Brew.Floor.prototype.move(Brew.Person, this);
     };
 
 
     //check if there is employee beside the kettle and enough money for cook
     Kettle.prototype.check = function () {
+        var aineet = parseInt($("#aineet").val());
+        $("#aineet")
+            .on("blur", function () {
+                aineet = parseInt($(this).val());
+            });
+
         if (!this.Person) {
             Brew.gui.alert("Siirrä työntekijä laitteen luokse.");
             return;
         }
-        if (budget - 1 <= 0) {
+        if (budget - aineet <= 0) {
             Brew.gui.alert("Rahasi eivät riitä uuden erän valmistamiseen.");
         } else {
-         //   budget = budget - 1;
+            budget = budget - aineet;
+            Brew.Budget.update(budget);
             $("#rahaa").text(budget);
+            //   budget = budget - 1;
             Brew.Budget.update(budget);
             this.inputEnabled = false;
             //scoreText.setText("Cooking...");
@@ -301,37 +293,33 @@
         //    this.age = age;
         this.type = type;
         this.amount = amount;
-        this.price = 100;
         this.buyer = buyer;
+
+        this.price = $("#hinta").val();
+        $("#hinta")
+            .on("blur", function () {
+                hinta = $(this).val();
+            });
     };
 
     Order.prototype.random = function () {
         var types = ["lageria", "tummaa olutta", "portteria"];
         var buyers = ["Kesko", "Hemingways", "Vakiopaine", "Musta Kynnys", "Ale Pub", "S-Ryhmä", "Nalle"];
 
-        var pieni = $("#pieni").val();
-        $("#pieni")
-            .on("blur", function () {
-                pieni = $(this).val();
-            });
-
-        var suuri = $("#suuri").val();
-        $("#suuri")
-            .on("blur", function () {
-                suuri = $(this).val();
-            });
-
+        var pieni = Brew.game.rnd.integerInRange(0, 10);
+        var suuri = Brew.game.rnd.integerInRange(30, 40); //isoja tilauksia voisi tulla harvemmin
         var amountTypes = [pieni, suuri];
 
         return new Order(
             types[Brew.game.rnd.integerInRange(0, types.length - 1)],
-            amountTypes[Brew.game.rnd.integerInRange(0, amountTypes.length - 1)],
+            //     amountTypes[Brew.game.rnd.integerInRange(0, amountTypes.length - 1)],
+            Brew.game.rnd.integerInRange(1, 10),
             //     Brew.game.time.totalElapsedSeconds(), 
             buyers[Brew.game.rnd.integerInRange(0, buyers.length - 1)]);
     };
 
     Order.prototype.message = function () {
-        return this.amount + " tynnyriä " + this.type + " Tilaaja:" + this.buyer;
+        return this.amount + " koria " + this.type + " Tilaaja:" + this.buyer;
     };
 
     Brew.Order = Order;
