@@ -33,6 +33,28 @@
 
 <body>
     <div id="progressbar"></div>
+    <form id="form">
+        <br><b>(tilaukset 20 sek välein, 1 kori maksaa 100 ja 1 kattilallisesta saa 10 koria)</b>
+        <br> Koreja suuressa tilauksessa:
+        <input type="text" id="suuri" value="10">
+
+        <br> Koreja pienessä tilauksessa:
+        <input type="text" id="pieni" value="1">
+
+        <br> Raaka-aineen hinta yhteen kattilalliseen (klikkaa cook):
+        <input type="text" id="aineet" value="1000">
+
+        <br> Rahan kulutus per 10 sek (verot, palkat)
+        <input type="text" id="kulutus" value="1000">
+        <br>
+        <input type="text">
+        <br>Alkupääoma: 50 000
+
+        <br>Voittopääoma: 100 000
+        <br>Rahaa jäljellä:
+        <b><p id="rahaa"></p></b>
+    </form>
+
     <div>
         <div style="width: 960px" id="game"></div>
     </div>

@@ -35,7 +35,8 @@
      */
     Floor.prototype.setElement = function (element) {
         //   alert(Math.floor(element.isoX / settings.tileSize));
-        //  graph[Math.floor(element.isoX / settings.tileSize)][Math.floor(element.isoY / settings.tileSize)] = 0;
+        graph[Math.floor(element.isoX / settings.tileSize)][Math.floor(element.isoY / settings.tileSize)] = 0;
+        this.grid = easystar.setGrid(graph);
     };
 
     /* Calculates if there is free path to
@@ -86,6 +87,7 @@
 
         graph[start[0]][start[1]] = 0;
         graph[end[0]][end[1]] = 1;
+        this.grid = easystar.setGrid(graph);
 
     };
 

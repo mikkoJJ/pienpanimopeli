@@ -26,28 +26,31 @@
 
     };
 
-    var money = 100;
     var div;
     var bar;
+    var full = 100000;
 
     /**
      */
     var Budget = function () {};
 
-    Budget.prototype.update = function (percent) {
+    Budget.prototype.update = function (money) {
+     //   console.log(money);
+        var percent = money / 1000;
         var message;
         if (percent <= 0) {
             percent = 0;
-            message = "Menetit kaikki rahasi ja hävisit pelin."
-        }
-        else if (percent >= 100) {
+            Brew.gui.alert("Menetit kaikki rahasi ja hävisit pelin.")
+//            message = "Menetit kaikki rahasi ja hävisit pelin."
+        } else if (percent >= 100) {
             percent = 100;
-            message = "Voitit pelin!";
+            Brew.gui.alert("Voitit pelin!");
+//            message = "Voitit pelin!";
         } else message = "";
 
         div.data('percent', percent);
         this.moveProgressBar();
-   //     console.log(div.data('percent'));
+        //     console.log(div.data('percent'));
         return message;
 
     };
