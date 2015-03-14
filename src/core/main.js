@@ -38,15 +38,9 @@
             storage.base.x = 0 * settings.tileSize;
             storage.base.y = 1 * settings.tileSize;
             storage.amount = 10;
-
-            /*    var kattila = this.add.isoSprite(50, 200, 0, 'kattila');
-            kattila.scale.set(0.5, 0.5);
-
-            var paakattila = this.add.isoSprite(50, 0, 0, 'paa_kattila_luonnos');
-            paakattila.scale.set(0.5, 0.5);
-*/
-            this.cursor = this.add.isoSprite(0, 0, 0, 'sprites', 'select', this.isoGroup);
-            this.cursor.anchor.setTo(0.5, 0);
+            
+            this.cursor = this.add.isoSprite(0, 0, 1, 'sprites', 'select', this.isoGroup);
+            this.cursor.anchor.setTo(0.5, 0.5);
 
             letter = this.add.button(50, 5, 'sprites', function () {
                 Brew.gui.toggleMessages();
@@ -54,9 +48,9 @@
             letter.anchor.setTo(0.5, 0);
 
             this.time.events.loop(Phaser.Timer.SECOND * 20, this.updateCounter, this);
-            kettle = new Kettle(this.game, 4 * settings.tileSize + 20, 3 * settings.tileSize - 10, 0, this.isoGroup);
+            kettle = new Kettle(this.game, 4 * settings.tileSize, 0 * settings.tileSize, 0, this.isoGroup);
             kettle.anchor.setTo(0.5, 0);
-            kettle2 = new Kettle(this.game, 4 * settings.tileSize + 20, 6 * settings.tileSize - 10, 0, this.isoGroup);
+            kettle2 = new Kettle(this.game, 4 * settings.tileSize, 3 * settings.tileSize, 0, this.isoGroup);
             kettle2.anchor.setTo(0.5, 0);
 
             Brew.Budget.create();
@@ -65,10 +59,10 @@
 
             person = new Person(this.game, 1 * settings.tileSize, 4 * settings.tileSize, 0, this.isoGroup);
             person2 = new Person(this.game, 1 * settings.tileSize, 5 * settings.tileSize, 0, this.isoGroup);
-            person.anchor.setTo(0.5, 0);
-            person2.anchor.setTo(0.5, 0);
+            person.anchor.setTo(0.5, 1);
+            person2.anchor.setTo(0.5, 1);
 
-            floor = new Brew.Floor;
+            floor = new Brew.Floor();
 
             $("#rahaa").text(budget);
 
@@ -125,7 +119,7 @@
 
         update: function () {
             //     scoreText.setText("Olutta: " + this.beer.amount + " koria")
-            this.game.iso.topologicalSort(this.isoGroup);
+            this.game.iso.simpleSort(this.isoGroup);
             this.messages.update();
 
             //check mouse position and put the cursor on the correct place:
@@ -163,7 +157,7 @@
                     tile.events.onInputDown.add(this.call, {
                         param: tile
                     }, this);
-                    tile.anchor.set(0.5, 0);
+                    tile.anchor.set(0.5, 0.5);
                 }
             }
         },
@@ -187,9 +181,9 @@
      * @param {Number}      z    iso X position
      */
     var Kettle = function (game, x, y, z, group) {
-        //call super constructor
         Phaser.Plugin.Isometric.IsoSprite.call(this, game, x, y, z, 'sprites', 'kettle', group);
-
+        
+        this.anchor.set(0.5, 0.76);
         this.Person = null;
         this.inputEnabled = true;
         this.events.onInputDown.add(this.moveEmployee, this);
@@ -275,14 +269,14 @@
 
     var Person = function (game, x, y, z, group) {
         Phaser.Plugin.Isometric.IsoSprite.call(this, game, x, y, z, 'sprites', 'mies', group);
-
+        this.anchor.set(0.5, 0.7);
         this.inputEnabled = true;
         this.events.onInputDown.add(function () {
           //  alert(Brew.Floor.moving);
             if (Brew.Floor.moving == false) return;
             Brew.Person = this;
         }, this);
-
+        
         game.add.existing(this);
     };
 

@@ -43,7 +43,7 @@
 
     Storage.prototype.addCase = function() {
         var _case = this._game.add.isoSprite(0, 0, 0, 'sprites', 'kori', this._group);
-        //_case.anchor.set(0.2, 0.2);
+        _case.anchor.set(0.5, 0.6);
         _case.isoX = this.base.x + settings.tileWidth * this._current.x;
         _case.isoY = this.base.y + settings.tileWidth * this._current.y;
         _case.isoZ = this.base.z + settings.caseHeight * this._current.z;
