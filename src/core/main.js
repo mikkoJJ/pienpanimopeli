@@ -71,7 +71,7 @@
             floor = new Brew.Floor;
 
             $("#rahaa").text(budget);
-            
+
             var kulutus = $("#kulutus").val();
             $("#kulutus")
                 .on("blur", function () {
@@ -278,6 +278,8 @@
 
         this.inputEnabled = true;
         this.events.onInputDown.add(function () {
+          //  alert(Brew.Floor.moving);
+            if (Brew.Floor.moving == false) return;
             Brew.Person = this;
         }, this);
 

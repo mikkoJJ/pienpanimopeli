@@ -17,16 +17,18 @@
  [1, 1, 1, 1, 1, 1, 1, 0, 0, 1],
  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
  [1, 1, 1, 1, 1, 1, 1, 0, 0, 1], //kettle
- [1, 1, 1, 1, 1, 1, 1, 0, 0, 1] 
+ [1, 1, 1, 1, 1, 1, 1, 0, 0, 1]
 ];
     var easystar = new EasyStar.js();
     var intervals = {};
     easystar.setIterationsPerCalculation(10);
+    var finished = true;
 
     var Floor = function () {
         this.grid = easystar.setGrid(graph);
         easystar.setAcceptableTiles([1]);
         this.Person = Brew.Person;
+        this.moving = finished;
         //    this.graph = new Graph(graph1);
     };
 
@@ -44,6 +46,9 @@
      * @param {destiny} currently, only tile is possible
      */
     Floor.prototype.move = function (person, destination) {
+        if (finished == false) {
+            return;
+        }
         this.Person = person;
         this.destination = destination;
 
@@ -59,6 +64,7 @@
             if (path === null) {
                 alert("Path was not found.");
             } else {
+                finished = false;
                 var id = setInterval(function () {
                     //path[0].x on kokonaislukuja taulukossa
                     Brew.Person.isoX = (path[0].x - 1) * settings.tileSize;
@@ -73,16 +79,17 @@
                     path.splice(0, 1);
 
                     if (path.length == 0) {
-                        //  delete intervals[id];
+                        finished = true;
+                        delete intervals[id];
                         clearInterval(id);
                         // callback();
                     }
 
                 }, 1000);
-                //    intervals[id] = true;
+                intervals[id] = true;
 
             }
-     
+
         });
 
         graph[start[0]][start[1]] = 0;
