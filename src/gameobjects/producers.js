@@ -19,7 +19,9 @@
      * @param {number} group - the (iso) group in which to put this sprite.
      */
     var Producer = function(game, x, y, z, frame, group) {
-        Phaser.Plugin.Isometric.IsoSprite.call(this, game, x, y, z, 'sprites', frame, group);
+        
+        /* The encapsulated sprite: */
+        this._sprite = game.add.isoSprite(x, y, z, 'sprites', frame, group);
         
         /** The current state of the producer. */
         this.state = Brew.ProducerState.IDLE;
@@ -36,15 +38,21 @@
         /** Is this the final phase of the production. */
         this.isFinal = false;
         
-        game.add.existing(this);
+        this._sprite.anchor.setTo(0.5, 0.9);
+        this._sprite.inputEnabled = true;
+        this._sprite.events.onInputDown.add(this._inputDown);
     };
     
     Producer.prototype = Object.create(Phaser.Plugin.Isometric.IsoSprite.prototype);
     Producer.prototype.constructor = Producer;
     
     
-    Producer.prototype.begin = function() {
-        
+    /**
+     * Event callback to when the Producer sprite is clicked
+     * @private
+     */
+    Producer.prototype._inputDown = function() {
+        //stuffs
     };
     
     

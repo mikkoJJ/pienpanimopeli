@@ -36,11 +36,12 @@
 
             storage = new Brew.Storage(this.game, this.isoGroup);
             storage.base.x = 0 * settings.tileSize;
-            storage.base.y = 1 * settings.tileSize;
+            storage.base.y = 0 * settings.tileSize;
             storage.amount = 10;
             
             this.cursor = this.add.isoSprite(0, 0, 1, 'sprites', 'select', this.isoGroup);
             this.cursor.anchor.setTo(0.5, 0.5);
+            this.isoGroup.add(this.cursor);
 
             letter = this.add.button(50, 5, 'sprites', function () {
                 Brew.gui.toggleMessages();
@@ -48,11 +49,17 @@
             letter.anchor.setTo(0.5, 0);
 
             this.time.events.loop(Phaser.Timer.SECOND * 20, this.updateCounter, this);
-            kettle = new Kettle(this.game, 4 * settings.tileSize, 0 * settings.tileSize, 0, this.isoGroup);
+            /*
+            kettle = new Kettle(this.game, 0, 0, 50, this.isoGroup);
             kettle.anchor.setTo(0.5, 0);
-            kettle2 = new Kettle(this.game, 4 * settings.tileSize, 3 * settings.tileSize, 0, this.isoGroup);
+            kettle2 = new Kettle(this.game, 4 * settings.tileSize, 3 * settings.tileSize, 100, this.isoGroup);
             kettle2.anchor.setTo(0.5, 0);
-
+            */
+            
+            kettle = new Brew.Producer(this.game, 4 * settings.tileSize, 3 * settings.tileSize, 0, 'kettle', this.isoGroup);
+            kettle2 = new Brew.Producer(this.game, 6 * settings.tileSize, 3 * settings.tileSize, 0, 'kettle', this.isoGroup);
+            
+            
             Brew.Budget.create();
             Brew.Budget.moveProgressBar();
             Brew.Budget.update(50000);
@@ -78,6 +85,9 @@
                 $("#rahaa").text(budget);
             }, this);
 
+            this.isoGroup.forEach(function(item) {
+                console.log(item.constructor.name);
+            });
         },
 
         //selling beer
@@ -169,7 +179,7 @@
     };
 
 
-
+    
     /**
      * Kettle IsoSprite that handles the cooking of beer.
      *
@@ -181,7 +191,7 @@
      * @param {Number}      z    iso X position
      */
     var Kettle = function (game, x, y, z, group) {
-        Phaser.Plugin.Isometric.IsoSprite.call(this, game, x, y, z, 'sprites', 'kettle', group);
+        Phaser.Plugin.Isometric.IsoSprite.call(this, game, x, y, z, 'sprites', 'kettle');
         
         this.anchor.set(0.5, 0.76);
         this.Person = null;
@@ -208,6 +218,7 @@
         this.name = 'kettle';
 
         game.add.existing(this);
+        group.add(this);
         Brew.Floor.prototype.setElement(this);
     };
 
@@ -278,6 +289,7 @@
         }, this);
         
         game.add.existing(this);
+        group.add(this);
     };
 
     Person.prototype = Object.create(Phaser.Plugin.Isometric.IsoSprite.prototype);
