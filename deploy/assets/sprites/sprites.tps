@@ -38,7 +38,7 @@
         <key>dataFormat</key>
         <string>json</string>
         <key>textureFileName</key>
-        <filename></filename>
+        <filename>brew_sprites.png</filename>
         <key>flipPVR</key>
         <false/>
         <key>pvrCompressionQuality</key>
@@ -145,7 +145,7 @@
             <key>data</key>
             <struct type="DataFile">
                 <key>name</key>
-                <filename></filename>
+                <filename>brew_sprites_data.json</filename>
             </struct>
         </map>
         <key>multiPack</key>
@@ -188,15 +188,17 @@
         </struct>
         <key>fileList</key>
         <array>
-            <filename>bottle.png</filename>
-            <filename>cook.png</filename>
-            <filename>floor.png</filename>
-            <filename>kettle.png</filename>
-            <filename>kettle_selected.png</filename>
-            <filename>kori.png</filename>
-            <filename>letter.png</filename>
-            <filename>select.png</filename>
-            <filename>sell.png</filename>
+            <filename>single_sprites/bottle.png</filename>
+            <filename>single_sprites/cook.png</filename>
+            <filename>single_sprites/floor.png</filename>
+            <filename>single_sprites/kettle.png</filename>
+            <filename>single_sprites/kettle_selected.png</filename>
+            <filename>single_sprites/kori.png</filename>
+            <filename>single_sprites/letter.png</filename>
+            <filename>single_sprites/letter_open.png</filename>
+            <filename>single_sprites/mies.png</filename>
+            <filename>single_sprites/select.png</filename>
+            <filename>single_sprites/sell.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
