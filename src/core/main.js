@@ -33,13 +33,15 @@
             this.messages = new Brew.Messages();
 
             this.isoGroup = this.add.group();
-            this.__makeFloor();
+
+            this.floor = new Brew.Floor();
+            this.floor.makeFloor(this.game, this.isoGroup);
 
             storage = new Brew.Storage(this.game, this.isoGroup);
             storage.base.x = 0 * settings.tileSize;
             storage.base.y = 0 * settings.tileSize;
             storage.amount = 10;
-            
+
             this.cursor = this.add.isoSprite(0, 0, 1, 'sprites', 'select', this.isoGroup);
             this.cursor.anchor.setTo(0.5, 0.5);
             this.isoGroup.add(this.cursor);
@@ -64,7 +66,6 @@
             Brew.Budget.moveProgressBar();
             Brew.Budget.update(50000);
 
-            this.floor = new Brew.Floor();
 
             person = new Person(this.game, 1 * settings.tileSize, 4 * settings.tileSize, 10, this.isoGroup, this.floor);
             person2 = new Person(this.game, 1 * settings.tileSize, 5 * settings.tileSize, 10, this.isoGroup, this.floor);
@@ -184,44 +185,22 @@
 
             }, this);
             this.floor.update();
+            //    person.move(Brew.Person);
+            //    person2.move();
         },
 
-
-        /**
-         * Creates the ground of play area.
-         *
-         * @private
-         */
-        __makeFloor: function () {
-            var tile;
-            for (var xx = 0; xx < 10 * settings.tileSize; xx += settings.tileSize) {
-                for (var yy = 0; yy < 10 * settings.tileSize; yy += settings.tileSize) {
-                    tile = this.add.isoSprite(xx, yy, 0, 'sprites', 'floor', this.isoGroup);
-                    tile.inputEnabled = true;
-                    tile.events.onInputDown.add(this.__moveHere, this, {
-                        param: tile
-                    });
-                    tile.anchor.set(0.5, 0.5);
-                }
-            }
-        },
-
-        __moveHere: function (tile) {
-         //   this.floor.setElement(tile);
-            this.floor.move(Brew.Person, tile);
-        }
     };
 
 
     var Person = function (game, x, y, z, group, floor) {
-        this.floor = floor;
         Phaser.Plugin.Isometric.IsoSprite.call(this, game, x, y, z, 'sprites', 'mies', group);
         this.anchor.set(0.5, 0.7);
+        this.floor = floor;
+        this.moving = false;
+
         this.inputEnabled = true;
         this.events.onInputDown.add(function () {
-            //  alert(Brew.Floor.moving);
-            if (this.floor.everybodyAreStillAndCalmDown == false) return;
-            Brew.Person = this;
+            this.floor.person = this;
         }, this);
 
         game.add.existing(this);
@@ -231,7 +210,7 @@
     Person.prototype = Object.create(Phaser.Plugin.Isometric.IsoSprite.prototype);
     Person.prototype.constructor = Person;
 
-    Brew.Person = null;
+    Brew.Person = Person;
 
     var Order = function (type, amount, buyer) {
         //    this.age = age;
