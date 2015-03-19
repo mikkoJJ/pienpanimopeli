@@ -8,16 +8,16 @@
     //paikka 0,0 on pelilaudan ylin kohta, oikeanpuolimmaisin kulma on 9,0 
 
     var graph = [
- [1, 1, 1, 1, 1, 1, 1, 1, 1, 1], 
- [1, 0, 0, 1, 1, 1, 1, 1, 1, 1], //bases
+ [0, 0, 0, 1, 1, 1, 1, 1, 1, 1],
+ [1, 1, 1, 1, 1, 1, 1, 1, 1, 1], //bases
+ [1, 1, 1, 0, 0, 0, 0, 1, 1, 1],
+ [1, 1, 1, 0, 0, 0, 0, 1, 1, 1],
+ [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+ [1, 1, 1, 1, 1, 1, 1, 1, 1, 1], //kettle
  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
- [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
- [1, 1, 1, 1, 1, 1, 1, 0, 0, 1], //kettle
- [1, 1, 1, 1, 1, 1, 1, 0, 0, 1],
- [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
- [1, 1, 1, 1, 1, 1, 1, 0, 0, 1], //kettle
- [1, 1, 1, 1, 1, 1, 1, 0, 0, 1]
+ [1, 1, 1, 1, 1, 1, 1, 1, 1, 1], //kettle
+ [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 ];
     var easystar = new EasyStar.js();
     var intervals = {};
@@ -28,7 +28,7 @@
         this.grid = easystar.setGrid(graph);
         easystar.setAcceptableTiles([1]);
         this.Person = Brew.Person;
-        this.moving = finished;
+        this.everybodyAreStillAndCalmDown = finished;
         //    this.graph = new Graph(graph1);
     };
 
@@ -46,10 +46,10 @@
      * @param {destiny} currently, only tile is possible
      */
     Floor.prototype.move = function (person, destination) {
-        if (finished == false) {
+        if (finished == false || person == undefined) {
             return;
         }
-        this.Person = person;
+        //    this.Person = person;
         this.destination = destination;
 
         var width = 0;
@@ -57,9 +57,9 @@
                     width = Math.floor(this.destination.width / settings.tileSize);
                 }
           */
-        var start = [Math.floor(this.Person.isoX / settings.tileSize), Math.floor(this.Person.isoY / settings.tileSize)];
-        var end = [Math.floor(this.destination.isoX / settings.tileSize), Math.floor(this.destination.isoY / settings.tileSize + width)];
-        //    alert(start + " " + end);
+        var start = [Math.floor(person.isoX / settings.tileSize), Math.floor(person.isoY / settings.tileSize)];
+        var end = [Math.floor(this.destination.isoX / settings.tileSize), Math.floor(this.destination.isoY / settings.tileSize)];
+  //      alert(start + " " + end);
         easystar.findPath(start[0], start[1], end[0], end[1], function (path) {
             if (path === null) {
                 alert("Path was not found.");
@@ -67,15 +67,14 @@
                 finished = false;
                 var id = setInterval(function () {
                     //path[0].x on kokonaislukuja taulukossa
-                    Brew.Person.isoX = (path[0].x - 1) * settings.tileSize;
-                    Brew.Person.isoY = (path[0].y - 1) * settings.tileSize;
-                    //+1 koska tulkitsee jostain syystä ylimmän rivin -1:seksi, mutta heittää eka siirron yhden kauemmas
+                    person.isoX = (path[0].x) * settings.tileSize;
+                    person.isoY = (path[0].y) * settings.tileSize;
 
                     Brew.game.add.tween(Brew.Person).to({
-                        isoX: Brew.Person.isoX,
-                        isoY: Brew.Person.isoY,
+                        isoX: person.isoX,
+                        isoY: person.isoY,
                         isoZ: 0
-                    }, 1000, Phaser.Easing.Linear.None, false, 0, 0, false);
+                    }, 5, Phaser.Easing.Linear.None, false, 0, 0, false);
                     path.splice(0, 1);
 
                     if (path.length == 0) {
@@ -85,7 +84,7 @@
                         // callback();
                     }
 
-                }, 1000);
+                }, 500);
                 intervals[id] = true;
 
             }

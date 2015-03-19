@@ -6,7 +6,7 @@
         <key>texturePackerVersion</key>
         <string>3.6.0</string>
         <key>fileName</key>
-        <string>Z:/Work/html_sandbox/pienpanimopeli/assets/sprites/sprites.tps</string>
+        <string>C:/Users/Elina Keränen/Documents/GitHub/pienpanimopeli/assets/sprites/sprites.tps</string>
         <key>autoSDSettings</key>
         <array>
             <struct type="AutoSDSettings">
@@ -86,7 +86,7 @@
         <key>maxTextureSize</key>
         <QSize>
             <key>width</key>
-            <int>2048</int>
+            <int>1024</int>
             <key>height</key>
             <int>2048</int>
         </QSize>
@@ -199,6 +199,9 @@
             <filename>single_sprites/mies.png</filename>
             <filename>single_sprites/select.png</filename>
             <filename>single_sprites/sell.png</filename>
+            <filename>single_sprites/coin-symbol.png</filename>
+            <filename>single_sprites/mallas_symbol.png</filename>
+            <filename>single_sprites/seek-employee-symbol.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

@@ -49,7 +49,7 @@
         _case.isoZ = this.base.z + settings.caseHeight * this._current.z;
         
         _case.inputEnabled = true;
-        _case.events.onInputDown.add(this.moveEmployee, this);
+     //   _case.events.onInputDown.add(this.moveEmployee, this);
         
         _case.casePosition = {x: this._current.x, y: this._current.y, z: this._current.z};
         

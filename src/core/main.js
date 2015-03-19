@@ -13,7 +13,8 @@
         storage,
         person,
         person2,
-        floor;
+        floor,
+        spending;
 
     /**
      * This is the main game state that starts when all assets are loaded.
@@ -55,39 +56,72 @@
             kettle2 = new Kettle(this.game, 4 * settings.tileSize, 3 * settings.tileSize, 100, this.isoGroup);
             kettle2.anchor.setTo(0.5, 0);
             */
-            
+
             kettle = new Brew.Producer(this.game, 4 * settings.tileSize, 3 * settings.tileSize, 0, 'kettle', this.isoGroup);
             kettle2 = new Brew.Producer(this.game, 6 * settings.tileSize, 3 * settings.tileSize, 0, 'kettle', this.isoGroup);
-            
-            
+
             Brew.Budget.create();
             Brew.Budget.moveProgressBar();
             Brew.Budget.update(50000);
 
-            person = new Person(this.game, 1 * settings.tileSize, 4 * settings.tileSize, 0, this.isoGroup);
-            person2 = new Person(this.game, 1 * settings.tileSize, 5 * settings.tileSize, 0, this.isoGroup);
+            this.floor = new Brew.Floor();
+
+            person = new Person(this.game, 1 * settings.tileSize, 4 * settings.tileSize, 10, this.isoGroup, this.floor);
+            person2 = new Person(this.game, 1 * settings.tileSize, 5 * settings.tileSize, 10, this.isoGroup, this.floor);
             person.anchor.setTo(0.5, 1);
             person2.anchor.setTo(0.5, 1);
 
-            floor = new Brew.Floor();
+            var seek = this.add.button(900, 0, 'sprites', function () {
+                Brew.gui.addMessage("Työhakemus", "Moi, olen Ville Viinamäki", null, "palkkaa", this.hire);
+            }, this, 'seek-employee-symbol', 'seek-employee-symbol');
+            seek.anchor.setTo(0.5, 0);
+            seek.scale.set(0.8, 0.8);
+
+            var coin = this.add.button(910, 100, 'sprites', function () {
+                Brew.gui.addMessage("Mainosta", "Rakenna jättitölkki?", null, "Oi kyllä!", this.ad);
+            }, this, 'coin-symbol', 'coin-symbol');
+            coin.anchor.setTo(0.5, 0);
+
+            var mallas = this.add.button(900, 200, 'sprites', function () {
+                alert("ostit raaka-aineita");
+            }, this, 'mallas_symbol', 'mallas_symbol');
+            mallas.anchor.setTo(0.5, 0);
+            mallas.scale.set(0.5, 0.5);
+
 
             $("#rahaa").text(budget);
 
-            var kulutus = $("#kulutus").val();
+            spending = $("#kulutus").val();
             $("#kulutus")
                 .on("blur", function () {
-                    kulutus = $(this).val();
+                    spending = $(this).val();
                 });
 
             this.time.events.loop(Phaser.Timer.SECOND * 10, function () {
-                budget = budget - parseInt(kulutus);
+                budget = budget - parseInt(spending);
                 Brew.Budget.update(budget);
                 $("#rahaa").text(budget);
             }, this);
 
-            this.isoGroup.forEach(function(item) {
+            this.isoGroup.forEach(function (item) {
                 console.log(item.constructor.name);
             });
+        },
+
+        //advertising
+        ad: function () {
+            budget = budget - 100;
+            Brew.Budget.update(budget);
+            $("#rahaa").text(budget);
+            Brew.gui.alert("Jättitölkkisi on laiton, sait sakot. Think of the children!");
+        },
+
+        //hire an employee
+        hire: function () {
+            spending = parseInt(spending) + 500;
+            var employee = new Person(Brew.game, Brew.game.rnd.integerInRange(0, 9) * settings.tileSize, 9 * settings.tileSize, 10, this.isoGroup);
+            //group null mutta ei näy haittaavan toimintaa
+            employee.anchor.setTo(0.5, 1);
         },
 
         //selling beer
@@ -149,7 +183,7 @@
                 }
 
             }, this);
-            Brew.Floor.prototype.update();
+            this.floor.update();
         },
 
 
@@ -164,130 +198,32 @@
                 for (var yy = 0; yy < 10 * settings.tileSize; yy += settings.tileSize) {
                     tile = this.add.isoSprite(xx, yy, 0, 'sprites', 'floor', this.isoGroup);
                     tile.inputEnabled = true;
-                    tile.events.onInputDown.add(this.call, {
+                    tile.events.onInputDown.add(this.__moveHere, this, {
                         param: tile
-                    }, this);
+                    });
                     tile.anchor.set(0.5, 0.5);
                 }
             }
         },
 
-        call: function (tile) {
-            Brew.Floor.prototype.setElement(tile);
-            Brew.Floor.prototype.move(Brew.Person, tile);
+        __moveHere: function (tile) {
+         //   this.floor.setElement(tile);
+            this.floor.move(Brew.Person, tile);
         }
     };
 
 
-    
-    /**
-     * Kettle IsoSprite that handles the cooking of beer.
-     *
-     * @class Brew.Kettle
-     * @augments Phaser.Plugin.Isometric.IsoSprite
-     * @param {Phaser.Game} game reference to the currently used game object
-     * @param {Number}      x    iso X position
-     * @param {Number}      y    iso X position
-     * @param {Number}      z    iso X position
-     */
-    var Kettle = function (game, x, y, z, group) {
-        Phaser.Plugin.Isometric.IsoSprite.call(this, game, x, y, z, 'sprites', 'kettle');
-        
-        this.anchor.set(0.5, 0.76);
-        this.Person = null;
-        this.inputEnabled = true;
-        this.events.onInputDown.add(this.moveEmployee, this);
-        this.events.onInputDown.add(this.check, this);
-        this.events.onInputDown.add(function () {
-            Brew.Kettle = this;
-        }, this);
-        /*        this.events.onInputDown.add(Brew.Floor.prototype.move, {
-                    param1: Brew.Person,
-                    param2: this
-                }, Brew.Floor);*/
-
-        this.events.onInputOver.add(function () {
-            this.frameName = 'kettle_selected';
-            Brew.noCursor = true;
-        }, this);
-        this.events.onInputOut.add(function () {
-            this.frameName = 'kettle';
-            Brew.noCursor = false;
-        }, this);
-
-        this.name = 'kettle';
-
-        game.add.existing(this);
-        group.add(this);
-        Brew.Floor.prototype.setElement(this);
-    };
-
-    Kettle.prototype = Object.create(Phaser.Plugin.Isometric.IsoSprite.prototype);
-    Kettle.prototype.constructor = Kettle;
-
-    //move employee to Kettle
-    Kettle.prototype.moveEmployee = function () {
-        this.Person = Brew.Person;
-        Brew.Floor.Person = Brew.Person;
-        //    Brew.Floor.prototype.move(Brew.Person, this);
-    };
-
-
-    //check if there is employee beside the kettle and enough money for cook
-    Kettle.prototype.check = function () {
-        var aineet = parseInt($("#aineet").val());
-        $("#aineet")
-            .on("blur", function () {
-                aineet = parseInt($(this).val());
-            });
-
-        if (!this.Person) {
-            Brew.gui.alert("Siirrä työntekijä laitteen luokse.");
-            return;
-        }
-        if (budget - aineet <= 0) {
-            Brew.gui.alert("Rahasi eivät riitä uuden erän valmistamiseen.");
-        } else {
-            budget = budget - aineet;
-            Brew.Budget.update(budget);
-            $("#rahaa").text(budget);
-            //   budget = budget - 1;
-            Brew.Budget.update(budget);
-            this.inputEnabled = false;
-            //scoreText.setText("Cooking...");
-            Brew.game.time.events.add(Phaser.Timer.SECOND * 4, this.cook, this);
-            Brew.game.add.tween(this).to({
-                isoZ: this.isoZ + 2
-            }, Phaser.Timer.SECOND / 8, Phaser.Easing.Default, true, 0, 16, true);
-        }
-
-    };
-
-    //cook some beer in the kettle
-    Kettle.prototype.cook = function () {
-        storage.amount += 10;
-        //scoreText.setText("Olutta: " + storage.amount + " pulloa");
-        this.inputEnabled = true;
-
-        if (storage.amount >= 50) {
-            budget = budget - 30;
-            var message = Brew.Budget.update(budget);
-            Brew.gui.alert("Ylitit vuosittaisen tuotantokiintiösi ja sait sakot! " + message);
-        }
-    };
-
-    Brew.Kettle = Kettle;
-
-    var Person = function (game, x, y, z, group) {
+    var Person = function (game, x, y, z, group, floor) {
+        this.floor = floor;
         Phaser.Plugin.Isometric.IsoSprite.call(this, game, x, y, z, 'sprites', 'mies', group);
         this.anchor.set(0.5, 0.7);
         this.inputEnabled = true;
         this.events.onInputDown.add(function () {
-          //  alert(Brew.Floor.moving);
-            if (Brew.Floor.moving == false) return;
+            //  alert(Brew.Floor.moving);
+            if (this.floor.everybodyAreStillAndCalmDown == false) return;
             Brew.Person = this;
         }, this);
-        
+
         game.add.existing(this);
         group.add(this);
     };
