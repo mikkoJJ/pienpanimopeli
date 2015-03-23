@@ -11,7 +11,7 @@
 },
 "coin-symbol":
 {
-	"frame": {"x":2,"y":68,"w":64,"h":64},
+	"frame": {"x":403,"y":2,"w":64,"h":64},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
@@ -20,7 +20,7 @@
 },
 "cook":
 {
-	"frame": {"x":74,"y":176,"w":70,"h":40},
+	"frame": {"x":469,"y":2,"w":70,"h":40},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":70,"h":40},
@@ -29,7 +29,7 @@
 },
 "dark_case":
 {
-	"frame": {"x":146,"y":134,"w":70,"h":40},
+	"frame": {"x":541,"y":2,"w":70,"h":40},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":70,"h":40},
@@ -38,7 +38,7 @@
 },
 "fermenter":
 {
-	"frame": {"x":122,"y":218,"w":119,"h":139},
+	"frame": {"x":194,"y":68,"w":119,"h":139},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":119,"h":139},
@@ -47,7 +47,7 @@
 },
 "floor":
 {
-	"frame": {"x":2,"y":176,"w":70,"h":40},
+	"frame": {"x":757,"y":2,"w":70,"h":40},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":70,"h":40},
@@ -56,7 +56,7 @@
 },
 "kettle":
 {
-	"frame": {"x":2,"y":218,"w":118,"h":139},
+	"frame": {"x":74,"y":68,"w":118,"h":139},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":118,"h":139},
@@ -65,7 +65,7 @@
 },
 "kettle_selected":
 {
-	"frame": {"x":2,"y":359,"w":138,"h":146},
+	"frame": {"x":315,"y":68,"w":138,"h":146},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":138,"h":146},
@@ -74,7 +74,7 @@
 },
 "lager_case":
 {
-	"frame": {"x":74,"y":134,"w":70,"h":40},
+	"frame": {"x":829,"y":2,"w":70,"h":40},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":70,"h":40},
@@ -83,6 +83,24 @@
 },
 "letter":
 {
+	"frame": {"x":271,"y":2,"w":64,"h":64},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
+	"sourceSize": {"w":64,"h":64},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"letter_new_empty1":
+{
+	"frame": {"x":337,"y":2,"w":64,"h":64},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
+	"sourceSize": {"w":64,"h":64},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"letter_new_open 2":
+{
 	"frame": {"x":73,"y":2,"w":64,"h":64},
 	"rotated": false,
 	"trimmed": false,
@@ -90,7 +108,7 @@
 	"sourceSize": {"w":64,"h":64},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"letter_open":
+"letter_new_unopened":
 {
 	"frame": {"x":139,"y":2,"w":64,"h":64},
 	"rotated": false,
@@ -99,9 +117,18 @@
 	"sourceSize": {"w":64,"h":64},
 	"pivot": {"x":0.5,"y":0.5}
 },
+"letter_open":
+{
+	"frame": {"x":205,"y":2,"w":64,"h":64},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
+	"sourceSize": {"w":64,"h":64},
+	"pivot": {"x":0.5,"y":0.5}
+},
 "mallas_symbol":
 {
-	"frame": {"x":2,"y":659,"w":248,"h":170},
+	"frame": {"x":637,"y":68,"w":248,"h":170},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":248,"h":170},
@@ -119,7 +146,7 @@
 },
 "porter_case":
 {
-	"frame": {"x":68,"y":68,"w":70,"h":40},
+	"frame": {"x":613,"y":2,"w":70,"h":40},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":70,"h":40},
@@ -128,7 +155,7 @@
 },
 "seek-employee-symbol":
 {
-	"frame": {"x":2,"y":507,"w":180,"h":150},
+	"frame": {"x":455,"y":68,"w":180,"h":150},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":180,"h":150},
@@ -137,7 +164,7 @@
 },
 "select":
 {
-	"frame": {"x":2,"y":134,"w":70,"h":40},
+	"frame": {"x":685,"y":2,"w":70,"h":40},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":70,"h":40},
@@ -146,7 +173,7 @@
 },
 "sell":
 {
-	"frame": {"x":140,"y":68,"w":70,"h":40},
+	"frame": {"x":2,"y":68,"w":70,"h":40},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":70,"h":40},
@@ -158,8 +185,8 @@
 	"version": "1.0",
 	"image": "brew_sprites.png",
 	"format": "RGBA8888",
-	"size": {"w":252,"h":831},
+	"size": {"w":901,"h":240},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:e6b372193a0ce292871f3fbb3176a2da:6392cf7db5a09f4796cdece6233cbb3f:e325bcc26a2f8fec181af486dd8a3cc9$"
+	"smartupdate": "$TexturePacker:SmartUpdate:46c5f4625aa9d04d66d60d28460f3c85:fc3e10c03e1cfe4066bfa7148a219582:e325bcc26a2f8fec181af486dd8a3cc9$"
 }
 }
