@@ -34,18 +34,41 @@
      */
     var Budget = function () {};
 
+    //handles budget
+    Budget.prototype.startBudget = function (budget, text) {
+        Brew.game.add.tween(text).to({
+            number: budget
+        }, 2000, Phaser.Easing.Linear.None, true);
+     //   budget = budget + money;
+        this.update(budget);
+    };
+
+    //shows decreases and increases
+    Budget.prototype.money = function (money, changeText, budget, text) {
+        changeText.setText(money);      
+        if (money > 0) changeText.fill = "#106906";
+        else changeText.fill = "#EE0A0A";
+        Brew.game.time.events.add(2000, function () {
+            changeText.setText("");
+        }, this);
+        
+        budget = budget + money;
+        Budget.prototype.startBudget(budget, text);
+    };
+
+
     Budget.prototype.update = function (money) {
-     //   console.log(money);
+        //   console.log(money);
         var percent = money / 1000;
         var message;
         if (percent <= 0) {
             percent = 0;
             Brew.gui.alert("Menetit kaikki rahasi ja hävisit pelin.")
-//            message = "Menetit kaikki rahasi ja hävisit pelin."
+                //            message = "Menetit kaikki rahasi ja hävisit pelin."
         } else if (percent >= 100) {
             percent = 100;
             Brew.gui.alert("Voitit pelin!");
-//            message = "Voitit pelin!";
+            //            message = "Voitit pelin!";
         } else message = "";
 
         div.data('percent', percent);

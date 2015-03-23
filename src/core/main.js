@@ -14,7 +14,8 @@
         person,
         person2,
         floor,
-        spending;
+        spending,
+        text;
 
     /**
      * This is the main game state that starts when all assets are loaded.
@@ -72,23 +73,33 @@
             person.anchor.setTo(0.5, 1);
             person2.anchor.setTo(0.5, 1);
 
-            var seek = this.add.button(900, 0, 'sprites', function () {
-                Brew.gui.addMessage("Työhakemus", "Moi, olen Ville Viinamäki", null, "palkkaa", this.hire);
-            }, this, 'seek-employee-symbol', 'seek-employee-symbol');
-            seek.anchor.setTo(0.5, 0);
-            seek.scale.set(0.8, 0.8);
-
-            var coin = this.add.button(910, 100, 'sprites', function () {
+            var coin = this.add.button(940, 0, 'sprites', function () {
                 Brew.gui.addMessage("Mainosta", "Rakenna jättitölkki?", null, "Oi kyllä!", this.ad);
             }, this, 'coin-symbol', 'coin-symbol');
             coin.anchor.setTo(0.5, 0);
+
+            text = this.add.text(880, 18, budget);
+            text.fill = '#FFFFFF';
+            text.anchor.setTo(0.5, 0);
+            text.number = budget;
+
+            changeText = this.add.text(880, 45, "");
+            changeText.fill = '#FFFFFF';
+            changeText.anchor.setTo(0.5, 0);
+
+
+            var seek = this.add.button(900, 80, 'sprites', function () {
+               Brew.gui.addMessage("Työhakemus", "Moi, olen Ville Viinamäki", null, "palkkaa", this.hire);
+               
+            }, this, 'seek-employee-symbol', 'seek-employee-symbol');
+            seek.anchor.setTo(0.5, 0);
+            seek.scale.set(0.8, 0.8);
 
             var mallas = this.add.button(900, 200, 'sprites', function () {
                 alert("ostit raaka-aineita");
             }, this, 'mallas_symbol', 'mallas_symbol');
             mallas.anchor.setTo(0.5, 0);
             mallas.scale.set(0.5, 0.5);
-
 
             $("#rahaa").text(budget);
 
@@ -111,16 +122,20 @@
 
         //advertising
         ad: function () {
+          //  Brew.Budget.startBudget(-100, changeText, budget, text);
+            Brew.Budget.money(-100, changeText, budget, text);
             budget = budget - 100;
-            Brew.Budget.update(budget);
+
+            //            Brew.Budget.update(budget);
             $("#rahaa").text(budget);
             Brew.gui.alert("Jättitölkkisi on laiton, sait sakot. Think of the children!");
         },
 
+
         //hire an employee
         hire: function () {
             spending = parseInt(spending) + 500;
-            var employee = new Person(Brew.game, Brew.game.rnd.integerInRange(0, 9) * settings.tileSize, 9 * settings.tileSize, 10, this.isoGroup);
+            var employee = new Person(Brew.game, Brew.game.rnd.integerInRange(0, 9) * settings.tileSize, 9 * settings.tileSize, 10, this.isoGroup, this.floor);
             //group null mutta ei näy haittaavan toimintaa
             employee.anchor.setTo(0.5, 1);
         },
@@ -130,11 +145,13 @@
             if (storage.amount < order.amount) return false;
             else if (order.buyer == "Nalle") {
                 budget = budget - 10;
+                Brew.Budget.money(-10, changeText, budget, text); //muutetaanko sitä nyt kahdesti? ei ainkaan kuvaan muutu, mutta kerranhan se tietenkin pitäiis vaan määritellä
                 $("#rahaa").text(budget);
                 var message = Brew.Budget.update(budget);
                 Brew.gui.alert("Yksityishenkilölle myyminen on laitonta! Sait sakot." + message);
             } else {
                 budget = budget + order.price * order.amount;
+                Brew.Budget.money(order.price * order.amount, changeText, budget, text);
                 $("#rahaa").text(budget);
                 var message = Brew.Budget.update(budget);
                 storage.amount -= order.amount;
@@ -184,9 +201,11 @@
                 }
 
             }, this);
+
             this.floor.update();
-            //    person.move(Brew.Person);
-            //    person2.move();
+
+            Brew.Budget.startBudget(budget, text);
+            text.setText(Math.floor(text.number));
         },
 
     };
