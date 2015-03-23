@@ -39,49 +39,49 @@
             this.floor = new Brew.Floor();
             this.floor.makeFloor(this.game, this.isoGroup);
 
-            
+
             //////////////// STORAGES: /////////////////
-            
+
             lagerStorage = new Brew.Storage(this.game, 'lager_case', this.isoGroup);
             lagerStorage.base.x = 0 * settings.tileSize;
             lagerStorage.base.y = 0 * settings.tileSize;
             lagerStorage.amount = 10;
-            
+
             porterStorage = new Brew.Storage(this.game, 'porter_case', this.isoGroup);
             porterStorage.base.x = 0 * settings.tileSize;
             porterStorage.base.y = 3 * settings.tileSize;
             porterStorage.amount = 10;
-            
+
             darkStorage = new Brew.Storage(this.game, 'dark_case', this.isoGroup);
             darkStorage.base.x = 0 * settings.tileSize;
             darkStorage.base.y = 6 * settings.tileSize;
             darkStorage.amount = 10;
 
-            
+
             //////////////// PRODUCERS: /////////////////
-            
+
             lauterer = new Brew.Producer(this.game, 4 * settings.tileSize, 3 * settings.tileSize, 0, 'kettle', this.isoGroup);
             fermenter = new Brew.Producer(this.game, 6 * settings.tileSize, 3 * settings.tileSize, 0, 'fermenter', this.isoGroup);
-            
+
             Brew.Producer.setChain(lauterer, fermenter);
-            
+
             fermenter.onBeerFinished.bind(this.beerFinished, this);
-            
+
             //////////////// CURSOR: /////////////////
-            
+
             this.cursor = this.add.isoSprite(0, 0, 1, 'sprites', 'select', this.isoGroup);
             this.cursor.anchor.setTo(0.5, 0.5);
             this.isoGroup.add(this.cursor);
 
-            
+
             //////////////// PERSONS: /////////////////
-            
+
             person = new Person(this.game, 1 * settings.tileSize, 4 * settings.tileSize, 10, this.isoGroup, this.floor);
             person2 = new Person(this.game, 1 * settings.tileSize, 5 * settings.tileSize, 10, this.isoGroup, this.floor);
             person.anchor.setTo(0.5, 1);
             person2.anchor.setTo(0.5, 1);
-            
-            
+
+
             //////////////// RIGHT BUTTONS: /////////////////
 
             var coin = this.add.button(940, 0, 'sprites', function () {
@@ -89,15 +89,21 @@
             }, this, 'coin-symbol', 'coin-symbol');
             coin.anchor.setTo(0.5, 0);
 
-            var seek = this.add.button(900, 80, 'sprites', function () {
-                Brew.gui.addMessage("Työhakemus", "Moi, olen Ville Viinamäki", null, "palkkaa", this.hire);
+            Brew.gui.seek("Ilmoita avoimesta työpaikasta", this.openJob, this);
+            /*function () {
+                this.time.events.loop(Phaser.Timer.SECOND * 2, this.openJob, this)
+            }, this);*/
+            Brew.gui.resources("Osta 1 erä raaka-aineita");
 
+            var seek = this.add.button(900, 80, 'sprites', function () {
+                Brew.gui.toggleSeek();
             }, this, 'seek-employee-symbol', 'seek-employee-symbol');
             seek.anchor.setTo(0.5, 0);
             seek.scale.set(0.8, 0.8);
 
             var mallas = this.add.button(900, 200, 'sprites', function () {
-                alert("ostit raaka-aineita");
+
+                Brew.gui.toggleResources();
             }, this, 'mallas_symbol', 'mallas_symbol');
             mallas.anchor.setTo(0.5, 0);
             mallas.scale.set(0.5, 0.5);
@@ -110,7 +116,7 @@
             letter.anchor.setTo(0.5, 0);
 
             //letter_new_unopened
-            
+
             this.time.events.loop(Phaser.Timer.SECOND * 20, this.updateCounter, this);
 
             Brew.Budget.create();
@@ -150,21 +156,27 @@
             Brew.gui.alert("Jättitölkkisi on laiton, sait sakot. Think of the children!");
         },
 
+        //applications for a job
+        openJob: function () {
+            var names = ["Ville Viinamäki", "Pertti Pitkäaikaistyötön", "Riikka Raskaana"];
+            Brew.gui.addMessage("Työhakemus", "Moi, olen " + names[0], null, "palkkaa", this.hire);
+            Brew.gui.addMessage("Työhakemus", "Moi, olen " + names[1], null, "palkkaa", this.hire);
+            Brew.gui.addMessage("Työhakemus", "Moi, olen " + names[2], null, "palkkaa", this.hire);
+        },
 
         //hire an employee
         hire: function () {
             spending = parseInt(spending) + 500;
             var employee = new Person(Brew.game, Brew.game.rnd.integerInRange(0, 9) * settings.tileSize, 9 * settings.tileSize, 10, this.isoGroup, this.floor);
-            //group null mutta ei näy haittaavan toimintaa
             employee.anchor.setTo(0.5, 1);
         },
 
         //selling beer
         sell: function (order) {
-            if (storage.amount < order.amount) return false;
+            if (lagerStorage.amount < order.amount) return false;
             else if (order.buyer == "Nalle") {
                 budget = budget - 10;
-                Brew.Budget.money(-10, changeText, budget, text); //muutetaanko sitä nyt kahdesti? ei ainkaan kuvaan muutu, mutta kerranhan se tietenkin pitäiis vaan määritellä
+                Brew.Budget.money(-10, changeText, budget, text);
                 $("#rahaa").text(budget);
                 var message = Brew.Budget.update(budget);
                 Brew.gui.alert("Yksityishenkilölle myyminen on laitonta! Sait sakot." + message);
@@ -173,26 +185,26 @@
                 Brew.Budget.money(order.price * order.amount, changeText, budget, text);
                 $("#rahaa").text(budget);
                 var message = Brew.Budget.update(budget);
-                storage.amount -= order.amount;
+                lagerStorage.amount -= order.amount;
                 if (budget >= 100000) {
                     Brew.gui.alert("Liikevoittosi on ilmiömäinen. " + message);
                 }
             }
 
         },
-        
-        
-        beerFinished: function(beer) {
+
+
+        beerFinished: function (beer) {
             console.log(beer.type);
-            
-            if ( beer.type == Brew.BeerType.LAGER ) 
+
+            if (beer.type == Brew.BeerType.LAGER)
                 lagerStorage.amount += 10;
-            if ( beer.type == Brew.BeerType.PORTER )
+            if (beer.type == Brew.BeerType.PORTER)
                 porterStorage.amount += 10;
-            if ( beer.type == Brew.BeerType.DARK )
+            if (beer.type == Brew.BeerType.DARK)
                 darkStorage.amount += 10;
         },
-        
+
 
         /*
          * control orders
@@ -211,7 +223,6 @@
         },
 
         update: function () {
-            //     scoreText.setText("Olutta: " + this.beer.amount + " koria")
             this.game.iso.simpleSort(this.isoGroup);
             this.messages.update();
 
