@@ -8,12 +8,13 @@
     var letter,
         i = 0,
         budget = 50000,
-        kettle,
-        kettle2,
-        storage,
+        lauterer,
+        fermenter,
+        lagerStorage,
+        porterStorage,
+        darkStorage,
         person,
         person2,
-        floor,
         spending;
 
     /**
@@ -37,40 +38,50 @@
             this.floor = new Brew.Floor();
             this.floor.makeFloor(this.game, this.isoGroup);
 
-            storage = new Brew.Storage(this.game, this.isoGroup);
-            storage.base.x = 0 * settings.tileSize;
-            storage.base.y = 0 * settings.tileSize;
-            storage.amount = 10;
+            
+            //////////////// STORAGES: /////////////////
+            
+            lagerStorage = new Brew.Storage(this.game, 'lager_case', this.isoGroup);
+            lagerStorage.base.x = 0 * settings.tileSize;
+            lagerStorage.base.y = 0 * settings.tileSize;
+            lagerStorage.amount = 10;
+            
+            porterStorage = new Brew.Storage(this.game, 'porter_case', this.isoGroup);
+            porterStorage.base.x = 0 * settings.tileSize;
+            porterStorage.base.y = 3 * settings.tileSize;
+            porterStorage.amount = 10;
+            
+            darkStorage = new Brew.Storage(this.game, 'dark_case', this.isoGroup);
+            darkStorage.base.x = 0 * settings.tileSize;
+            darkStorage.base.y = 6 * settings.tileSize;
+            darkStorage.amount = 10;
 
+            
+            //////////////// PRODUCERS: /////////////////
+            
+            lauterer = new Brew.Producer(this.game, 4 * settings.tileSize, 3 * settings.tileSize, 0, 'kettle', this.isoGroup);
+            fermenter = new Brew.Producer(this.game, 6 * settings.tileSize, 3 * settings.tileSize, 0, 'fermenter', this.isoGroup);
+            
+            Brew.Producer.setChain(lauterer, fermenter);
+            
+            fermenter.onBeerFinished.bind(this.beerFinished, this);
+            
+            //////////////// CURSOR: /////////////////
+            
             this.cursor = this.add.isoSprite(0, 0, 1, 'sprites', 'select', this.isoGroup);
             this.cursor.anchor.setTo(0.5, 0.5);
             this.isoGroup.add(this.cursor);
 
-            letter = this.add.button(50, 5, 'sprites', function () {
-                Brew.gui.toggleMessages();
-            }, this, 'letter_open', 'letter', 'letter_open', 'letter_open');
-            letter.anchor.setTo(0.5, 0);
-
-            this.time.events.loop(Phaser.Timer.SECOND * 20, this.updateCounter, this);
-            /*
-            kettle = new Kettle(this.game, 0, 0, 50, this.isoGroup);
-            kettle.anchor.setTo(0.5, 0);
-            kettle2 = new Kettle(this.game, 4 * settings.tileSize, 3 * settings.tileSize, 100, this.isoGroup);
-            kettle2.anchor.setTo(0.5, 0);
-            */
-
-            kettle = new Brew.Producer(this.game, 4 * settings.tileSize, 3 * settings.tileSize, 0, 'kettle', this.isoGroup);
-            kettle2 = new Brew.Producer(this.game, 6 * settings.tileSize, 3 * settings.tileSize, 0, 'kettle', this.isoGroup);
-
-            Brew.Budget.create();
-            Brew.Budget.moveProgressBar();
-            Brew.Budget.update(50000);
-
-
+            
+            //////////////// PERSONS: /////////////////
+            
             person = new Person(this.game, 1 * settings.tileSize, 4 * settings.tileSize, 10, this.isoGroup, this.floor);
             person2 = new Person(this.game, 1 * settings.tileSize, 5 * settings.tileSize, 10, this.isoGroup, this.floor);
             person.anchor.setTo(0.5, 1);
             person2.anchor.setTo(0.5, 1);
+            
+            
+            //////////////// RIGHT BUTTONS: /////////////////
 
             var seek = this.add.button(900, 0, 'sprites', function () {
                 Brew.gui.addMessage("Työhakemus", "Moi, olen Ville Viinamäki", null, "palkkaa", this.hire);
@@ -89,6 +100,19 @@
             mallas.anchor.setTo(0.5, 0);
             mallas.scale.set(0.5, 0.5);
 
+            
+            //////////////// OTHER STUFF: /////////////////
+            
+            letter = this.add.button(50, 5, 'sprites', function () {
+                Brew.gui.toggleMessages();
+            }, this, 'letter_open', 'letter', 'letter_open', 'letter_open');
+            letter.anchor.setTo(0.5, 0);
+
+            this.time.events.loop(Phaser.Timer.SECOND * 20, this.updateCounter, this);
+
+            Brew.Budget.create();
+            Brew.Budget.moveProgressBar();
+            Brew.Budget.update(50000);
 
             $("#rahaa").text(budget);
 
@@ -103,10 +127,6 @@
                 Brew.Budget.update(budget);
                 $("#rahaa").text(budget);
             }, this);
-
-            this.isoGroup.forEach(function (item) {
-                console.log(item.constructor.name);
-            });
         },
 
         //advertising
@@ -140,11 +160,23 @@
                 storage.amount -= order.amount;
                 if (budget >= 100000) {
                     Brew.gui.alert("Liikevoittosi on ilmiömäinen. " + message);
-                    kettle.inputEnabled = false;
                 }
             }
 
         },
+        
+        
+        beerFinished: function(beer) {
+            console.log(beer.type);
+            
+            if ( beer.type == Brew.BeerType.LAGER ) 
+                lagerStorage.amount += 10;
+            if ( beer.type == Brew.BeerType.PORTER )
+                porterStorage.amount += 10;
+            if ( beer.type == Brew.BeerType.DARK )
+                darkStorage.amount += 10;
+        },
+        
 
         /*
          * control orders

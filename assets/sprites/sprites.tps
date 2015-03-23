@@ -6,7 +6,7 @@
         <key>texturePackerVersion</key>
         <string>3.6.0</string>
         <key>fileName</key>
-        <string>C:/Users/Elina Keränen/Documents/GitHub/pienpanimopeli/assets/sprites/sprites.tps</string>
+        <string>Z:/Work/html_sandbox/pienpanimopeli/assets/sprites/sprites.tps</string>
         <key>autoSDSettings</key>
         <array>
             <struct type="AutoSDSettings">
@@ -193,7 +193,6 @@
             <filename>single_sprites/floor.png</filename>
             <filename>single_sprites/kettle.png</filename>
             <filename>single_sprites/kettle_selected.png</filename>
-            <filename>single_sprites/kori.png</filename>
             <filename>single_sprites/letter.png</filename>
             <filename>single_sprites/letter_open.png</filename>
             <filename>single_sprites/mies.png</filename>
@@ -202,6 +201,10 @@
             <filename>single_sprites/coin-symbol.png</filename>
             <filename>single_sprites/mallas_symbol.png</filename>
             <filename>single_sprites/seek-employee-symbol.png</filename>
+            <filename>single_sprites/fermenter.png</filename>
+            <filename>single_sprites/lager_case.png</filename>
+            <filename>single_sprites/porter_case.png</filename>
+            <filename>single_sprites/dark_case.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

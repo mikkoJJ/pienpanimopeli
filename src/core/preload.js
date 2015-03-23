@@ -39,19 +39,6 @@
           //  Brew.game.plugins.add(Phaser.Plugin.PathFinderPlugin);
             this.load.image('kattila', 'assets/sprites/single_sprites/kattila.png');
             this.load.image('paa_kattila_luonnos', 'assets/sprites/single_sprites/paa_kattila_luonnos.png');
-            /*
-            this.load.image('floor', 'assets/sprites/floor.png');
-            this.load.image('cursor', 'assets/sprites/select.png');
-            this.load.image('bottle', 'assets/sprites/bottle.png');
-            this.load.image('kettle', 'assets/sprites/kettle_selected.png');
-            
-            this.load.json('texts', 'assets/json/texts.json');
-
-            this.load.image('letter', 'assets/sprites/letter.png');
-            this.load.image('sell', 'assets/sprites/sell.png');
-            this.load.image('cook', 'assets/sprites/cook.png');
-            this.load.image('beercase', 'assets/sprites/kori.png');
-            */  
             this.load.atlasJSONHash('sprites', 'assets/sprites/brew_sprites.png', 'assets/sprites/brew_sprites_data.json');
             this.load.json('texts', 'assets/json/texts.json');
             
