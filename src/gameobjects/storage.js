@@ -5,13 +5,13 @@
         tileWidth: 38,
         
         //the height of one case in pixels
-        caseHeight: 20,
+        caseHeight: 18,
         
         //how many cases at max do we pile
         pileHeight: 5,
         
         //how many piles next to each other
-        pileWidth: 4,
+        pileWidth: 3,
         
         //how many units of beer does one case represent
         caseValue: 1,
@@ -25,25 +25,25 @@
      * a nice graphical way by piling up beer cases.
      * 
      * @param {Phaser.Game} game reference to the game object to use.
+     * @param {string} spriteName the name of the sprite frame to pile in this storage
+     * @param {Phaser.Group} group the group to add the sprites in.
      */
-    var Storage = function(game, group) {
+    var Storage = function(game, spriteName, group) {
         this._game = game;
         this._group = group;
+        this._frame = spriteName;
         this._amount = 0;
         this._cases = [];
         this._current = { x: 0, y: 0, z: 0 };
+        this.base = {x: 0, y: 0, z: 0};
     };
     
-    
-    /**
-     * Where the first case will be put.
-     */
-    Storage.prototype.base = {x: 0, y: 0, z: 0};
+    Storage.prototype.constructor = Storage;
     
 
     Storage.prototype.addCase = function() {
-        var _case = this._game.add.isoSprite(0, 0, 0, 'sprites', 'kori', this._group);
-        _case.anchor.set(0.5, 0.6);
+        var _case = this._game.add.isoSprite(0, 0, 0, 'sprites', this._frame, this._group);
+        _case.anchor.set(0.5, 0.76);
         _case.isoX = this.base.x + settings.tileWidth * this._current.x;
         _case.isoY = this.base.y + settings.tileWidth * this._current.y;
         _case.isoZ = this.base.z + settings.caseHeight * this._current.z;
