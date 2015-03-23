@@ -89,19 +89,9 @@
             }, this, 'coin-symbol', 'coin-symbol');
             coin.anchor.setTo(0.5, 0);
 
-            text = this.add.text(880, 18, budget);
-            text.fill = '#FFFFFF';
-            text.anchor.setTo(0.5, 0);
-            text.number = budget;
-
-            changeText = this.add.text(880, 45, "");
-            changeText.fill = '#FFFFFF';
-            changeText.anchor.setTo(0.5, 0);
-
-
             var seek = this.add.button(900, 80, 'sprites', function () {
-               Brew.gui.addMessage("Työhakemus", "Moi, olen Ville Viinamäki", null, "palkkaa", this.hire);
-               
+                Brew.gui.addMessage("Työhakemus", "Moi, olen Ville Viinamäki", null, "palkkaa", this.hire);
+
             }, this, 'seek-employee-symbol', 'seek-employee-symbol');
             seek.anchor.setTo(0.5, 0);
             seek.scale.set(0.8, 0.8);
@@ -113,12 +103,14 @@
             mallas.scale.set(0.5, 0.5);
 
             //////////////// OTHER STUFF: /////////////////
-            
+
             letter = this.add.button(50, 5, 'sprites', function () {
                 Brew.gui.toggleMessages();
-            }, this, 'letter_open', 'letter', 'letter_open', 'letter_open');
+            }, this, 'letter_new_empty1', 'letter_new_unopened', 'letter_new_empty1', 'letter_new_empty1');
             letter.anchor.setTo(0.5, 0);
 
+            //letter_new_unopened
+            
             this.time.events.loop(Phaser.Timer.SECOND * 20, this.updateCounter, this);
 
             Brew.Budget.create();
@@ -138,15 +130,22 @@
                 Brew.Budget.update(budget);
                 $("#rahaa").text(budget);
             }, this);
+
+            text = this.add.text(880, 18, budget);
+            text.fill = '#FFFFFF';
+            text.anchor.setTo(0.5, 0);
+            text.number = budget;
+
+            changeText = this.add.text(880, 45, "");
+            changeText.fill = '#FFFFFF';
+            changeText.anchor.setTo(0.5, 0);
         },
 
         //advertising
         ad: function () {
-          //  Brew.Budget.startBudget(-100, changeText, budget, text);
             Brew.Budget.money(-100, changeText, budget, text);
             budget = budget - 100;
 
-            //            Brew.Budget.update(budget);
             $("#rahaa").text(budget);
             Brew.gui.alert("Jättitölkkisi on laiton, sait sakot. Think of the children!");
         },
