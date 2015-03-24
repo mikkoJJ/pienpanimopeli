@@ -213,6 +213,8 @@
             <filename>single_sprites/dark_case_selected.png</filename>
             <filename>single_sprites/fermenter_selected.png</filename>
             <filename>single_sprites/mies_selected.png</filename>
+            <filename>single_sprites/consumable.png</filename>
+            <filename>single_sprites/consumable_selected.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

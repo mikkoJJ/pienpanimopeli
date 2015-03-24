@@ -97,3 +97,11 @@
     z-index: 1;
     clear: both;
 }
+
+.brew-info-window {
+    font-size: 9pt;
+    position: absolute;    
+    background: white;
+    padding: 10px;
+    display: none;
+}
