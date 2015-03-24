@@ -12,6 +12,18 @@
     -ms-user-select: none;
 }
 
+.brew-resources {
+    font-size: 12pt;
+    width: 300px;
+    padding: 10px;
+    margin: auto;
+    position: relative;
+    top: -450px;
+    left: 300px;
+    display: none;
+    overflow: auto;
+}
+
 .brew-alert {
     width: 400px;
     padding: 10px;

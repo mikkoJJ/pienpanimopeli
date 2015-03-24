@@ -21,7 +21,7 @@ var compressor = require('node-minify'),
 
 //1: ------------------- copy copied files:
 for( var i = 0; i < COPIED_FILES.length; i++ ) {
-    ncp(COPIED_FILES[i], 'deploy/' + COPIED_FILES[i], { filter: /^(.(?!single_sprites))*$/gi }, function(err) {
+    ncp(COPIED_FILES[i], 'deploy/' + COPIED_FILES[i], { filter: /^((?!single_sprites).)*$/ }, function(err) {
         if(err) return console.log(err);
         
         console.log('File/dir copied');

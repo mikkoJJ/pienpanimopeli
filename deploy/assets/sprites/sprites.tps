@@ -205,6 +205,14 @@
             <filename>single_sprites/lager_case.png</filename>
             <filename>single_sprites/porter_case.png</filename>
             <filename>single_sprites/dark_case.png</filename>
+            <filename>single_sprites/letter_new_empty1.png</filename>
+            <filename>single_sprites/letter_new_open 2.png</filename>
+            <filename>single_sprites/letter_new_unopened.png</filename>
+            <filename>single_sprites/lager_case_selected.png</filename>
+            <filename>single_sprites/porter_case_selected.png</filename>
+            <filename>single_sprites/dark_case_selected.png</filename>
+            <filename>single_sprites/fermenter_selected.png</filename>
+            <filename>single_sprites/mies_selected.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
