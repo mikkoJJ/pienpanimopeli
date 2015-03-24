@@ -28,8 +28,9 @@
         this.resourceWindow = $('<div><div/>')
             .addClass('brew-window brew-resources')
             .html(message)
-            .append(this.__makeButton("OK", function () {
+            .append(this.__makeButton("Lageria", function () {
                 var p = $(this).parent();
+                p.data('type', Brew.BeerType.LAGER);
                 if (p.data('callback')) p.data('callback').call(p.data('callbackCtx'));
                 p.hide('drop', {
                     direction: 'right'
@@ -38,8 +39,20 @@
                 });
 
             }))
-            .append(this.__makeButton("Hylkää", function () {
+            .append(this.__makeButton("Portteria", function () {
                 var p = $(this).parent();
+                p.data('type', Brew.BeerType.PORTER);
+                if (p.data('callback')) p.data('callback').call(p.data('callbackCtx'));
+                p.hide('drop', {
+                    direction: 'right'
+                }, 200, 'easeInBack', function () {
+                    this.remove();
+                });
+            }))
+            .append(this.__makeButton("Tummaa olutta", function () {
+                var p = $(this).parent();
+                p.data('type', Brew.BeerType.DARK);
+                if (p.data('callback')) p.data('callback').call(p.data('callbackCtx'));
                 p.hide('drop', {
                     direction: 'right'
                 }, 200, 'easeInBack', function () {
@@ -48,8 +61,10 @@
             }))
             .appendTo(settings.dom)
             //   .show('drop', 200, 'easeOutBack')
+          //  .data('param1', type)
             .data('callback', callback)
             .data('callbackCtx', callbackCtx);
+     //   alert(type);
     };
 
     GUI.prototype.seek = function (message, callback, callbackCtx) {

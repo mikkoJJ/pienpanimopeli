@@ -85,7 +85,7 @@
             //////////////// RIGHT BUTTONS: /////////////////
 
             var coin = this.add.button(940, 0, 'sprites', function () {
-                Brew.gui.addMessage("Mainosta", "Rakenna jättitölkki?", null, "Oi kyllä!", this.ad);
+                Brew.gui.addMessage("Mainosta", "Rakenna jättitölkki hintaan 1000 euroa?", null, "Oi kyllä!", this.ad);
             }, this, 'coin-symbol', 'coin-symbol');
             coin.anchor.setTo(0.5, 0);
 
@@ -93,20 +93,19 @@
             /*function () {
                 this.time.events.loop(Phaser.Timer.SECOND * 2, this.openJob, this)
             }, this);*/
-            Brew.gui.resources("Osta 1 erä raaka-aineita");
+            Brew.gui.resources("Osta 1 erä raaka-aineita", this.buyMaterials);
 
-            var seek = this.add.button(900, 80, 'sprites', function () {
+            var seek = this.add.button(900, 50, 'sprites', function () {
                 Brew.gui.toggleSeek();
             }, this, 'seek-employee-symbol', 'seek-employee-symbol');
             seek.anchor.setTo(0.5, 0);
-            seek.scale.set(0.8, 0.8);
+            seek.scale.set(0.6, 0.6);
 
-            var mallas = this.add.button(900, 200, 'sprites', function () {
-
+            var mallas = this.add.button(900, 140, 'sprites', function () {
                 Brew.gui.toggleResources();
             }, this, 'mallas_symbol', 'mallas_symbol');
             mallas.anchor.setTo(0.5, 0);
-            mallas.scale.set(0.5, 0.5);
+            mallas.scale.set(0.4, 0.4);
 
             //////////////// OTHER STUFF: /////////////////
 
@@ -123,8 +122,6 @@
             Brew.Budget.moveProgressBar();
             Brew.Budget.update(50000);
 
-            $("#rahaa").text(budget);
-
             spending = $("#kulutus").val();
             $("#kulutus")
                 .on("blur", function () {
@@ -134,7 +131,6 @@
             this.time.events.loop(Phaser.Timer.SECOND * 10, function () {
                 budget = budget - parseInt(spending);
                 Brew.Budget.update(budget);
-                $("#rahaa").text(budget);
             }, this);
 
             text = this.add.text(880, 18, budget);
@@ -147,21 +143,29 @@
             changeText.anchor.setTo(0.5, 0);
         },
 
+        buyMaterials: function () {
+            var price = -$("#aineet").val();
+
+            Brew.Budget.money(price, changeText, budget, text);
+            budget = budget + price;
+            var beerType = Brew.gui.resourceWindow.data('type');
+            //storage add beerType
+        },
+
         //advertising
         ad: function () {
-            Brew.Budget.money(-100, changeText, budget, text);
-            budget = budget - 100;
+            Brew.Budget.money(-1000, changeText, budget, text);
+            budget = budget - 1000;
 
-            $("#rahaa").text(budget);
             Brew.gui.alert("Jättitölkkisi on laiton, sait sakot. Think of the children!");
         },
 
         //applications for a job
         openJob: function () {
             var names = ["Ville Viinamäki", "Pertti Pitkäaikaistyötön", "Riikka Raskaana"];
-            Brew.gui.addMessage("Työhakemus", "Moi, olen " + names[0], null, "palkkaa", this.hire);
-            Brew.gui.addMessage("Työhakemus", "Moi, olen " + names[1], null, "palkkaa", this.hire);
-            Brew.gui.addMessage("Työhakemus", "Moi, olen " + names[2], null, "palkkaa", this.hire);
+            Brew.gui.addMessage("Työhakemus", "Moi, olen " + names[0], null, "palkkaa", this.hire, this);
+            Brew.gui.addMessage("Työhakemus", "Moi, olen " + names[1], null, "palkkaa", this.hire, this);
+            Brew.gui.addMessage("Työhakemus", "Moi, olen " + names[2], null, "palkkaa", this.hire, this);
         },
 
         //hire an employee
@@ -177,13 +181,11 @@
             else if (order.buyer == "Nalle") {
                 budget = budget - 10;
                 Brew.Budget.money(-10, changeText, budget, text);
-                $("#rahaa").text(budget);
                 var message = Brew.Budget.update(budget);
                 Brew.gui.alert("Yksityishenkilölle myyminen on laitonta! Sait sakot." + message);
             } else {
                 budget = budget + order.price * order.amount;
                 Brew.Budget.money(order.price * order.amount, changeText, budget, text);
-                $("#rahaa").text(budget);
                 var message = Brew.Budget.update(budget);
                 lagerStorage.amount -= order.amount;
                 if (budget >= 100000) {
