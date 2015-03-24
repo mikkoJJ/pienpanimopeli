@@ -37,50 +37,29 @@
 
     //handles budget
     Budget.prototype.startBudget = function (budget, text) {
+        //   if (budget < 0 || budget > 100000) return;
         this.tween = Brew.game.add.tween(text).to({
             number: budget
         }, 1000, Phaser.Easing.Linear.None, true);
-        //   budget = budget + money;
         this.update(budget);
-        this.tween.onComplete.add(function () {
-            if (budget <= 0) {
-                this.tween.stop();
-                text.fill = "#EE0A0A";
-            }
-        });
     };
-
-    //shows decreases and increases
-    Budget.prototype.money = function (money, changeText, budget, text) {
-        changeText.setText(money);
-        if (money > 0) changeText.fill = "#106906";
-        else changeText.fill = "#EE0A0A";
-        Brew.game.time.events.add(2000, function () {
-            changeText.setText("");
-        }, this);
-
-        budget = budget + money;
-        Budget.prototype.startBudget(budget, text);
-    };
-
 
     Budget.prototype.update = function (money) {
-        //   console.log(money);
         var percent = money / 1000;
         var message;
         if (percent <= 0) {
             percent = 0;
-            Brew.gui.alert("Menetit kaikki rahasi ja hävisit pelin.")
-                //            message = "Menetit kaikki rahasi ja hävisit pelin."
+         //   Brew.gui.alert("Menetit kaikki rahasi ja hävisit pelin.");
+            this.tween.stop();
+            //            message = "Menetit kaikki rahasi ja hävisit pelin."
         } else if (percent >= 100) {
             percent = 100;
-            Brew.gui.alert("Voitit pelin!");
-            //            message = "Voitit pelin!";
+        //    Brew.gui.alert("Liikevoittosi on ilmiömäinen. Voitit pelin!");
+            this.tween.stop()
         } else message = "";
 
         div.data('percent', percent);
         this.moveProgressBar();
-        //     console.log(div.data('percent'));
         return message;
 
     };

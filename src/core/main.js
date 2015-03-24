@@ -76,12 +76,12 @@
             //////////////// PERSONS: /////////////////
 
             person = new Person(this.game, 1 * settings.tileSize, 4 * settings.tileSize, 10, this.isoGroup, this.floor);
-            person2 = new Person(this.game, 1 * settings.tileSize, 5 * settings.tileSize, 10, this.isoGroup, this.floor);
+            person2 = new Person(this.game, 1 * settings.tileSize, 7 * settings.tileSize, 10, this.isoGroup, this.floor);
 
             //////////////// RIGHT BUTTONS: /////////////////
 
             var coin = this.add.button(940, 0, 'sprites', function () {
-                Brew.gui.addMessage("Mainosta", "Rakenna jättitölkki hintaan 1000 euroa?", null, "Oi kyllä!", this.ad);
+                Brew.gui.addMessage("Mainosta", "Rakenna jättitölkki hintaan 1000 euroa?", null, "Oi kyllä!", this.ad, this);
             }, this, 'coin-symbol', 'coin-symbol');
             coin.anchor.setTo(0.5, 0);
 
@@ -89,7 +89,7 @@
             /*function () {
                 this.time.events.loop(Phaser.Timer.SECOND * 2, this.openJob, this)
             }, this);*/
-            Brew.gui.resources("Osta 1 erä raaka-aineita", this.buyMaterials);
+            Brew.gui.resources("Osta 1 erä raaka-aineita", this.buyMaterials, this);
 
             var seek = this.add.button(900, 50, 'sprites', function () {
                 Brew.gui.toggleSeek();
@@ -125,9 +125,7 @@
                 });
 
             this.time.events.loop(Phaser.Timer.SECOND * 20, function () {
-                budget = budget - parseInt(spending);
-                Brew.Budget.money(-spending, changeText, budget, text);
-              //  Brew.Budget.update(budget);
+                this.budgetHandling(-spending);
             }, this);
 
             text = this.add.text(880, 18, budget);
@@ -142,18 +140,14 @@
 
         buyMaterials: function () {
             var price = -$("#aineet").val();
-
-            Brew.Budget.money(price, changeText, budget, text);
-            budget = budget + price;
+            this.budgetHandling(price);
             var beerType = Brew.gui.resourceWindow.data('type');
             //storage add beerType
         },
 
         //advertising
         ad: function () {
-            Brew.Budget.money(-1000, changeText, budget, text);
-            budget = budget - 1000;
-
+            this.budgetHandling(-100);
             Brew.gui.alert("Jättitölkkisi on laiton, sait sakot. Think of the children!");
         },
 
@@ -174,7 +168,6 @@
             employee.anchor.setTo(0.5, 1);
             if (param1) {
                 this.time.events.add(Phaser.Timer.SECOND * 10, function () {
-                    //   spending = parseInt(spending) + 500;
                     Brew.gui.alert("Työntekijäsi jäi äitiyslomalle. Sinun täytyy jatkaa palkan maksamista hänelle.");
                     employee.destroy();
                 }, this);
@@ -185,20 +178,11 @@
         sell: function (order) {
             if (lagerStorage.amount < order.amount) return false;
             else if (order.buyer == "Nalle") {
-                budget = budget - 10;
-                Brew.Budget.money(-10, changeText, budget, text);
-                var message = Brew.Budget.update(budget);
-                Brew.gui.alert("Yksityishenkilölle myyminen on laitonta! Sait sakot." + message);
+                this.budgetHandling(-10);
+                Brew.gui.alert("Yksityishenkilölle myyminen on laitonta! Sait sakot.");
             } else {
-                budget = budget + order.price * order.amount;
-                Brew.Budget.money(order.price * order.amount, changeText, budget, text);
-                var message = Brew.Budget.update(budget);
+                this.budgetHandling(order.price * order.amount);
                 lagerStorage.amount -= order.amount;
-                if (budget >= 100000) {
-                    Brew.gui.alert("Liikevoittosi on ilmiömäinen." + message);
-                    this.input.onDown.removeAll();
-                    Brew.Budget.tween.stop();      
-                }
             }
 
         },
@@ -222,7 +206,7 @@
             //   if (i > 5) return;
             var order = new Order().random();
             var list = [];
-            list[i++] = Brew.gui.addMessage('Tilaus', order.message(), order, "Myy", this.sell);
+            list[i++] = Brew.gui.addMessage('Tilaus', order.message(), order, "Myy", this.sell, this);
 
             var now = this.time.totalElapsedSeconds();
             if (now - order.age > 10) {
@@ -230,10 +214,34 @@
             }
         },
 
+        budgetHandling: function (money) {
+            budget = budget + money;
+
+            changeText.setText(money);
+            if (money > 0) changeText.fill = "#106906";
+            else changeText.fill = "#EE0A0A";
+
+            this.time.events.add(2000, function () {
+                changeText.setText("");
+            }, this);
+
+            if (budget <= 0) {
+                Brew.gui.alert("Menetit kaikki rahasi ja hävisit pelin.");
+                Brew.Budget.update(budget);
+                text.setText(budget);
+            } else if (budget >= 100000) {
+                Brew.gui.alert("Liikevoittosi on ilmiömäinen. Voitit pelin!");
+                Brew.Budget.update(budget);
+                text.setText(budget);
+            } else {
+                Brew.Budget.startBudget(budget, text);
+            }
+        },
+
         update: function () {
             this.game.iso.simpleSort(this.isoGroup);
             this.messages.update();
-            
+
             lagerStorage.update();
             darkStorage.update();
             porterStorage.update();
@@ -257,8 +265,13 @@
 
             this.floor.update();
 
-            Brew.Budget.startBudget(budget, text);
-            text.setText(Math.floor(text.number));
+            if (budget <= 100000 && budget >= 0) {
+            //    Brew.Budget.startBudget(budget, text);
+                text.setText(Math.floor(text.number));
+            } else {
+            //    Brew.Budget.update(budget);
+                text.setText(budget);
+            }
         },
 
     };
@@ -302,7 +315,7 @@
         this.price = $("#hinta").val();
         $("#hinta")
             .on("blur", function () {
-                hinta = $(this).val();
+                this.price = $(this).val();
             });
     };
 
@@ -320,9 +333,9 @@
             types[Brew.game.rnd.integerInRange(0, types.length - 1)],
             currentBuyer[1],
             currentBuyer[0]);
-            //     amountTypes[Brew.game.rnd.integerInRange(0, amountTypes.length - 1)],
-            //Brew.game.rnd.integerInRange(1, 10),
-            //     Brew.game.time.totalElapsedSeconds(), 
+        //     amountTypes[Brew.game.rnd.integerInRange(0, amountTypes.length - 1)],
+        //Brew.game.rnd.integerInRange(1, 10),
+        //     Brew.game.time.totalElapsedSeconds(), 
         //    buyers[Brew.game.rnd.integerInRange(0, buyers.length - 1)]);
     };
 

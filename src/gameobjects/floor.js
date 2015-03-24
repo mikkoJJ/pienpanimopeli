@@ -74,7 +74,7 @@
         //        alert(start + " " + end);
         easystar.findPath(start[0], start[1], end[0], end[1], function (path) {
             if (path === null) {
-                alert("Path was not found.");
+              //  alert("Path was not found.");
             } else {
                 person.moving = true;
                 var id = setInterval(function () {
