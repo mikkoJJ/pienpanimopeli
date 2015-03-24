@@ -77,7 +77,7 @@
             //////////////// PERSONS: /////////////////
 
             person = new Person(this.game, 1 * settings.tileSize, 4 * settings.tileSize, 10, this.isoGroup, this.floor);
-            person2 = new Person(this.game, 1 * settings.tileSize, 5 * settings.tileSize, 10, this.isoGroup, this.floor);
+            person2 = new Person(this.game, 1 * settings.tileSize, 8 * settings.tileSize, 10, this.isoGroup, this.floor);
             person.anchor.setTo(0.5, 1);
             person2.anchor.setTo(0.5, 1);
 
@@ -116,7 +116,7 @@
 
             //letter_new_unopened
 
-            this.time.events.loop(Phaser.Timer.SECOND * 20, this.updateCounter, this);
+            this.time.events.loop(Phaser.Timer.SECOND * 10, this.updateCounter, this);
 
             Brew.Budget.create();
             Brew.Budget.moveProgressBar();
@@ -128,9 +128,10 @@
                     spending = $(this).val();
                 });
 
-            this.time.events.loop(Phaser.Timer.SECOND * 10, function () {
+            this.time.events.loop(Phaser.Timer.SECOND * 20, function () {
                 budget = budget - parseInt(spending);
-                Brew.Budget.update(budget);
+                Brew.Budget.money(-spending, changeText, budget, text);
+              //  Brew.Budget.update(budget);
             }, this);
 
             text = this.add.text(880, 18, budget);
@@ -165,14 +166,23 @@
             var names = ["Ville Viinamäki", "Pertti Pitkäaikaistyötön", "Riikka Raskaana"];
             Brew.gui.addMessage("Työhakemus", "Moi, olen " + names[0], null, "palkkaa", this.hire, this);
             Brew.gui.addMessage("Työhakemus", "Moi, olen " + names[1], null, "palkkaa", this.hire, this);
-            Brew.gui.addMessage("Työhakemus", "Moi, olen " + names[2], null, "palkkaa", this.hire, this);
+            Brew.gui.addMessage("Työhakemus", "Moi, olen " + names[2], null, "palkkaa", function () {
+                this.hire(true)
+            }, this);
         },
 
         //hire an employee
-        hire: function () {
+        hire: function (param1) {
             spending = parseInt(spending) + 500;
             var employee = new Person(Brew.game, Brew.game.rnd.integerInRange(0, 9) * settings.tileSize, 9 * settings.tileSize, 10, this.isoGroup, this.floor);
             employee.anchor.setTo(0.5, 1);
+            if (param1) {
+                this.time.events.add(Phaser.Timer.SECOND * 10, function () {
+                    //   spending = parseInt(spending) + 500;
+                    Brew.gui.alert("Työntekijäsi jäi äitiyslomalle. Sinun täytyy jatkaa palkan maksamista hänelle.");
+                    employee.destroy();
+                }, this);
+            }
         },
 
         //selling beer
@@ -189,7 +199,9 @@
                 var message = Brew.Budget.update(budget);
                 lagerStorage.amount -= order.amount;
                 if (budget >= 100000) {
-                    Brew.gui.alert("Liikevoittosi on ilmiömäinen. " + message);
+                    Brew.gui.alert("Liikevoittosi on ilmiömäinen." + message);
+                    this.input.onDown.removeAll();
+                    Brew.Budget.tween.stop();      
                 }
             }
 
@@ -290,18 +302,22 @@
 
     Order.prototype.random = function () {
         var types = ["lageria", "tummaa olutta", "portteria"];
-        var buyers = ["Kesko", "Hemingways", "Vakiopaine", "Musta Kynnys", "Ale Pub", "S-Ryhmä", "Nalle"];
-
-        var pieni = Brew.game.rnd.integerInRange(0, 10);
+        var pieni = Brew.game.rnd.integerInRange(1, 10);
         var suuri = Brew.game.rnd.integerInRange(30, 40); //isoja tilauksia voisi tulla harvemmin
         var amountTypes = [pieni, suuri];
 
+        var buyers = [["Kesko", suuri], ["Hemingways", pieni], ["Vakiopaine", pieni], ["Musta Kynnys", pieni], ["Ale Pub", pieni], ["S-Ryhmä", suuri], ["Nalle", pieni]];
+
+        var currentBuyer = buyers[Brew.game.rnd.integerInRange(0, buyers.length - 1)];
+
         return new Order(
             types[Brew.game.rnd.integerInRange(0, types.length - 1)],
+            currentBuyer[1],
+            currentBuyer[0]);
             //     amountTypes[Brew.game.rnd.integerInRange(0, amountTypes.length - 1)],
-            Brew.game.rnd.integerInRange(1, 10),
+            //Brew.game.rnd.integerInRange(1, 10),
             //     Brew.game.time.totalElapsedSeconds(), 
-            buyers[Brew.game.rnd.integerInRange(0, buyers.length - 1)]);
+        //    buyers[Brew.game.rnd.integerInRange(0, buyers.length - 1)]);
     };
 
     Order.prototype.message = function () {

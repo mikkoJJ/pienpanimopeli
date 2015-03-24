@@ -8,8 +8,8 @@
     //paikka 0,0 on pelilaudan ylin kohta, oikeanpuolimmaisin kulma on 9,0 
 
     var graph = [
- [1, 1, 0, 1, 1, 1, 1, 1, 1, 1],
- [0, 0, 1, 1, 1, 1, 1, 1, 1, 1], //bases
+ [0, 0, 0, 1, 1, 1, 1, 1, 1, 1],
+ [1, 1, 1, 1, 1, 1, 1, 1, 1, 1], //bases
  [1, 1, 1, 0, 0, 0, 0, 1, 1, 1],
  [0, 0, 1, 0, 0, 0, 0, 1, 1, 1],
  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -96,9 +96,8 @@
             }
         });
 
-        
-        //     graph[start[0]][start[1]] = 0;
-        //    graph[end[0]][end[1]] = 1;
+        graph[start[0]][start[1]] = 0;
+        graph[end[0]][end[1]] = 1;
         this.grid = easystar.setGrid(graph);
 
     };
