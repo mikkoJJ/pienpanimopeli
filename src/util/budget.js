@@ -29,6 +29,7 @@
     var div;
     var bar;
     var full = 100000;
+    var tween;
 
     /**
      */
@@ -36,22 +37,28 @@
 
     //handles budget
     Budget.prototype.startBudget = function (budget, text) {
-        Brew.game.add.tween(text).to({
+        this.tween = Brew.game.add.tween(text).to({
             number: budget
-        }, 2000, Phaser.Easing.Linear.None, true);
-     //   budget = budget + money;
+        }, 1000, Phaser.Easing.Linear.None, true);
+        //   budget = budget + money;
         this.update(budget);
+        this.tween.onComplete.add(function () {
+            if (budget <= 0) {
+                this.tween.stop();
+                text.fill = "#EE0A0A";
+            }
+        });
     };
 
     //shows decreases and increases
     Budget.prototype.money = function (money, changeText, budget, text) {
-        changeText.setText(money);      
+        changeText.setText(money);
         if (money > 0) changeText.fill = "#106906";
         else changeText.fill = "#EE0A0A";
         Brew.game.time.events.add(2000, function () {
             changeText.setText("");
         }, this);
-        
+
         budget = budget + money;
         Budget.prototype.startBudget(budget, text);
     };
