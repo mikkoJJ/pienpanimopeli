@@ -47,9 +47,14 @@
         /** How long it takes for the producer to finish */
         this.workDuration = 10;
         
+        this._frame = frame;
+        this._frameSelected = frame + '_selected';
+        
         this._sprite.anchor.setTo(0.5, 0.97);
         this._sprite.inputEnabled = true;
         this._sprite.events.onInputDown.add(this._inputDown, this);
+        this._sprite.events.onInputOver.add(this._inputOver, this);
+        this._sprite.events.onInputOut.add(this._inputOut, this);
         //this._sprite.tint = 0xffaaaa;
     };
     
@@ -124,6 +129,24 @@
                 this.begin(this.previous);
             } 
         }
+    };
+    
+    /**
+     * Event callback to when the Producer sprite is clicked.
+     * 
+     * @private
+     */
+    Producer.prototype._inputOver = function() {
+        this._sprite.frameName = this._frameSelected;
+    };
+    
+    /**
+     * Event callback to when the Producer sprite is clicked.
+     * 
+     * @private
+     */
+    Producer.prototype._inputOut = function() {
+        this._sprite.frameName = this._frame;
     };
     
     

@@ -32,6 +32,7 @@
         this._game = game;
         this._group = group;
         this._frame = spriteName;
+        this._frameSelected = spriteName + '_selected';
         this._amount = 0;
         this._cases = [];
         this._current = { x: 0, y: 0, z: 0 };
@@ -49,7 +50,9 @@
         _case.isoZ = this.base.z + settings.caseHeight * this._current.z;
         
         _case.inputEnabled = true;
-     //   _case.events.onInputDown.add(this.moveEmployee, this);
+        _case.events.onInputOver.add(function() { this._mouseOver = true; }, _case);
+        _case.events.onInputOut.add(function() { this._mouseOver = false; }, _case);
+     //   _case.events.onInputDown.add(fthis.moveEmployee, this);
         
         _case.casePosition = {x: this._current.x, y: this._current.y, z: this._current.z};
         
@@ -64,6 +67,7 @@
         this._cases.push(_case);
     };
     
+    
     Storage.prototype.moveEmployee = function() {
         Brew.game.add.tween(Brew.Person).to({
             isoX: this._current.x + 130,
@@ -71,6 +75,7 @@
             isoZ: 0
         }, 2000, Phaser.Easing.Linear.None, true, 0, 0, false);
     };
+    
     
     Storage.prototype.removeCase = function() {
         var _case = this._cases.pop();
@@ -80,6 +85,55 @@
         this._current.z = _case.casePosition.z;
         
         _case.destroy();
+    };
+    
+    /**
+     * Called whenever the mouse hovers any of the stored sprites.
+     */
+    Storage.prototype._mouseOver = function() {
+        if( this._selected ) return;
+        this._selected = true;
+        
+        for ( var i=0; i < this._cases.length; i++ ) {
+            this._cases[i].frameName = this._frameSelected;
+        }
+    };
+    
+    /**
+     * Called whenever the mouse hovers any of the stored sprites.
+     */
+    Storage.prototype._mouseOut = function() {
+        //if( !this._selected ) return;
+        this._selected = false;
+        
+        for ( var i=0; i < this._cases.length; i++ ) {
+            this._cases[i].frameName = this._frame;
+        }
+    };
+    
+    Storage.prototype.update = function() {
+        var _mouse = false;
+        
+        for ( var i = 0; i < this._cases.length; i++ ) {
+            if ( this._cases[i]._mouseOver ) {
+                _mouse = true;
+                break;
+            }
+        }
+        
+        if ( _mouse && !this._selected ) {
+            this._selected = true;
+            for ( var i=0; i < this._cases.length; i++ ) {
+                this._cases[i].frameName = this._frameSelected;
+            }
+        } 
+        
+        if ( !_mouse && this._selected ) {
+            this._selected = false;
+            for ( var i=0; i < this._cases.length; i++ ) {
+                this._cases[i].frameName = this._frame;
+            }
+        }
     };
     
     

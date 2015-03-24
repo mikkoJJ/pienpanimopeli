@@ -6,7 +6,7 @@
         <key>texturePackerVersion</key>
         <string>3.6.0</string>
         <key>fileName</key>
-        <string>C:/Users/Elina Keränen/Documents/GitHub/pienpanimopeli/assets/sprites/sprites.tps</string>
+        <string>Z:/Work/html_sandbox/pienpanimopeli/assets/sprites/sprites.tps</string>
         <key>autoSDSettings</key>
         <array>
             <struct type="AutoSDSettings">
@@ -208,6 +208,11 @@
             <filename>single_sprites/letter_new_empty1.png</filename>
             <filename>single_sprites/letter_new_open 2.png</filename>
             <filename>single_sprites/letter_new_unopened.png</filename>
+            <filename>single_sprites/lager_case_selected.png</filename>
+            <filename>single_sprites/porter_case_selected.png</filename>
+            <filename>single_sprites/dark_case_selected.png</filename>
+            <filename>single_sprites/fermenter_selected.png</filename>
+            <filename>single_sprites/mies_selected.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

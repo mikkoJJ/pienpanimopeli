@@ -69,18 +69,15 @@
 
             //////////////// CURSOR: /////////////////
 
-            this.cursor = this.add.isoSprite(0, 0, 1, 'sprites', 'select', this.isoGroup);
+            /*this.cursor = this.add.isoSprite(0, 0, 1, 'sprites', 'select', this.isoGroup);
             this.cursor.anchor.setTo(0.5, 0.5);
-            this.isoGroup.add(this.cursor);
+            this.isoGroup.add(this.cursor);*/
 
 
             //////////////// PERSONS: /////////////////
 
             person = new Person(this.game, 1 * settings.tileSize, 4 * settings.tileSize, 10, this.isoGroup, this.floor);
             person2 = new Person(this.game, 1 * settings.tileSize, 5 * settings.tileSize, 10, this.isoGroup, this.floor);
-            person.anchor.setTo(0.5, 1);
-            person2.anchor.setTo(0.5, 1);
-
 
             //////////////// RIGHT BUTTONS: /////////////////
 
@@ -197,8 +194,6 @@
 
 
         beerFinished: function (beer) {
-            console.log(beer.type);
-
             if (beer.type == Brew.BeerType.LAGER)
                 lagerStorage.amount += 10;
             if (beer.type == Brew.BeerType.PORTER)
@@ -227,15 +222,18 @@
         update: function () {
             this.game.iso.simpleSort(this.isoGroup);
             this.messages.update();
-
+            
+            lagerStorage.update();
+            darkStorage.update();
+            porterStorage.update();
             //check mouse position and put the cursor on the correct place:
-            var _pos = new Phaser.Plugin.Isometric.Point3();
+            /*var _pos = new Phaser.Plugin.Isometric.Point3();
             this.game.iso.unproject(this.game.input.activePointer.position, _pos);
 
             if (Brew.noCursor) {
                 this.cursor.isoX = this.cursor.isoY = -1000;
                 return;
-            }
+            }*
 
             this.isoGroup.forEach(function (tile) {
                 var inBounds = tile.isoBounds.containsXY(_pos.x, _pos.y);
@@ -244,7 +242,7 @@
                     this.cursor.isoY = tile.isoY;
                 }
 
-            }, this);
+            }, this);*/
 
             this.floor.update();
 
@@ -257,13 +255,22 @@
 
     var Person = function (game, x, y, z, group, floor) {
         Phaser.Plugin.Isometric.IsoSprite.call(this, game, x, y, z, 'sprites', 'mies', group);
-        this.anchor.set(0.5, 0.7);
+        this.anchor.set(0.5, 0.75);
         this.floor = floor;
         this.moving = false;
+        this._frameUnselected = 'mies';
+        this._frameSelected = 'mies_selected';
 
         this.inputEnabled = true;
         this.events.onInputDown.add(function () {
             this.floor.person = this;
+        }, this);
+        this.events.onInputOver.add(function () {
+            this.frameName = this._frameSelected;
+        }, this);
+        this.events.onInputOut.add(function () {
+            console.log(this._frame.constructor);
+            this.frameName = this._frameUnselected;
         }, this);
 
         game.add.existing(this);
