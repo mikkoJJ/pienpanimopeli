@@ -27,8 +27,9 @@
      * @param {Phaser.Game} game reference to the game object to use.
      * @param {string} spriteName the name of the sprite frame to pile in this storage
      * @param {Phaser.Group} group the group to add the sprites in.
+     * @param {string} description a human-readable description of what this storage contains.
      */
-    var Storage = function(game, spriteName, group) {
+    var Storage = function(game, spriteName, group, description) {
         this._game = game;
         this._group = group;
         this._frame = spriteName;
@@ -37,6 +38,7 @@
         this._cases = [];
         this._current = { x: 0, y: 0, z: 0 };
         this.base = {x: 0, y: 0, z: 0};
+        this.description = description;
     };
     
     Storage.prototype.constructor = Storage;
@@ -52,7 +54,6 @@
         _case.inputEnabled = true;
         _case.events.onInputOver.add(function() { this._mouseOver = true; }, _case);
         _case.events.onInputOut.add(function() { this._mouseOver = false; }, _case);
-     //   _case.events.onInputDown.add(fthis.moveEmployee, this);
         
         _case.casePosition = {x: this._current.x, y: this._current.y, z: this._current.z};
         
@@ -87,29 +88,6 @@
         _case.destroy();
     };
     
-    /**
-     * Called whenever the mouse hovers any of the stored sprites.
-     */
-    Storage.prototype._mouseOver = function() {
-        if( this._selected ) return;
-        this._selected = true;
-        
-        for ( var i=0; i < this._cases.length; i++ ) {
-            this._cases[i].frameName = this._frameSelected;
-        }
-    };
-    
-    /**
-     * Called whenever the mouse hovers any of the stored sprites.
-     */
-    Storage.prototype._mouseOut = function() {
-        //if( !this._selected ) return;
-        this._selected = false;
-        
-        for ( var i=0; i < this._cases.length; i++ ) {
-            this._cases[i].frameName = this._frame;
-        }
-    };
     
     Storage.prototype.update = function() {
         var _mouse = false;
@@ -126,6 +104,14 @@
             for ( var i=0; i < this._cases.length; i++ ) {
                 this._cases[i].frameName = this._frameSelected;
             }
+            var infoPosition = this._game.iso.project(
+                                new Phaser.Plugin.Isometric.Point3(
+                                                            this.base.x + settings.tileWidth * 1,
+                                                            this.base.y + settings.tileWidth * 1,
+                                                            this.base.z + settings.tileWidth * settings.pileHeight)
+                                                      );
+            
+            this._info = Brew.gui.showInfo(infoPosition.x - 100, infoPosition.y + 50, '<b>' + this.description + ':</b> ' + this.amount);
         } 
         
         if ( !_mouse && this._selected ) {
@@ -133,6 +119,7 @@
             for ( var i=0; i < this._cases.length; i++ ) {
                 this._cases[i].frameName = this._frame;
             }
+            Brew.gui.hideInfo(this._info);
         }
     };
     

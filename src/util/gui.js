@@ -19,9 +19,10 @@
             .addClass('brew-messages')
             .appendTo(settings.dom);
 
-        this.resourceWindow;
-        this.seekWindow;
-
+        this.resourceWindow = null;
+        this.seekWindow = null;
+        
+        this.infoWindows = [];
     };
 
     GUI.prototype.resources = function (message, callback, callbackCtx) {
@@ -100,6 +101,7 @@
             //  easing: 'easeOutBounce'
         }, 200);
     };
+    
     /**
      * Show an alert window. It is a simple window with a message and an OK button
      * to dismiss the message.
@@ -125,6 +127,22 @@
             .data('callbackCtx', callbackCtx);
     };
 
+    
+    GUI.prototype.showInfo = function(x, y, message) {
+        var w = $('<div></div>')
+            .addClass('brew-info-window brew-window')
+            .appendTo(settings.dom)
+            .css({left: x, top: y})
+            .html(message)
+            .show({effect: 'scale', origin: ['left', 'center'], duration: 80 });
+        
+        return w;
+    };
+    
+    GUI.prototype.hideInfo = function(window) {
+        window.hide({effect: 'scale', origin: ['left', 'center'], duration: 80, complete: function() { $(this).remove() } });    
+    };
+    
 
     /**
      * Adds a message to the message display.

@@ -13,6 +13,7 @@
         lagerStorage,
         porterStorage,
         darkStorage,
+        resourceStorage,
         person,
         person2,
         floor,
@@ -42,32 +43,39 @@
 
             //////////////// STORAGES: /////////////////
 
-            lagerStorage = new Brew.Storage(this.game, 'lager_case', this.isoGroup);
+            lagerStorage = new Brew.Storage(this.game, 'lager_case', this.isoGroup, 'Lageria');
             lagerStorage.base.x = 0 * settings.tileSize;
             lagerStorage.base.y = 0 * settings.tileSize;
-            lagerStorage.amount = 10;
+            lagerStorage.amount = 2;
 
-            porterStorage = new Brew.Storage(this.game, 'porter_case', this.isoGroup);
+            porterStorage = new Brew.Storage(this.game, 'porter_case', this.isoGroup, 'Portteria');
             porterStorage.base.x = 0 * settings.tileSize;
             porterStorage.base.y = 3 * settings.tileSize;
-            porterStorage.amount = 10;
+            porterStorage.amount = 2;
 
-            darkStorage = new Brew.Storage(this.game, 'dark_case', this.isoGroup);
+            darkStorage = new Brew.Storage(this.game, 'dark_case', this.isoGroup, 'Tummaa olutta');
             darkStorage.base.x = 0 * settings.tileSize;
             darkStorage.base.y = 6 * settings.tileSize;
-            darkStorage.amount = 10;
+            darkStorage.amount = 2;
 
+            resourceStorage = new Brew.Storage(this.game, 'consumable', this.isoGroup, 'Ohramallasta');
+            resourceStorage.base.x = 4 * settings.tileSize;
+            resourceStorage.base.y = 0 * settings.tileSize;
+            resourceStorage.amount = 20;
 
             //////////////// PRODUCERS: /////////////////
 
-            lauterer = new Brew.Producer(this.game, 4 * settings.tileSize, 3 * settings.tileSize, 0, 'kettle', this.isoGroup);
-            fermenter = new Brew.Producer(this.game, 6 * settings.tileSize, 3 * settings.tileSize, 0, 'fermenter', this.isoGroup);
+            lauterer = new Brew.Producer(this.game, 8 * settings.tileSize, 8 * settings.tileSize, 0, 'kettle', this.isoGroup);
+            lauterer.resource = resourceStorage;
+            fermenter = new Brew.Producer(this.game, 8 * settings.tileSize, 5 * settings.tileSize, 0, 'fermenter', this.isoGroup);
 
             Brew.Producer.setChain(lauterer, fermenter);
 
             fermenter.onBeerFinished.bind(this.beerFinished, this);
 
+            
             //////////////// CURSOR: /////////////////
+            
             /*this.cursor = this.add.isoSprite(0, 0, 1, 'sprites', 'select', this.isoGroup);
             this.cursor.anchor.setTo(0.5, 0.5);
             this.isoGroup.add(this.cursor);*/
@@ -190,11 +198,11 @@
 
         beerFinished: function (beer) {
             if (beer.type == Brew.BeerType.LAGER)
-                lagerStorage.amount += 10;
+                lagerStorage.amount += 1;
             if (beer.type == Brew.BeerType.PORTER)
-                porterStorage.amount += 10;
+                porterStorage.amount += 1;
             if (beer.type == Brew.BeerType.DARK)
-                darkStorage.amount += 10;
+                darkStorage.amount += 1;
         },
 
 
@@ -245,6 +253,7 @@
             lagerStorage.update();
             darkStorage.update();
             porterStorage.update();
+            resourceStorage.update();
             //check mouse position and put the cursor on the correct place:
             /*var _pos = new Phaser.Plugin.Isometric.Point3();
             this.game.iso.unproject(this.game.input.activePointer.position, _pos);
@@ -293,7 +302,6 @@
             this.frameName = this._frameSelected;
         }, this);
         this.events.onInputOut.add(function () {
-            console.log(this._frame.constructor);
             this.frameName = this._frameUnselected;
         }, this);
 

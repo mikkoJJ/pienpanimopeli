@@ -74,6 +74,10 @@
         } else 
             beer = new Brew.Beer();
         
+        if ( this.resource ) {
+            this.resource.amount -= 1;
+        }
+        
         this.beer = beer;
         
         var workTween = this._game.add.tween(this._sprite.scale).to({x: 1.05, y: 1.05}, 100, Phaser.Easing.Linear.None, true, 0, this.workDuration, true);
