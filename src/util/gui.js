@@ -29,7 +29,7 @@
         this.resourceWindow = $('<div><div/>')
             .addClass('brew-window brew-resources')
             .html(message)
-            .append(this.__makeButton("Lageria", function () {
+            .append(this.__makeButton("Osta", function () {
                 var p = $(this).parent();
                 p.data('type', Brew.BeerType.LAGER);
                 if (p.data('callback')) p.data('callback').call(p.data('callbackCtx'));
@@ -39,7 +39,7 @@
                     this.remove();
                 });
 
-            }))
+            }))/*
             .append(this.__makeButton("Portteria", function () {
                 var p = $(this).parent();
                 p.data('type', Brew.BeerType.PORTER);
@@ -59,7 +59,7 @@
                 }, 200, 'easeInBack', function () {
                     this.remove();
                 });
-            }))
+            }))*/
             .appendTo(settings.dom)
             //   .show('drop', 200, 'easeOutBack')
           //  .data('param1', type)

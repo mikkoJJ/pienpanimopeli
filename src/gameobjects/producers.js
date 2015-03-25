@@ -4,8 +4,12 @@
      * Enumeration for producer states.
      */
     Brew.ProducerState = {
-        IDLE: 1, PROCESSING: 2, DONE: 3
+        IDLE: 0, PROCESSING: 1, DONE: 2
     };
+    
+    var STATE_ICONS = [
+        'producer_idle', 'producer_active', 'producer_done'
+    ];
     
     
     /**
@@ -27,7 +31,7 @@
         this._game = game;
         
         /** The current state of the producer. */
-        this.state = Brew.ProducerState.IDLE;
+        this._state = Brew.ProducerState.IDLE;
         
         /** The next stage in the production chain. */
         this.next = null;
@@ -56,6 +60,11 @@
         this._sprite.events.onInputOver.add(this._inputOver, this);
         this._sprite.events.onInputOut.add(this._inputOut, this);
         //this._sprite.tint = 0xffaaaa;
+        
+        this._indicator = game.add.isoSprite(x, y, z + 140, 'sprites', 'producer_idle', group);
+        this._indicator.anchor.set(0.5, 0.5);
+        this._indicator.pivot.set(0.5, 0.5);
+        game.add.tween(this._indicator).to({ isoZ: z + 145 }, 1800, Phaser.Easing.Quadratic.InOut, true, 0, -1, true);
     };
     
     Producer.prototype.constructor = Producer;
@@ -80,9 +89,9 @@
         
         this.beer = beer;
         
-        var workTween = this._game.add.tween(this._sprite.scale).to({x: 1.05, y: 1.05}, 100, Phaser.Easing.Linear.None, true, 0, this.workDuration, true);
+        var workTween = this._game.add.tween(this._sprite.scale).to({x: 1.02, y: 1.02}, 100, Phaser.Easing.Linear.None, true, 0, this.workDuration, true);
         
-        workTween.onComplete.add(function() {
+        workTween.onComplete.add(function() {        
             this.state = Brew.ProducerState.DONE;
             if( !this.next ) {
                 this.onBeerFinished.fire(this.beer);
@@ -114,10 +123,30 @@
         },
         
         fire: function(arg) {
-            console.log("AA");
             if( this._callback ) this._callback.call(this._ctx, arg);
         }
     };
+    
+    
+    Object.defineProperty(Producer.prototype, 'state', {
+        
+        get: function() {
+            return this._state;
+        },
+        
+        set: function(newState) {
+            this._state = newState;
+            this._indicator.frameName = STATE_ICONS[newState];
+            if ( newState == Brew.ProducerState.PROCESSING ) {
+                this._indicatorTween = this._game.add.tween(this._indicator).to({rotation: Math.PI * 2}, 800, Phaser.Easing.Cubic.In, true, 0, -1, false);
+            }
+            else {
+                this._indicatorTween.stop();
+                this._indicator.rotation = 0;
+            }
+        }
+        
+    });
     
     
     /**

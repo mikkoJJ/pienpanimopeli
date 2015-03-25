@@ -215,6 +215,9 @@
             <filename>single_sprites/mies_selected.png</filename>
             <filename>single_sprites/consumable.png</filename>
             <filename>single_sprites/consumable_selected.png</filename>
+            <filename>single_sprites/producer_active.png</filename>
+            <filename>single_sprites/producer_done.png</filename>
+            <filename>single_sprites/producer_idle.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

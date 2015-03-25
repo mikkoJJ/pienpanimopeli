@@ -50,18 +50,18 @@
 
             porterStorage = new Brew.Storage(this.game, 'porter_case', this.isoGroup, 'Portteria');
             porterStorage.base.x = 0 * settings.tileSize;
-            porterStorage.base.y = 3 * settings.tileSize;
+            porterStorage.base.y = 2 * settings.tileSize;
             porterStorage.amount = 2;
 
             darkStorage = new Brew.Storage(this.game, 'dark_case', this.isoGroup, 'Tummaa olutta');
             darkStorage.base.x = 0 * settings.tileSize;
-            darkStorage.base.y = 6 * settings.tileSize;
+            darkStorage.base.y = 4 * settings.tileSize;
             darkStorage.amount = 2;
 
             resourceStorage = new Brew.Storage(this.game, 'consumable', this.isoGroup, 'Ohramallasta');
             resourceStorage.base.x = 4 * settings.tileSize;
             resourceStorage.base.y = 0 * settings.tileSize;
-            resourceStorage.amount = 20;
+            resourceStorage.amount = 5;
 
             //////////////// PRODUCERS: /////////////////
 
@@ -150,7 +150,7 @@
             var price = -$("#aineet").val();
             this.budgetHandling(price);
             var beerType = Brew.gui.resourceWindow.data('type');
-            //storage add beerType
+            resourceStorage.amount += 1;
         },
 
         //advertising
@@ -173,7 +173,6 @@
         hire: function (param1) {
             spending = parseInt(spending) + 500;
             var employee = new Person(Brew.game, Brew.game.rnd.integerInRange(0, 9) * settings.tileSize, 9 * settings.tileSize, 10, this.isoGroup, this.floor);
-            employee.anchor.setTo(0.5, 1);
             if (param1) {
                 this.time.events.add(Phaser.Timer.SECOND * 10, function () {
                     Brew.gui.alert("Työntekijäsi jäi äitiyslomalle. Sinun täytyy jatkaa palkan maksamista hänelle.");
