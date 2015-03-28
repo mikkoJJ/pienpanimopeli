@@ -1,7 +1,7 @@
 (function() {
     
     Brew.BeerType = {
-        LAGER: 1, PORTER: 2, DARK: 3
+        LAGER: 1, IPA: 2, DARK: 3
     };
     
     

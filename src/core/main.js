@@ -18,7 +18,8 @@
         person2,
         floor,
         spending,
-        text;
+        text,
+        list = [];
     /**
      * This is the main game state that starts when all assets are loaded.
      *
@@ -88,19 +89,16 @@
 
             //////////////// RIGHT BUTTONS: /////////////////
 
-            var coin = this.add.button(940, 0, 'sprites', function () {
-                Brew.gui.addMessage("Mainosta", "Rakenna jättitölkki hintaan 1000 euroa?", null, "Oi kyllä!", this.ad, this);
-            }, this, 'coin-symbol', 'coin-symbol');
+            var coin = this.add.button(940, 0, 'sprites', function () {}, this, 'coin-symbol', 'coin-symbol');
             coin.anchor.setTo(0.5, 0);
 
-            Brew.gui.seek("Ilmoita avoimesta työpaikasta", this.openJob, this);
-            /*function () {
-                this.time.events.loop(Phaser.Timer.SECOND * 2, this.openJob, this)
-            }, this);*/
+            //     Brew.gui.seek("Ilmoita avoimesta työpaikasta", this.openJob, this);
+
             Brew.gui.resources("Osta 1 erä raaka-aineita", this.buyMaterials, this);
 
             var seek = this.add.button(900, 50, 'sprites', function () {
-                Brew.gui.toggleSeek();
+                Brew.gui.addMessage("Mainosta", "Rakenna jättitölkki hintaan 1000 euroa?", null, "Oi kyllä!", this.ad, this);
+                //  Brew.gui.toggleSeek();
             }, this, 'seek-employee-symbol', 'seek-employee-symbol');
             seek.anchor.setTo(0.5, 0);
             seek.scale.set(0.6, 0.6);
@@ -120,7 +118,7 @@
 
             //letter_new_unopened
 
-            this.time.events.loop(Phaser.Timer.SECOND * 10, this.updateCounter, this);
+            var orders = this.time.events.loop(Phaser.Timer.SECOND * 5, this.updateCounter, this);
 
             Brew.Budget.create();
             Brew.Budget.moveProgressBar();
@@ -160,7 +158,7 @@
         },
 
         //applications for a job
-        openJob: function () {
+        /*       openJob: function () {
             var names = ["Ville Viinamäki", "Pertti Pitkäaikaistyötön", "Riikka Raskaana"];
             Brew.gui.addMessage("Työhakemus", "Moi, olen " + names[0], null, "palkkaa", this.hire, this);
             Brew.gui.addMessage("Työhakemus", "Moi, olen " + names[1], null, "palkkaa", this.hire, this);
@@ -168,23 +166,17 @@
                 this.hire(true)
             }, this);
         },
-
+*/
         //hire an employee
-        hire: function (param1) {
+        hire: function () {
             spending = parseInt(spending) + 500;
             var employee = new Person(Brew.game, Brew.game.rnd.integerInRange(0, 9) * settings.tileSize, 9 * settings.tileSize, 10, this.isoGroup, this.floor);
-            if (param1) {
-                this.time.events.add(Phaser.Timer.SECOND * 10, function () {
-                    Brew.gui.alert("Työntekijäsi jäi äitiyslomalle. Sinun täytyy jatkaa palkan maksamista hänelle.");
-                    employee.destroy();
-                }, this);
-            }
         },
 
         //selling beer
         sell: function (order) {
             if (lagerStorage.amount < order.amount) return false;
-            else if (order.buyer == "Nalle") {
+            else if (order.buyer == "Erkki Virtanen") {
                 this.budgetHandling(-10);
                 Brew.gui.alert("Yksityishenkilölle myyminen on laitonta! Sait sakot.");
             } else {
@@ -198,7 +190,7 @@
         beerFinished: function (beer) {
             if (beer.type == Brew.BeerType.LAGER)
                 lagerStorage.amount += 1;
-            if (beer.type == Brew.BeerType.PORTER)
+            if (beer.type == Brew.BeerType.IPA)
                 porterStorage.amount += 1;
             if (beer.type == Brew.BeerType.DARK)
                 darkStorage.amount += 1;
@@ -209,16 +201,19 @@
          * control orders
          */
         updateCounter: function () {
-            //   console.log(this.time.totalElapsedSeconds());
+            //     console.log(this.time.now);
             //   if (i > 5) return;
             var order = new Order().random();
-            var list = [];
-            list[i++] = Brew.gui.addMessage('Tilaus', order.message(), order, "Myy", this.sell, this);
+            list[i++] = order;
+            Brew.gui.addMessage('Tilaus', order.message(), order, "Myy", this.sell, this);
+            var secondsToDisappear = 35000; //35 sekuntia
 
-            var now = this.time.totalElapsedSeconds();
-            if (now - order.age > 10) {
-                //poista tilaus
-            }
+            list.forEach(function (entry) {
+                if (Brew.game.time.now - entry.age > 10000) {
+                    //    list.splice(list.indexOf(entry, 1));
+                    console.log(entry.age + " " + entry.type);
+                }
+            });
         },
 
         budgetHandling: function (money) {
@@ -274,10 +269,10 @@
             this.floor.update();
 
             if (budget <= 100000 && budget >= 0) {
-            //    Brew.Budget.startBudget(budget, text);
+                //    Brew.Budget.startBudget(budget, text);
                 text.setText(Math.floor(text.number));
             } else {
-            //    Brew.Budget.update(budget);
+                //    Brew.Budget.update(budget);
                 text.setText(budget);
             }
         },
@@ -314,7 +309,7 @@
     Brew.Person = Person;
 
     var Order = function (type, amount, buyer) {
-        //    this.age = age;
+        this.age = Brew.game.time.now;
         this.type = type;
         this.amount = amount;
         this.buyer = buyer;
@@ -327,12 +322,13 @@
     };
 
     Order.prototype.random = function () {
-        var types = ["lageria", "tummaa olutta", "portteria"];
+        var types = ["lageria", "tummaa olutta", "IPA"];
         var pieni = Brew.game.rnd.integerInRange(1, 10);
         var suuri = Brew.game.rnd.integerInRange(30, 40); //isoja tilauksia voisi tulla harvemmin
         var amountTypes = [pieni, suuri];
+        //   console.log(this.age);
 
-        var buyers = [["Kesko", suuri], ["Hemingways", pieni], ["Vakiopaine", pieni], ["Musta Kynnys", pieni], ["Ale Pub", pieni], ["S-Ryhmä", suuri], ["Nalle", pieni]];
+        var buyers = [["Alko", suuri], ["Kesko", suuri], ["Hemingways", pieni], ["Vakiopaine", pieni], ["Musta Kynnys", pieni], ["Ale Pub", pieni], ["S-Ryhmä", suuri], ["Erkki Virtanen", pieni]];
 
         var currentBuyer = buyers[Brew.game.rnd.integerInRange(0, buyers.length - 1)];
 
@@ -345,7 +341,7 @@
         //     Brew.game.time.totalElapsedSeconds(), 
         //    buyers[Brew.game.rnd.integerInRange(0, buyers.length - 1)]);
     };
-
+    
     Order.prototype.message = function () {
         return this.amount + " koria " + this.type + " Tilaaja:" + this.buyer;
     };
