@@ -17,6 +17,7 @@
         caseValue: 1,
     };
     
+    
     /**
      * @class Brew.Storage                           
      * 
@@ -30,6 +31,7 @@
      * @param {string} description a human-readable description of what this storage contains.
      */
     var Storage = function(game, spriteName, group, description) {
+        //private vars:
         this._game = game;
         this._group = group;
         this._frame = spriteName;
@@ -37,13 +39,20 @@
         this._amount = 0;
         this._cases = [];
         this._current = { x: 0, y: 0, z: 0 };
+        
+        /** Where the first pile of cases will be placed in the world. */
         this.base = {x: 0, y: 0, z: 0};
+        
+        /** The "name" of the cases in this storage */
         this.description = description;
     };
     
     Storage.prototype.constructor = Storage;
     
-
+    
+    /**
+     * Add a case to the storage.
+     */
     Storage.prototype.addCase = function() {
         var _case = this._game.add.isoSprite(0, 0, 0, 'sprites', this._frame, this._group);
         _case.anchor.set(0.5, 0.76);
@@ -69,15 +78,11 @@
     };
     
     
-    Storage.prototype.moveEmployee = function() {
-        Brew.game.add.tween(Brew.Person).to({
-            isoX: this._current.x + 130,
-            isoY: this._current.y,
-            isoZ: 0
-        }, 2000, Phaser.Easing.Linear.None, true, 0, 0, false);
-    };
-    
-    
+    /**
+     * Remove a case from the storage.
+     * 
+     * @private
+     */
     Storage.prototype.removeCase = function() {
         var _case = this._cases.pop();
         
@@ -89,6 +94,20 @@
     };
     
     
+    Storage.prototype.moveEmployee = function() {
+        Brew.game.add.tween(Brew.Person).to({
+            isoX: this._current.x + 130,
+            isoY: this._current.y,
+            isoZ: 0
+        }, 2000, Phaser.Easing.Linear.None, true, 0, 0, false);
+    };
+    
+    
+    /**
+     * Call this every update tick to update mouse interaction checks.
+     * 
+     * @public
+     */
     Storage.prototype.update = function() {
         var _mouse = false;
         
@@ -101,8 +120,8 @@
         
         if ( _mouse && !this._selected ) {
             this._selected = true;
-            for ( var i=0; i < this._cases.length; i++ ) {
-                this._cases[i].frameName = this._frameSelected;
+            for ( var j=0; j < this._cases.length; j++ ) {
+                this._cases[j].frameName = this._frameSelected;
             }
             var infoPosition = this._game.iso.project(
                                 new Phaser.Plugin.Isometric.Point3(
@@ -116,14 +135,18 @@
         
         if ( !_mouse && this._selected ) {
             this._selected = false;
-            for ( var i=0; i < this._cases.length; i++ ) {
-                this._cases[i].frameName = this._frame;
+            for ( var k=0; k < this._cases.length; k++ ) {
+                this._cases[k].frameName = this._frame;
             }
             Brew.gui.hideInfo(this._info);
         }
     };
     
     
+    /**
+     * @property {number} amount The amount  Changing the value makes the cases appear or disappear.
+     * @public
+     */ 
     Object.defineProperty(Storage.prototype, 'amount', {
         
         get: function() {
