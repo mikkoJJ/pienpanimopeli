@@ -19,7 +19,8 @@
         floor,
         spending,
         text,
-        list = [];
+        list = [],
+        soDirtyEverywhere = 0;
     /**
      * This is the main game state that starts when all assets are loaded.
      *
@@ -142,6 +143,24 @@
             changeText = this.add.text(880, 45, "");
             changeText.fill = '#FFFFFF';
             changeText.anchor.setTo(0.5, 0);
+
+      /*      this.time.events.loop(Phaser.Timer.SECOND * 20, function () {
+                this.cleanUp();
+            }, this);
+*/
+        },
+
+        cleanUp: function () {
+            var clean = this.add.isoSprite(Brew.game.rnd.integerInRange(50, 200), Brew.game.rnd.integerInRange(50, 200), 100, 'sprites', 'cook', this.isoGroup);
+            soDirtyEverywhere++;
+            if (soDirtyEverywhere % 5 == 0) Brew.gui.alert("Hygieniasi on epäilyttävää. Sait sakot.", this.budgetHandling(-100), this);
+
+            clean.inputEnabled = true;
+            clean.events.onInputDown.add(function () {
+                clean.destroy();
+                soDirtyEverywhere--;
+            }, this);
+            //      console.log(soDirtyEverywhere);
         },
 
         buyMaterials: function () {
@@ -201,20 +220,42 @@
          * control orders
          */
         updateCounter: function () {
-            //     console.log(this.time.now);
-            //   if (i > 5) return;
             var order = new Order().random();
-            list[i++] = order;
-            Brew.gui.addMessage('Tilaus', order.message(), order, "Myy", this.sell, this);
-            var secondsToDisappear = 35000; //35 sekuntia
+            list.push(order);
 
+            Brew.gui.addMessage('Tilaus', order.message(), order, "Myy", this.sell, this, order.remove, Brew.Order);
+            var secondsToDisappear = 15000; //15 sekuntia
+            //   console.log(list.length);
+
+            //remove old orders
             list.forEach(function (entry) {
-                if (Brew.game.time.now - entry.age > 10000) {
-                    //    list.splice(list.indexOf(entry, 1));
-                    console.log(entry.age + " " + entry.type);
+                if (Brew.game.time.now - entry.age > secondsToDisappear) {
+                    var allListElements = $('.brew-message');
+
+                    allListElements.each(function (index) {
+                        if ($(this).data('messageData') == entry) {
+                            $(this).remove();
+                            entry.buyers.splice(entry.buyers.indexOf(entry.buyer), 1); //IE?
+                         //   console.log(entry.buyers);
+                            list.shift();
+                            return;
+                        }
+                    });
                 }
             });
-        },
+       //     console.log(removeBuyer);
+ 
+        },  
+ 
+        //IE:n koodi arrayn indexofille
+        /*if (!Array.prototype.indexOf) {
+    Array.prototype.indexOf = function(obj, start) {
+         for (var i = (start || 0), j = this.length; i < j; i++) {
+             if (this[i] === obj) { return i; }
+         }
+         return -1;
+    }
+}*/
 
         budgetHandling: function (money) {
             budget = budget + money;
@@ -308,11 +349,14 @@
 
     Brew.Person = Person;
 
+    var buyers = ["Kesko", "S-Ryhmä", "Alko", "Kesko", "S-Ryhmä", "Hemingways", "Vakiopaine", "Musta Kynnys", "Ale Pub", "Erkki Virtanen"];
+
     var Order = function (type, amount, buyer) {
         this.age = Brew.game.time.now;
         this.type = type;
         this.amount = amount;
         this.buyer = buyer;
+        this.buyers = buyers;
 
         this.price = $("#hinta").val();
         $("#hinta")
@@ -321,27 +365,28 @@
             });
     };
 
+    Order.prototype.remove = function () {
+        buyers.splice(buyers.indexOf(this.buyer));
+        console.log(buyers.length);
+    };
+
     Order.prototype.random = function () {
         var types = ["lageria", "tummaa olutta", "IPA"];
         var pieni = Brew.game.rnd.integerInRange(1, 10);
-        var suuri = Brew.game.rnd.integerInRange(30, 40); //isoja tilauksia voisi tulla harvemmin
+        var suuri = Brew.game.rnd.integerInRange(30, 40);
         var amountTypes = [pieni, suuri];
         //   console.log(this.age);
 
-        var buyers = [["Alko", suuri], ["Kesko", suuri], ["Hemingways", pieni], ["Vakiopaine", pieni], ["Musta Kynnys", pieni], ["Ale Pub", pieni], ["S-Ryhmä", suuri], ["Erkki Virtanen", pieni]];
+        //   var buyers = [["Alko", suuri], ["Kesko", suuri], ["S-Ryhmä", suuri], ["Hemingways", pieni], ["Vakiopaine", pieni], ["Musta Kynnys", pieni], ["Ale Pub", pieni], ["Erkki Virtanen", pieni]];
 
         var currentBuyer = buyers[Brew.game.rnd.integerInRange(0, buyers.length - 1)];
 
         return new Order(
             types[Brew.game.rnd.integerInRange(0, types.length - 1)],
-            currentBuyer[1],
-            currentBuyer[0]);
-        //     amountTypes[Brew.game.rnd.integerInRange(0, amountTypes.length - 1)],
-        //Brew.game.rnd.integerInRange(1, 10),
-        //     Brew.game.time.totalElapsedSeconds(), 
-        //    buyers[Brew.game.rnd.integerInRange(0, buyers.length - 1)]);
+            pieni,
+            currentBuyer);
     };
-    
+
     Order.prototype.message = function () {
         return this.amount + " koria " + this.type + " Tilaaja:" + this.buyer;
     };
