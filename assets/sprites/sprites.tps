@@ -6,7 +6,7 @@
         <key>texturePackerVersion</key>
         <string>3.6.0</string>
         <key>fileName</key>
-        <string>Z:/Work/html_sandbox/pienpanimopeli/assets/sprites/sprites.tps</string>
+        <string>C:/Users/Elina Keränen/Documents/GitHub/pienpanimopeli/assets/sprites/sprites.tps</string>
         <key>autoSDSettings</key>
         <array>
             <struct type="AutoSDSettings">
@@ -192,7 +192,6 @@
             <filename>single_sprites/cook.png</filename>
             <filename>single_sprites/floor.png</filename>
             <filename>single_sprites/kettle.png</filename>
-            <filename>single_sprites/kettle_selected.png</filename>
             <filename>single_sprites/letter.png</filename>
             <filename>single_sprites/letter_open.png</filename>
             <filename>single_sprites/mies.png</filename>
@@ -218,6 +217,12 @@
             <filename>single_sprites/producer_active.png</filename>
             <filename>single_sprites/producer_done.png</filename>
             <filename>single_sprites/producer_idle.png</filename>
+            <filename>single_sprites/kettle3_with_bubbles.png</filename>
+            <filename>single_sprites/kettle4.png</filename>
+            <filename>single_sprites/kettle1.png</filename>
+            <filename>single_sprites/kettle1_selected.png</filename>
+            <filename>single_sprites/kettle3_with_bubbles_selected.png</filename>
+            <filename>single_sprites/kettle2.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

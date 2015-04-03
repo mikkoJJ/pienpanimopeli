@@ -67,17 +67,21 @@
 
             //////////////// PRODUCERS: /////////////////
 
-            lauterer = new Brew.Producer(this.game, 8 * settings.tileSize, 8 * settings.tileSize, 0, 'kettle', this.isoGroup);
+            lauterer = new Brew.Producer(this.game, 8 * settings.tileSize, 8 * settings.tileSize, 0, 'kettle1', this.isoGroup);
             lauterer.resource = resourceStorage;
-            fermenter = new Brew.Producer(this.game, 8 * settings.tileSize, 5 * settings.tileSize, 0, 'fermenter', this.isoGroup);
+            fermenter = new Brew.Producer(this.game, 8 * settings.tileSize, 5 * settings.tileSize, 0, 'kettle3_with_bubbles', this.isoGroup);
+      //      fermenter._sprite.scale.set(0.6, 0.6);
+            
+        //    kattila1 = new Brew.Producer(this.game, 8 * settings.tileSize, 3 * settings.tileSize, 0, 'kettle2', this.isoGroup);
+        //    kattila2 = new Brew.Producer(this.game, 8 * settings.tileSize, 1 * settings.tileSize, 0, 'kettle4', this.isoGroup);
 
             Brew.Producer.setChain(lauterer, fermenter);
 
             fermenter.onBeerFinished.bind(this.beerFinished, this);
 
-            
+
             //////////////// CURSOR: /////////////////
-            
+
             /*this.cursor = this.add.isoSprite(0, 0, 1, 'sprites', 'select', this.isoGroup);
             this.cursor.anchor.setTo(0.5, 0.5);
             this.isoGroup.add(this.cursor);*/
@@ -97,18 +101,19 @@
 
             Brew.gui.resources("Osta 1 erä raaka-aineita", this.buyMaterials, this);
 
-            var seek = this.add.button(900, 50, 'sprites', function () {
+            var seek = this.add.button(900, 75, 'sprites', function () {
                 Brew.gui.addMessage("Mainosta", "Rakenna jättitölkki hintaan 1000 euroa?", null, "Oi kyllä!", this.ad, this);
+                letter.frameName = "letter_new_open 2";
                 //  Brew.gui.toggleSeek();
             }, this, 'seek-employee-symbol', 'seek-employee-symbol');
             seek.anchor.setTo(0.5, 0);
-            seek.scale.set(0.6, 0.6);
+        //    seek.scale.set(0.6, 0.6);
 
-            var mallas = this.add.button(900, 140, 'sprites', function () {
+            var mallas = this.add.button(900, 160, 'sprites', function () {
                 Brew.gui.toggleResources();
             }, this, 'mallas_symbol', 'mallas_symbol');
             mallas.anchor.setTo(0.5, 0);
-            mallas.scale.set(0.4, 0.4);
+        //    mallas.scale.set(0.4, 0.4);
 
             //////////////// OTHER STUFF: /////////////////
 
@@ -224,7 +229,8 @@
             list.push(order);
 
             Brew.gui.addMessage('Tilaus', order.message(), order, "Myy", this.sell, this, order.remove, Brew.Order);
-            var secondsToDisappear = 15000; //15 sekuntia
+            letter.frameName = "letter_new_open 2";
+            var secondsToDisappear = 60000; //60 sekuntia
             //   console.log(list.length);
 
             //remove old orders
@@ -235,27 +241,18 @@
                     allListElements.each(function (index) {
                         if ($(this).data('messageData') == entry) {
                             $(this).remove();
-                            entry.buyers.splice(entry.buyers.indexOf(entry.buyer), 1); //IE?
-                         //   console.log(entry.buyers);
+                            entry.remove();
+            //                entry.buyers.splice(entry.buyers.indexOf(entry.buyer), 1); //IE?
+                            //   console.log(entry.buyers);
                             list.shift();
                             return;
                         }
                     });
                 }
             });
-       //     console.log(removeBuyer);
- 
-        },  
- 
-        //IE:n koodi arrayn indexofille
-        /*if (!Array.prototype.indexOf) {
-    Array.prototype.indexOf = function(obj, start) {
-         for (var i = (start || 0), j = this.length; i < j; i++) {
-             if (this[i] === obj) { return i; }
-         }
-         return -1;
-    }
-}*/
+            //     console.log(removeBuyer);
+
+        },
 
         budgetHandling: function (money) {
             budget = budget + money;
@@ -366,6 +363,16 @@
     };
 
     Order.prototype.remove = function () {
+    //    entry.buyers.splice(entry.buyers.indexOf(entry.buyer), 1); //IE?
+                //IE:n koodi arrayn indexofille
+        /*if (!Array.prototype.indexOf) {
+    Array.prototype.indexOf = function(obj, start) {
+         for (var i = (start || 0), j = this.length; i < j; i++) {
+             if (this[i] === obj) { return i; }
+         }
+         return -1;
+    }
+}*/
         buyers.splice(buyers.indexOf(this.buyer));
         console.log(buyers.length);
     };
