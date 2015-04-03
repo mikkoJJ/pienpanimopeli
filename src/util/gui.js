@@ -153,8 +153,9 @@
      * @param {String} buttonText text to show on a button on the message, null to have no button
      * @param {Brew.Order|Object} data message data to use.
      * @param {Object} buttonCallbackCtx context in which to call the button callback
+     * @param {Function} rejectCallback callback to call when reject button pressed.
      */
-    GUI.prototype.addMessage = function (header, message, data, buttonText, buttonCallback, buttonCallbackCtx) {
+    GUI.prototype.addMessage = function (header, message, data, buttonText, buttonCallback, buttonCallbackCtx, rejectCallback) {
         var _w = $('<div><div/>')
             .addClass('brew-window brew-message')
             .html('<h2>' + header + '<h2>')
@@ -162,11 +163,13 @@
                 .addClass('brew-message-body brew-window')
                 .html(message)
                 .append(this.__makeButton("Hylkää", function () {
-                    $(this).parent().parent().hide('fold', 200, 'easeInBack', function () {
+                    var remove = true;
+                    if ($(this).data('rejectCallback')) remove = $(this).data('rejectCallback').call($(this).data('callbackCtx'), $(this).parent().parent().data('messageData'));
+                    if (remove !== false) $(this).parent().parent().hide('fold', 200, 'easeInBack', function () {
                         $(this).parent().parent().remove();
                     });
-                }))
-
+                    else e.stopPropagation();
+                }).data('rejectCallback', rejectCallback))
             )
             .click(this.__messageWindowClicked)
             .hover(this.__messageWindowHover, this.__messageWindowHover)

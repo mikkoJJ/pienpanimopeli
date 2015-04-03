@@ -6,7 +6,6 @@
 
     //helper variables:
     var letter,
-        i = 0,
         budget = 50000,
         lauterer,
         fermenter,
@@ -97,8 +96,6 @@
             var coin = this.add.button(940, 0, 'sprites', function () {}, this, 'coin-symbol', 'coin-symbol');
             coin.anchor.setTo(0.5, 0);
 
-            //     Brew.gui.seek("Ilmoita avoimesta työpaikasta", this.openJob, this);
-
             Brew.gui.resources("Osta 1 erä raaka-aineita", this.buyMaterials, this);
 
             var seek = this.add.button(900, 75, 'sprites', function () {
@@ -107,13 +104,11 @@
                 //  Brew.gui.toggleSeek();
             }, this, 'seek-employee-symbol', 'seek-employee-symbol');
             seek.anchor.setTo(0.5, 0);
-        //    seek.scale.set(0.6, 0.6);
 
-            var mallas = this.add.button(900, 160, 'sprites', function () {
+            var mallas = this.add.button(900, 190, 'sprites', function () {
                 Brew.gui.toggleResources();
             }, this, 'mallas_symbol', 'mallas_symbol');
             mallas.anchor.setTo(0.5, 0);
-        //    mallas.scale.set(0.4, 0.4);
 
             //////////////// OTHER STUFF: /////////////////
 
@@ -122,9 +117,7 @@
             }, this, 'letter_new_empty1', 'letter_new_unopened', 'letter_new_empty1', 'letter_new_empty1');
             letter.anchor.setTo(0.5, 0);
 
-            //letter_new_unopened
-
-            var orders = this.time.events.loop(Phaser.Timer.SECOND * 5, this.updateCounter, this);
+            var orders = this.time.events.loop(Phaser.Timer.SECOND * 15, this.updateCounter, this);
 
             Brew.Budget.create();
             Brew.Budget.moveProgressBar();
@@ -149,23 +142,22 @@
             changeText.fill = '#FFFFFF';
             changeText.anchor.setTo(0.5, 0);
 
-      /*      this.time.events.loop(Phaser.Timer.SECOND * 20, function () {
+            this.time.events.loop(Phaser.Timer.SECOND * 20, function () {
                 this.cleanUp();
             }, this);
-*/
+
         },
 
         cleanUp: function () {
             var clean = this.add.isoSprite(Brew.game.rnd.integerInRange(50, 200), Brew.game.rnd.integerInRange(50, 200), 100, 'sprites', 'cook', this.isoGroup);
             soDirtyEverywhere++;
-            if (soDirtyEverywhere % 5 == 0) Brew.gui.alert("Hygieniasi on epäilyttävää. Sait sakot.", this.budgetHandling(-100), this);
+            if (soDirtyEverywhere % 10 == 0) Brew.gui.alert("Hygieniasi on epäilyttävää. Sait sakot.", this.budgetHandling(-100), this);
 
             clean.inputEnabled = true;
             clean.events.onInputDown.add(function () {
                 clean.destroy();
                 soDirtyEverywhere--;
             }, this);
-            //      console.log(soDirtyEverywhere);
         },
 
         buyMaterials: function () {
@@ -181,16 +173,6 @@
             Brew.gui.alert("Jättitölkkisi on laiton, sait sakot. Think of the children!");
         },
 
-        //applications for a job
-        /*       openJob: function () {
-            var names = ["Ville Viinamäki", "Pertti Pitkäaikaistyötön", "Riikka Raskaana"];
-            Brew.gui.addMessage("Työhakemus", "Moi, olen " + names[0], null, "palkkaa", this.hire, this);
-            Brew.gui.addMessage("Työhakemus", "Moi, olen " + names[1], null, "palkkaa", this.hire, this);
-            Brew.gui.addMessage("Työhakemus", "Moi, olen " + names[2], null, "palkkaa", function () {
-                this.hire(true)
-            }, this);
-        },
-*/
         //hire an employee
         hire: function () {
             spending = parseInt(spending) + 500;
@@ -206,6 +188,13 @@
             } else {
                 this.budgetHandling(order.price * order.amount);
                 lagerStorage.amount -= order.amount;
+                var index = -1;
+                for (var i = 0, j = list.length; i < j; i++) {
+                    if (list[i] === order)
+                        index = i;
+                }
+                list.splice(index, 1);
+
             }
 
         },
@@ -228,10 +217,9 @@
             var order = new Order().random();
             list.push(order);
 
-            Brew.gui.addMessage('Tilaus', order.message(), order, "Myy", this.sell, this, order.remove, Brew.Order);
+            Brew.gui.addMessage('Tilaus', order.message(), order, "Myy", this.sell, this, this.remove);
             letter.frameName = "letter_new_open 2";
             var secondsToDisappear = 60000; //60 sekuntia
-            //   console.log(list.length);
 
             //remove old orders
             list.forEach(function (entry) {
@@ -241,17 +229,18 @@
                     allListElements.each(function (index) {
                         if ($(this).data('messageData') == entry) {
                             $(this).remove();
-                            entry.remove();
-            //                entry.buyers.splice(entry.buyers.indexOf(entry.buyer), 1); //IE?
-                            //   console.log(entry.buyers);
+                            entry.buyers.splice(entry.getIndex(), 1);
                             list.shift();
                             return;
                         }
                     });
                 }
             });
-            //     console.log(removeBuyer);
+        },
 
+        //remove rejected buyers
+        remove: function (order) {
+            order.buyers.splice(order.getIndex(), 1);
         },
 
         budgetHandling: function (money) {
@@ -346,7 +335,7 @@
 
     Brew.Person = Person;
 
-    var buyers = ["Kesko", "S-Ryhmä", "Alko", "Kesko", "S-Ryhmä", "Hemingways", "Vakiopaine", "Musta Kynnys", "Ale Pub", "Erkki Virtanen"];
+    var buyers = ["Kesko", "S-Ryhmä", "Alko", "Hemingways", "Vakiopaine", "Musta Kynnys", "Ale Pub", "Erkki Virtanen"];
 
     var Order = function (type, amount, buyer) {
         this.age = Brew.game.time.now;
@@ -362,19 +351,13 @@
             });
     };
 
-    Order.prototype.remove = function () {
-    //    entry.buyers.splice(entry.buyers.indexOf(entry.buyer), 1); //IE?
-                //IE:n koodi arrayn indexofille
-        /*if (!Array.prototype.indexOf) {
-    Array.prototype.indexOf = function(obj, start) {
-         for (var i = (start || 0), j = this.length; i < j; i++) {
-             if (this[i] === obj) { return i; }
-         }
-         return -1;
-    }
-}*/
-        buyers.splice(buyers.indexOf(this.buyer));
-        console.log(buyers.length);
+    Order.prototype.getIndex = function () {
+        for (var i = 0, j = this.buyers.length; i < j; i++) {
+            if (this.buyers[i] === this.buyer) {
+                return i;
+            }
+        }
+        return -1;
     };
 
     Order.prototype.random = function () {
