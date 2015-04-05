@@ -69,10 +69,9 @@
             lauterer = new Brew.Producer(this.game, 8 * settings.tileSize, 8 * settings.tileSize, 0, 'kettle1', this.isoGroup);
             lauterer.resource = resourceStorage;
             fermenter = new Brew.Producer(this.game, 8 * settings.tileSize, 5 * settings.tileSize, 0, 'kettle3_with_bubbles', this.isoGroup);
-      //      fermenter._sprite.scale.set(0.6, 0.6);
-            
-        //    kattila1 = new Brew.Producer(this.game, 8 * settings.tileSize, 3 * settings.tileSize, 0, 'kettle2', this.isoGroup);
-        //    kattila2 = new Brew.Producer(this.game, 8 * settings.tileSize, 1 * settings.tileSize, 0, 'kettle4', this.isoGroup);
+
+            //    kattila1 = new Brew.Producer(this.game, 8 * settings.tileSize, 3 * settings.tileSize, 0, 'kettle2', this.isoGroup);
+            //    kattila2 = new Brew.Producer(this.game, 8 * settings.tileSize, 1 * settings.tileSize, 0, 'kettle4', this.isoGroup);
 
             Brew.Producer.setChain(lauterer, fermenter);
 
@@ -99,7 +98,10 @@
             Brew.gui.resources("Osta 1 erä raaka-aineita", this.buyMaterials, this);
 
             var seek = this.add.button(900, 75, 'sprites', function () {
-                Brew.gui.addMessage("Mainosta", "Rakenna jättitölkki hintaan 1000 euroa?", null, "Oi kyllä!", this.ad, this);
+                var mess = new Brew.Messages().getMessage();
+                Brew.gui.addMessage("Mainosta", mess.content, null, "Oi kyllä!", function () {
+                    this.ad(mess);
+                }, this);
                 letter.frameName = "letter_new_open 2";
                 //  Brew.gui.toggleSeek();
             }, this, 'seek-employee-symbol', 'seek-employee-symbol');
@@ -168,9 +170,9 @@
         },
 
         //advertising
-        ad: function () {
-            this.budgetHandling(-100);
-            Brew.gui.alert("Jättitölkkisi on laiton, sait sakot. Think of the children!");
+        ad: function (mess) {
+            this.budgetHandling(-parseInt(mess.due));
+            Brew.gui.alert(mess.dueText);
         },
 
         //hire an employee

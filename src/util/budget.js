@@ -49,12 +49,9 @@
         var message;
         if (percent <= 0) {
             percent = 0;
-         //   Brew.gui.alert("Menetit kaikki rahasi ja hävisit pelin.");
             this.tween.stop();
-            //            message = "Menetit kaikki rahasi ja hävisit pelin."
         } else if (percent >= 100) {
             percent = 100;
-        //    Brew.gui.alert("Liikevoittosi on ilmiömäinen. Voitit pelin!");
             this.tween.stop()
         } else message = "";
 

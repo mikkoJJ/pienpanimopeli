@@ -1,35 +1,37 @@
-{ "letters":[
-            {
-                "title":"sakko",
-                "content":"Sait sakot!",
-                "due": 500
+{
+    "ads": [
+        {
+            "title": "Jättitölkki",
+            "content": "Rakenna jättitölkki hintaan 1000e",
+            "due": 500,
+            "dueText": "Jättitölkkisi on laiton, sait sakot! Think of the children!"
+            },
+        {
+            "title": "Facebook",
+            "content": "Mainosta facebookissa 5pv/500e",
+            "due": 500,
+            "dueText": "Facebookissa mainostaminen on laitonta!"
+            },
+        {
+            "title": "Laillinen",
+            "content": "Mainosta tv:ssä klo 23-00",
+            "due": 0,
+            "dueText": "Mainostit onnistuneesti ja kysyntä kasvaa."
             }
-           
-], 
- "order": [
-     {
-                "title":"tilaus",
-                "content":"Sait tilauksen!",
-                "maarat": {
-                    "type":"Lager",
-                    "litres":28
-                }
+
+],
+    "tutorial": [
+        {
+            "title": "mäskikattila",
+            "content": "Mäskikattila, jossa maltaat mäskätään. Klikkaa sitä ensimmäisenä"
             },
-     {
-                "title":"laiton",
-                "content":"Laiton tilaus",
-                "maarat": {
-                    "type":"Lager",
-                    "litres":28
-                }
+        {
+            "title": "Kattila",
+            "content": "Pääkäymiskattila, jossa olut käy 2-4 viikkoa."
             },
-     {
-         "title":"toinen",
-         "content":"tässä on tilaus",
-         "maarat":{
-             "type":"IPA",
-             "liters":500
-         }
+        {
+            "title": "Tilaus",
+            "content": "Postilaatikkoosi saapuu välillä tilauksia"
      }
  ]
 

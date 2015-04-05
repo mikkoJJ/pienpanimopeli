@@ -1,11 +1,9 @@
 (function () {
 
     var Messages = function () {};
-
-    var sakot;
-    
+   
     /*
-    Viestityypit: sakko, tilaus, ohje
+    Viestityypit: tutoriaali & mainos
     */
 
     Messages.prototype = {
@@ -14,10 +12,12 @@
             //  alert(Brew.game.time.elapsed);
         },
 
+        //returns random advertise option
         getMessage: function () {
             var data = Brew.game.cache.getJSON('texts');
-            sakot = data.letters[0].content;
-            return sakot;
+            
+            var message = data.ads[Math.floor(Math.random()*data.ads.length)]; //title content due duetext
+            return message;
         }
     };
 
