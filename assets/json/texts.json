@@ -3,7 +3,7 @@
         {
             "title": "Jättitölkki",
             "content": "Rakenna jättitölkki hintaan 1000e",
-            "due": 500,
+            "due": 1000,
             "dueText": "Jättitölkkisi on laiton, sait sakot! Think of the children!"
             },
         {
@@ -15,7 +15,7 @@
         {
             "title": "Laillinen",
             "content": "Mainosta tv:ssä klo 23-00",
-            "due": 0,
+            "due": 500,
             "dueText": "Mainostit onnistuneesti ja kysyntä kasvaa."
             }
 
