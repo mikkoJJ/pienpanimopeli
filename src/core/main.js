@@ -71,20 +71,14 @@
             lauterer = new Brew.Producer(this.game, 8 * settings.tileSize, 8 * settings.tileSize, 0, 'kettle1', this.isoGroup);
             lauterer.resource = resourceStorage;
             fermenter = new Brew.Producer(this.game, 8 * settings.tileSize, 5 * settings.tileSize, 0, 'kettle3_with_bubbles', this.isoGroup);
-
-            //    kattila1 = new Brew.Producer(this.game, 8 * settings.tileSize, 3 * settings.tileSize, 0, 'kettle2', this.isoGroup);
-            //    kattila2 = new Brew.Producer(this.game, 8 * settings.tileSize, 1 * settings.tileSize, 0, 'kettle4', this.isoGroup);
+            
+            fermenter.addOption('Tee lageria', 'lagerbutton', 'type', Brew.BeerType.LAGER);
+            fermenter.addOption('Tee IPAa', 'ipabutton', 'type', Brew.BeerType.IPA);
+            fermenter.addOption('Tee tummaa', 'darkbutton', 'type', Brew.BeerType.DARK);
 
             Brew.Producer.setChain(lauterer, fermenter);
 
             fermenter.onBeerFinished.bind(this.beerFinished, this);
-
-
-            //////////////// CURSOR: /////////////////
-
-            /*this.cursor = this.add.isoSprite(0, 0, 1, 'sprites', 'select', this.isoGroup);
-            this.cursor.anchor.setTo(0.5, 0.5);
-            this.isoGroup.add(this.cursor);*/
 
 
             //////////////// PERSONS: /////////////////
@@ -94,7 +88,7 @@
 
             //////////////// RIGHT BUTTONS: /////////////////
 
-            var coin = this.add.button(940, 0, 'sprites', function () {}, this, 'coin-symbol', 'coin-symbol');
+            var coin = this.add.button(940, 0, 'sprites', function () {}, this, 'money_symbol', 'money_symbol');
             coin.anchor.setTo(0.5, 0);
 
             Brew.gui.resources("Osta 1 erä raaka-aineita", this.buyMaterials, this);
@@ -111,7 +105,7 @@
 
             var mallas = this.add.button(900, 190, 'sprites', function () {
                 Brew.gui.toggleResources();
-            }, this, 'mallas_symbol', 'mallas_symbol');
+            }, this, 'consumable', 'consumable');
             mallas.anchor.setTo(0.5, 0);
 
             //////////////// OTHER STUFF: /////////////////
@@ -157,7 +151,7 @@
         },
 
         cleanUp: function () {
-            var clean = this.add.isoSprite(Brew.game.rnd.integerInRange(50, 200), Brew.game.rnd.integerInRange(50, 200), 100, 'sprites', 'cook', this.isoGroup);
+            var clean = this.add.isoSprite(Brew.game.rnd.integerInRange(50, 200), Brew.game.rnd.integerInRange(50, 200), 100, 'sprites', 'dirt', this.isoGroup);
             soDirtyEverywhere++;
             if (soDirtyEverywhere % 10 == 0) Brew.gui.alert("Hygieniasi on epäilyttävää. Sait sakot.", this.budgetHandling(-100), this);
 

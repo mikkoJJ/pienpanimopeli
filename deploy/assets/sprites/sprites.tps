@@ -191,15 +191,11 @@
             <filename>single_sprites/bottle.png</filename>
             <filename>single_sprites/cook.png</filename>
             <filename>single_sprites/floor.png</filename>
-            <filename>single_sprites/kettle.png</filename>
-            <filename>single_sprites/kettle_selected.png</filename>
             <filename>single_sprites/letter.png</filename>
             <filename>single_sprites/letter_open.png</filename>
             <filename>single_sprites/mies.png</filename>
             <filename>single_sprites/select.png</filename>
             <filename>single_sprites/sell.png</filename>
-            <filename>single_sprites/coin-symbol.png</filename>
-            <filename>single_sprites/mallas_symbol.png</filename>
             <filename>single_sprites/seek-employee-symbol.png</filename>
             <filename>single_sprites/fermenter.png</filename>
             <filename>single_sprites/lager_case.png</filename>
@@ -218,6 +214,20 @@
             <filename>single_sprites/producer_active.png</filename>
             <filename>single_sprites/producer_done.png</filename>
             <filename>single_sprites/producer_idle.png</filename>
+            <filename>single_sprites/kettle4.png</filename>
+            <filename>single_sprites/kettle1.png</filename>
+            <filename>single_sprites/kettle1_selected.png</filename>
+            <filename>single_sprites/kettle3_with_bubbles_selected.png</filename>
+            <filename>single_sprites/kettle2.png</filename>
+            <filename>single_sprites/darkbutton_out.png</filename>
+            <filename>single_sprites/darkbutton_over.png</filename>
+            <filename>single_sprites/ipabutton_out.png</filename>
+            <filename>single_sprites/ipabutton_over.png</filename>
+            <filename>single_sprites/lagerbutton_out.png</filename>
+            <filename>single_sprites/lagerbutton_over.png</filename>
+            <filename>single_sprites/dirt.png</filename>
+            <filename>single_sprites/kettle3_with_bubbles.png</filename>
+            <filename>single_sprites/money_symbol.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
