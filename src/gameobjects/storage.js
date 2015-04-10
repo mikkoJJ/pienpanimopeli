@@ -40,6 +40,9 @@
         this._cases = [];
         this._current = { x: 0, y: 0, z: 0 };
         
+        /** The name of the product to display */
+        this.name = 'Nimetön';
+        
         /** Where the first pile of cases will be placed in the world. */
         this.base = {x: 0, y: 0, z: 0};
         
@@ -130,7 +133,7 @@
                                                             this.base.z + settings.tileWidth * settings.pileHeight)
                                                       );
             
-            this._info = Brew.gui.showInfo(infoPosition.x - 100, infoPosition.y + 50, '<b>' + this.description + ':</b> ' + this.amount);
+            this._info = Brew.gui.showInfo(infoPosition.x - 100, infoPosition.y + 50, '<b>' + this.name + ':</b> ' + this.amount);
         } 
         
         if ( !_mouse && this._selected ) {

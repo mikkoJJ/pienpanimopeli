@@ -181,7 +181,10 @@
         
     });
     
-    
+    /**
+     * @property {Number} The index of the option that is currently selected on this producer. For the actual
+     * option, @see currentOption
+     */
     Object.defineProperty(Producer.prototype, 'selectedOption', {
         
         get: function() {
@@ -200,7 +203,9 @@
         
     });
     
-    
+    /**
+     * @property {Brew.Option} the producer option object that is currently selected.
+     */
     Object.defineProperty(Producer.prototype, 'currentOption', {
         
         get: function() {

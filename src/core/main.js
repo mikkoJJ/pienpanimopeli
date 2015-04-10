@@ -12,6 +12,7 @@
         lagerStorage,
         porterStorage,
         darkStorage,
+        storageManager,
         resourceStorage,
         person,
         person2,
@@ -46,7 +47,7 @@
 
             //////////////// STORAGES: /////////////////
 
-            lagerStorage = new Brew.Storage(this.game, 'lager_case', this.isoGroup, 'Lageria');
+            /*lagerStorage = new Brew.Storage(this.game, 'lager_case', this.isoGroup, 'Lageria');
             lagerStorage.base.x = 0 * settings.tileSize;
             lagerStorage.base.y = 0 * settings.tileSize;
             lagerStorage.amount = 2;
@@ -60,11 +61,12 @@
             darkStorage.base.x = 0 * settings.tileSize;
             darkStorage.base.y = 4 * settings.tileSize;
             darkStorage.amount = 2;
-
+            */
             resourceStorage = new Brew.Storage(this.game, 'consumable', this.isoGroup, 'Ohramallasta');
             resourceStorage.base.x = 4 * settings.tileSize;
             resourceStorage.base.y = 0 * settings.tileSize;
             resourceStorage.amount = 5;
+            storageManager = new Brew.StorageManager();
 
             //////////////// PRODUCERS: /////////////////
 
@@ -209,12 +211,13 @@
 
 
         beerFinished: function (beer) {
-            if (beer.type == Brew.BeerType.LAGER)
+            /*if (beer.type == Brew.BeerType.LAGER)
                 lagerStorage.amount += 1;
             if (beer.type == Brew.BeerType.IPA)
                 porterStorage.amount += 1;
             if (beer.type == Brew.BeerType.DARK)
-                darkStorage.amount += 1;
+                darkStorage.amount += 1;*/
+            storageManager.addBeer(beer, 4);
         },
 
 
@@ -290,10 +293,7 @@
             this.game.iso.simpleSort(this.isoGroup);
             this.messages.update();
 
-            lagerStorage.update();
-            darkStorage.update();
-            porterStorage.update();
-            resourceStorage.update();
+            storageManager.update();
             //check mouse position and put the cursor on the correct place:
             /*var _pos = new Phaser.Plugin.Isometric.Point3();
             this.game.iso.unproject(this.game.input.activePointer.position, _pos);
