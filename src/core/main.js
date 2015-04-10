@@ -94,8 +94,9 @@
 
             //////////////// RIGHT BUTTONS: /////////////////
 
-            var coin = this.add.button(940, 0, 'sprites', function () {}, this, 'coin-symbol', 'coin-symbol');
+            var coin = this.add.button(940, 10, 'sprites', function () {}, this, 'money_symbol', 'money_symbol');
             coin.anchor.setTo(0.5, 0);
+            coin.scale.set(0.8, 0.8);
 
             Brew.gui.resources("Osta 1 erä raaka-aineita", this.buyMaterials, this);
 
@@ -111,7 +112,7 @@
 
             var mallas = this.add.button(900, 190, 'sprites', function () {
                 Brew.gui.toggleResources();
-            }, this, 'mallas_symbol', 'mallas_symbol');
+            }, this, 'consumable', 'consumable');
             mallas.anchor.setTo(0.5, 0);
 
             //////////////// OTHER STUFF: /////////////////
@@ -126,7 +127,7 @@
             buyerList.push(order.newBuyer());
 
             this.time.events.loop(Phaser.Timer.SECOND * 15, this.updateCounter, this);
-
+//1 tilaaja tilaa 1,5 minuutin välein
             Brew.Budget.create();
             Brew.Budget.moveProgressBar();
             Brew.Budget.update(50000);
@@ -141,7 +142,7 @@
                 this.budgetHandling(-spending);
             }, this);
 
-            text = this.add.text(880, 18, budget);
+            text = this.add.text(870, 18, budget);
             text.fill = '#FFFFFF';
             text.anchor.setTo(0.5, 0);
             text.number = budget;
@@ -156,8 +157,12 @@
 
         },
 
+        bottling: function (pullotus) {
+            var frameNames = ['bottlemachine_step1', 'bottlemachine_step2', 'bottlemachine_step3', 'bottlemachine_step4', 'bottlemachine_step5'];
+        },
+
         cleanUp: function () {
-            var clean = this.add.isoSprite(Brew.game.rnd.integerInRange(50, 200), Brew.game.rnd.integerInRange(50, 200), 100, 'sprites', 'cook', this.isoGroup);
+            var clean = this.add.isoSprite(Brew.game.rnd.integerInRange(50, 200), Brew.game.rnd.integerInRange(50, 200), 100, 'sprites', 'dirt', this.isoGroup);
             soDirtyEverywhere++;
             if (soDirtyEverywhere % 10 == 0) Brew.gui.alert("Hygieniasi on epäilyttävää. Sait sakot.", this.budgetHandling(-100), this);
 
@@ -241,7 +246,7 @@
 
             Brew.gui.addMessage('Tilaus', order.message(), order, "Myy", this.sell, this, this.remove);
             letter.frameName = "letter_new_open 2";
-            var secondsToDisappear = 60000; //60 sekuntia
+            var secondsToDisappear = 150000; //60 sekuntia
 
             //remove old orders
             orderList.forEach(function (entry) {

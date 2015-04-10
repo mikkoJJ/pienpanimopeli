@@ -6,18 +6,65 @@
             "due": 1000,
             "dueText": "Jättitölkkisi on laiton, sait sakot! Think of the children!"
             },
+
+        {
+            "title": "Tienvarsi",
+            "content": "Mainosta tienvarsimainoksella",
+            "due": 1000,
+            "dueText": "Yleisillä paikoilla mainostaminen on laitonta.<p style='font-size:70%'> (Alkoholilaki 33.2 §:n 9 kohta ja 33.5 §)</p>"
+            },
+        {
+            "title": "Raitiovaunu",
+            "content": "Mainosta raitiovaunussa",
+            "due": 1000,
+            "dueText": "Yleisillä paikoilla mainostaminen on laitonta.<p style='font-size:70%'> (Alkoholilaki 33.2 §:n 9 kohta ja 33.5 §)</p>"
+            },
+
         {
             "title": "Facebook",
-            "content": "Mainosta facebookissa 5pv/500e",
+            "content": "Jaa Facebookissa asiakkaan lähettämä olutvideo",
             "due": 500,
             "dueText": "Facebookissa mainostaminen on laitonta!"
             },
         {
+            "title": "Facebook",
+            "content": "Arvo tuotteitasi somekampanjalla",
+            "due": 500,
+            "dueText": "Facebookissa mainostaminen on laitonta!"
+            },
+        {
+            "title": "Facebook",
+            "content": "Pyydä asi",
+            "due": 500,
+            "dueText": "Facebookissa mainostaminen on laitonta!"
+            },
+
+
+        {
             "title": "Laillinen",
-            "content": "Mainosta tv:ssä klo 23-00",
+            "content": "Mainosta tv:ssä klo 22 jälkeen",
             "due": 500,
             "dueText": "Mainostit onnistuneesti ja kysyntä kasvaa."
+            },
+        {
+            "title": "Laillinen",
+            "content": "Esittele tuotteitasi messuilla",
+            "due": 0,
+            "dueText": "Mainostit onnistuneesti! Jee!"
+            },
+        {
+            "title": "Laillinen",
+            "content": "Sponsoroi paikallista lentopallojoukkuetta",
+            "due": 10000,
+            "dueText": "Mainostit onnistuneesti!"
+            },
+        {
+            "title": "Laillinen",
+            "content": "Osta mainos jäähallin kaukaloon",
+            "due": 15000,
+            "dueText": "Mainostit onnistuneesti!"
             }
+
 
 ],
     "tutorial": [
@@ -32,6 +79,10 @@
         {
             "title": "Tilaus",
             "content": "Postilaatikkoosi saapuu välillä tilauksia"
+     },
+        {
+            "title": "Laiton",
+            "content": "Varo laittomuuksia, sillä kolmesta rikkeestä menetät toimilupasi"
      }
  ]
 
