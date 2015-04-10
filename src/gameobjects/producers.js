@@ -51,6 +51,14 @@
         /** How long it takes for the producer to finish */
         this.workDuration = 10;
         
+        /** An offset given to the centre of the radial option menu. */
+        this.optionOffset = { x: -30, y: -70};
+        
+        /** Which option is selected. */
+        this._selectedOption = 0;
+        
+        this._options = [];
+        
         this._frame = frame;
         this._frameSelected = frame + '_selected';
         
@@ -88,6 +96,9 @@
         }
         
         this.beer = beer;
+        
+        if ( this.currentOption ) beer[this.currentOption._parameter] = this.currentOption._value;
+
         
         var workTween = this._game.add.tween(this._sprite.scale).to({x: 1.02, y: 1.02}, 100, Phaser.Easing.Linear.None, true, 0, this.workDuration, true);
         
@@ -128,6 +139,28 @@
     };
     
     
+    /**
+     * Add an option to the producer. Options are displayed as a radial menu when the 
+     * mouse hovers over the producer.
+     * 
+     * @param {String} name      the name of the option
+     * @param {String} sprite    the sprite used as the icon for this option
+     * @param {String} parameter the parameter (attribute of the producerd Beer object) this option affects
+     * @param {Object} value     the value given to the previously defined parameter
+     */
+    Producer.prototype.addOption = function(name, sprite, parameter, value) {
+        var option = this._game.add.sprite(this._sprite.x + this.optionOffset.x, this._sprite.y + this.optionOffset.y, 'sprites', sprite + '_over'); 
+        if ( this._options.length > 0 ) option.frameName = sprite + '_out';
+        option.visible = false;
+        
+        option._parameter = parameter;
+        option._value = value;
+        option._sprite = sprite;
+        
+        this._options.push(option);
+    };
+    
+    
     Object.defineProperty(Producer.prototype, 'state', {
         
         get: function() {
@@ -148,6 +181,39 @@
         
     });
     
+    /**
+     * @property {Number} The index of the option that is currently selected on this producer. For the actual
+     * option, @see currentOption
+     */
+    Object.defineProperty(Producer.prototype, 'selectedOption', {
+        
+        get: function() {
+            return this._selectedOption;
+        },
+        
+        set: function(newOptionNum) {
+            var oldOption = this._options[this._selectedOption];
+            var newOption = this._options[newOptionNum];
+            
+            oldOption.frameName = oldOption._sprite + '_out';
+            newOption.frameName = newOption._sprite + '_over';
+            
+            this._selectedOption = newOptionNum;
+        }
+        
+    });
+    
+    /**
+     * @property {Brew.Option} the producer option object that is currently selected.
+     */
+    Object.defineProperty(Producer.prototype, 'currentOption', {
+        
+        get: function() {
+            return this._options[this.selectedOption];
+        }
+                
+    });
+    
     
     /**
      * Event callback to when the Producer sprite is clicked.
@@ -162,7 +228,12 @@
                 this.begin(this.previous);
             } 
         }
+        if ( this._options.length > 0 ) {
+            if ( this.selectedOption >= this._options.length - 1 ) this.selectedOption = 0;
+            else this.selectedOption = this.selectedOption + 1;
+        }
     };
+    
     
     /**
      * Event callback to when the Producer sprite is clicked.
@@ -171,6 +242,22 @@
      */
     Producer.prototype._inputOver = function() {
         this._sprite.frameName = this._frameSelected;
+        var theta = 0;
+        var r = 40;
+        var toX, toY;
+        
+        var option;
+        for ( var i = 0; i < this._options.length; i++ ) {
+            option = this._options[i];
+            option.visible = true;
+            
+            theta = i * ((Math.PI * 2) * (1 / 6));
+            
+            toX = this._sprite.x + this.optionOffset.x + r * Math.cos(theta);
+            toY = this._sprite.y + this.optionOffset.y + r * Math.sin(theta);
+                        
+            this._game.add.tween(option).to({x: toX, y: toY}, 300, Phaser.Easing.Cubic.Out, true);
+        }
     };
     
     /**
@@ -180,6 +267,13 @@
      */
     Producer.prototype._inputOut = function() {
         this._sprite.frameName = this._frame;
+        
+        for ( var i = 0; i < this._options.length; i++ ) {
+            var option = this._options[i];
+            option.visible = false;
+            option.x = this._sprite.x + this.optionOffset.x; 
+            option.y = this._sprite.y + this.optionOffset.y;
+        }
     };
     
     

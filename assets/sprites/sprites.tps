@@ -6,7 +6,7 @@
         <key>texturePackerVersion</key>
         <string>3.6.0</string>
         <key>fileName</key>
-        <string>C:/Users/Elina Keränen/Documents/GitHub/pienpanimopeli/assets/sprites/sprites.tps</string>
+        <string>Z:/Work/html_sandbox/pienpanimopeli/assets/sprites/sprites.tps</string>
         <key>autoSDSettings</key>
         <array>
             <struct type="AutoSDSettings">
@@ -219,18 +219,15 @@
             <filename>single_sprites/kettle1_selected.png</filename>
             <filename>single_sprites/kettle3_with_bubbles_selected.png</filename>
             <filename>single_sprites/kettle2.png</filename>
-            <filename>single_sprites/bottlemachine_step1.png</filename>
-            <filename>single_sprites/bottlemachine_step2.png</filename>
-            <filename>single_sprites/bottlemachine_step3.png</filename>
-            <filename>single_sprites/bottlemachine_step4.png</filename>
-            <filename>single_sprites/bottlemachine_step5.png</filename>
+            <filename>single_sprites/darkbutton_out.png</filename>
+            <filename>single_sprites/darkbutton_over.png</filename>
+            <filename>single_sprites/ipabutton_out.png</filename>
+            <filename>single_sprites/ipabutton_over.png</filename>
+            <filename>single_sprites/lagerbutton_out.png</filename>
+            <filename>single_sprites/lagerbutton_over.png</filename>
             <filename>single_sprites/dirt.png</filename>
-            <filename>single_sprites/lettersymbol_B-group.png</filename>
-            <filename>single_sprites/lettersymbol_Ernest.png</filename>
+            <filename>single_sprites/kettle3_with_bubbles.png</filename>
             <filename>single_sprites/money_symbol.png</filename>
-            <filename>single_sprites/kettle3_without_bubbles.png</filename>
-            <filename>single_sprites/infosymbol.png</filename>
-            <filename>single_sprites/infowoman.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

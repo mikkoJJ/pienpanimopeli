@@ -128,6 +128,13 @@
     };
 
     
+    /**
+     * Show a floating info element.
+     * @param   {Number} x       the screen x position to show in.
+     * @param   {Number} y       the screen y position to show in
+     * @param   {Str}    message the message to display
+     * @returns {jQuery} the showed window
+     */
     GUI.prototype.showInfo = function(x, y, message) {
         var w = $('<div></div>')
             .addClass('brew-info-window brew-window')
@@ -139,8 +146,39 @@
         return w;
     };
     
+    /**
+     * Hide a previously shown info window.
+     * @param {jQuery} window the window to hide (returned by showInfo).
+     */
     GUI.prototype.hideInfo = function(window) {
         window.hide({effect: 'scale', origin: ['left', 'center'], duration: 80, complete: function() { $(this).remove() } });    
+    };
+    
+    
+    /**
+     * Show a query window to the user. The user can input text as an answer to the query, and the input 
+     * will be given as a parameter to the callback function.
+     * @param {String}   message     The message to display with the query
+     * @param {Function} callback    Function called when the user clicks the OK button.
+     * @param {Object}   callbackCtx the context in which to call the callback
+     */
+    GUI.prototype.query = function(message, callback, callbackCtx) {
+        $('<div><div/>')
+            .addClass('brew-window brew-alert')
+            .html(message)
+            .append( $('<input/>').attr({ type: 'text', id: 'brew-query' }) )
+            .append(this.__makeButton('OK', function () {
+                var p = $(this).parent();
+                var answer = p.children('#brew-query').val();
+                if (p.data('callback')) p.data('callback').call(p.data('callbackCtx'), answer);
+                p.hide('drop', 200, 'easeInBack', function () {
+                    this.remove();
+                });
+            }))
+            .appendTo(settings.dom)
+            .show('drop', 200, 'easeOutBack')
+            .data('callback', callback)
+            .data('callbackCtx', callbackCtx);
     };
     
 

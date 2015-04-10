@@ -12,6 +12,7 @@
         lagerStorage,
         porterStorage,
         darkStorage,
+        storageManager,
         resourceStorage,
         person,
         person2,
@@ -46,7 +47,7 @@
 
             //////////////// STORAGES: /////////////////
 
-            lagerStorage = new Brew.Storage(this.game, 'lager_case', this.isoGroup, 'Lageria');
+            /*lagerStorage = new Brew.Storage(this.game, 'lager_case', this.isoGroup, 'Lageria');
             lagerStorage.base.x = 0 * settings.tileSize;
             lagerStorage.base.y = 0 * settings.tileSize;
             lagerStorage.amount = 2;
@@ -60,31 +61,26 @@
             darkStorage.base.x = 0 * settings.tileSize;
             darkStorage.base.y = 4 * settings.tileSize;
             darkStorage.amount = 2;
-
+            */
             resourceStorage = new Brew.Storage(this.game, 'consumable', this.isoGroup, 'Ohramallasta');
             resourceStorage.base.x = 4 * settings.tileSize;
             resourceStorage.base.y = 0 * settings.tileSize;
             resourceStorage.amount = 5;
+            storageManager = new Brew.StorageManager();
 
             //////////////// PRODUCERS: /////////////////
 
             lauterer = new Brew.Producer(this.game, 8 * settings.tileSize, 8 * settings.tileSize, 0, 'kettle1', this.isoGroup);
             lauterer.resource = resourceStorage;
             fermenter = new Brew.Producer(this.game, 8 * settings.tileSize, 5 * settings.tileSize, 0, 'kettle3_with_bubbles', this.isoGroup);
-
-            //    kattila1 = new Brew.Producer(this.game, 8 * settings.tileSize, 3 * settings.tileSize, 0, 'kettle2', this.isoGroup);
-            //    kattila2 = new Brew.Producer(this.game, 8 * settings.tileSize, 1 * settings.tileSize, 0, 'kettle4', this.isoGroup);
+            
+            fermenter.addOption('Tee lageria', 'lagerbutton', 'type', Brew.BeerType.LAGER);
+            fermenter.addOption('Tee IPAa', 'ipabutton', 'type', Brew.BeerType.IPA);
+            fermenter.addOption('Tee tummaa', 'darkbutton', 'type', Brew.BeerType.DARK);
 
             Brew.Producer.setChain(lauterer, fermenter);
 
             fermenter.onBeerFinished.bind(this.beerFinished, this);
-
-
-            //////////////// CURSOR: /////////////////
-
-            /*this.cursor = this.add.isoSprite(0, 0, 1, 'sprites', 'select', this.isoGroup);
-            this.cursor.anchor.setTo(0.5, 0.5);
-            this.isoGroup.add(this.cursor);*/
 
 
             //////////////// PERSONS: /////////////////
@@ -94,9 +90,8 @@
 
             //////////////// RIGHT BUTTONS: /////////////////
 
-            var coin = this.add.button(940, 10, 'sprites', function () {}, this, 'money_symbol', 'money_symbol');
+            var coin = this.add.button(940, 0, 'sprites', function () {}, this, 'money_symbol', 'money_symbol');
             coin.anchor.setTo(0.5, 0);
-            coin.scale.set(0.8, 0.8);
 
             Brew.gui.resources("Osta 1 erä raaka-aineita", this.buyMaterials, this);
 
@@ -127,7 +122,7 @@
             buyerList.push(order.newBuyer());
 
             this.time.events.loop(Phaser.Timer.SECOND * 15, this.updateCounter, this);
-//1 tilaaja tilaa 1,5 minuutin välein
+
             Brew.Budget.create();
             Brew.Budget.moveProgressBar();
             Brew.Budget.update(50000);
@@ -142,7 +137,7 @@
                 this.budgetHandling(-spending);
             }, this);
 
-            text = this.add.text(870, 18, budget);
+            text = this.add.text(880, 18, budget);
             text.fill = '#FFFFFF';
             text.anchor.setTo(0.5, 0);
             text.number = budget;
@@ -155,10 +150,6 @@
                 this.cleanUp();
             }, this);
 
-        },
-
-        bottling: function (pullotus) {
-            var frameNames = ['bottlemachine_step1', 'bottlemachine_step2', 'bottlemachine_step3', 'bottlemachine_step4', 'bottlemachine_step5'];
         },
 
         cleanUp: function () {
@@ -220,12 +211,13 @@
 
 
         beerFinished: function (beer) {
-            if (beer.type == Brew.BeerType.LAGER)
+            /*if (beer.type == Brew.BeerType.LAGER)
                 lagerStorage.amount += 1;
             if (beer.type == Brew.BeerType.IPA)
                 porterStorage.amount += 1;
             if (beer.type == Brew.BeerType.DARK)
-                darkStorage.amount += 1;
+                darkStorage.amount += 1;*/
+            storageManager.addBeer(beer, 4);
         },
 
 
@@ -246,7 +238,7 @@
 
             Brew.gui.addMessage('Tilaus', order.message(), order, "Myy", this.sell, this, this.remove);
             letter.frameName = "letter_new_open 2";
-            var secondsToDisappear = 150000; //60 sekuntia
+            var secondsToDisappear = 60000; //60 sekuntia
 
             //remove old orders
             orderList.forEach(function (entry) {
@@ -301,10 +293,7 @@
             this.game.iso.simpleSort(this.isoGroup);
             this.messages.update();
 
-            lagerStorage.update();
-            darkStorage.update();
-            porterStorage.update();
-            resourceStorage.update();
+            storageManager.update();
             //check mouse position and put the cursor on the correct place:
             /*var _pos = new Phaser.Plugin.Isometric.Point3();
             this.game.iso.unproject(this.game.input.activePointer.position, _pos);
