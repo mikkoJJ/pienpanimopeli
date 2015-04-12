@@ -22,7 +22,8 @@
         orderList = [],
         buyerList = [],
         buyers,
-        soDirtyEverywhere = 0;
+        soDirtyEverywhere = 0,
+        illegalAds = 0;
     /**
      * This is the main game state that starts when all assets are loaded.
      *
@@ -105,9 +106,10 @@
             }, this, 'seek-employee-symbol', 'seek-employee-symbol');
             seek.anchor.setTo(0.5, 0);
 
-            var mallas = this.add.button(900, 190, 'sprites', function () {
-                Brew.gui.toggleResources();
-            }, this, 'consumable', 'consumable');
+            var mallas = this.add.button(900, 190, 'sprites', this.buyMaterials, //function () {
+                // Brew.gui.toggleResources();
+                //    },
+                this, 'consumable', 'consumable');
             mallas.anchor.setTo(0.5, 0);
 
             //////////////// OTHER STUFF: /////////////////
@@ -120,8 +122,9 @@
             var order = new Order();
             buyerList.push(order.newBuyer());
             buyerList.push(order.newBuyer());
+            this.createOrders();
 
-            this.time.events.loop(Phaser.Timer.SECOND * 15, this.updateCounter, this);
+            //    this.time.events.loop(Phaser.Timer.SECOND * 15, this.updateCounter, this);
 
             Brew.Budget.create();
             Brew.Budget.moveProgressBar();
@@ -171,16 +174,36 @@
             resourceStorage.amount += 1;
         },
 
-        //advertising
+        //advertising: legal cases increases amount of buyers, illegal may cause a defeat
         ad: function (mess) {
             this.budgetHandling(-parseInt(mess.due));
-            Brew.gui.alert(mess.dueText);
-            if (mess.title == "Laillinen") {
+
+            var warning = "";
+            if (mess.title != "Laillinen") {
+                illegalAds++;
+                this.sendBrag('I just scored ', function () {});
+                if (illegalAds == 5) {
+                    Brew.gui.alert("Olet mainostanut liikaa laittomasti. Menetit toimilupasi ja hävisit pelin.");
+                    return;
+                } else warning = "Tämä on " + illegalAds + ". laiton mainos";
+            } else {
                 var order = new Order();
                 var tilaaja = order.newBuyer();
                 buyerList.push(tilaaja);
+
                 console.log(buyerList.length);
             }
+            Brew.gui.alert(mess.dueText + " " + warning);
+        },
+
+        //toimii oikein
+        sendBrag: function (caption, callback) {
+            FB.ui({
+                method: 'feed',
+                caption: caption,
+                picture: 'localhost:8080/pienpanimopeli/assets/sprites/single_sprites/bottle.png',
+                name: 'Testing'
+            }, callback);
         },
 
         //hire an employee
@@ -191,24 +214,29 @@
 
         //selling beer
         sell: function (order) {
-            if (lagerStorage.amount < order.amount) return false;
-            else if (order.buyer == "Erkki Virtanen") {
+            var storagei;
+            for (var i in storageManager.storages) {
+                //if order type = storage type
+                // storagejen i:t on tyyppiä 0pehmeä, mitä vittua
+                if (storageManager.storages[i].amount >= order.amount) storagei = i;
+            }
+            if (storagei == undefined) {
+                return false;
+            } else if (order.buyer == "Erkki Virtanen") {
                 this.budgetHandling(-10);
                 Brew.gui.alert("Yksityishenkilölle myyminen on laitonta! Sait sakot.");
             } else {
                 this.budgetHandling(order.price * order.amount);
-                lagerStorage.amount -= order.amount;
+                storageManager.storages[storagei].amount -= order.amount;
                 var index = -1;
                 for (var i = 0, j = orderList.length; i < j; i++) {
                     if (orderList[i] === order)
                         index = i;
                 }
                 orderList.splice(index, 1);
-
             }
 
         },
-
 
         beerFinished: function (beer) {
             /*if (beer.type == Brew.BeerType.LAGER)
@@ -221,36 +249,43 @@
         },
 
 
+        //every buyer sends an order in their own loop
         createOrders: function () {
-            //jokainen tilaaja tilaa tasaisin väliajoin
-        },
-        /*
-         * control orders
-         */
-        updateCounter: function () {
             if (buyerList == 0) {
                 Brew.gui.alert("Menetit kaikki tilaajasi.");
                 return;
             }
-            var tilaaja = buyerList[Brew.game.rnd.integerInRange(0, buyerList.length - 1)];
-            var order = new Order().random(tilaaja);
-            orderList.push(order);
+            this.time.events.loop(Phaser.Timer.SECOND * 15, this.updateOrders, this);
+        },
 
-            Brew.gui.addMessage('Tilaus', order.message(), order, "Myy", this.sell, this, this.remove);
-            letter.frameName = "letter_new_open 2";
+        /*
+         * control orders
+         */
+        updateOrders: function () {
+            var buyer = buyerList[Brew.game.rnd.integerInRange(0, buyerList.length - 1)];
+
+            //            buyerList.forEach(function (buyer) {
+            if (buyer != undefined) {
+                var order = new Order().random(buyer);
+                orderList.push(order);
+
+                Brew.gui.addMessage('Tilaus', order.message(), order, "Myy", this.sell, this, this.remove);
+                letter.frameName = "letter_new_open 2";
+            }
+            //          });
             var secondsToDisappear = 60000; //60 sekuntia
 
             //remove old orders
-            orderList.forEach(function (entry) {
-                if (Brew.game.time.now - entry.age > secondsToDisappear) {
+            orderList.forEach(function (order) {
+                if (Brew.game.time.now - order.age > secondsToDisappear) {
                     var allListElements = $('.brew-message');
 
                     allListElements.each(function (index) {
-                        if ($(this).data('messageData') == entry) {
+                        if ($(this).data('messageData') == order) {
                             $(this).remove();
-                            entry.buyers.splice(entry.getIndex(), 1);
+                            order.buyers.splice(order.getIndex(), 1);
                             console.log(buyerList.length);
-                            console.log(buyerList);
+                            //  console.log(buyerList);
                             orderList.shift();
                             return;
                         }
@@ -321,6 +356,10 @@
                 //    Brew.Budget.update(budget);
                 text.setText(budget);
             }
+
+            this.time.events.add(Phaser.Timer.SECOND * 20, function () {
+                new Order().update();
+            }, this);
         },
 
     };
@@ -386,10 +425,14 @@
         return this.staticBuyers[Brew.game.rnd.integerInRange(0, this.staticBuyers.length)];
     };
 
+    Order.prototype.update = function () {
+        // this.time.events.loop(Phaser.Timer.SECOND * 15, this.updateCounter, this);
+    };
+
     Order.prototype.random = function (buyer) {
-        var types = ["lageria", "tummaa olutta", "IPA"];
+        var types = ["Lager", "Tumma olut", "IPA"];
         var amountType = buyer[1];
-        var amount = Brew.game.rnd.integerInRange(buyer[1], buyer[1] + 5);
+        var amount = Brew.game.rnd.integerInRange(amountType, amountType + 5);
 
         return new Order(
             types[Brew.game.rnd.integerInRange(0, types.length - 1)],
@@ -398,7 +441,7 @@
     };
 
     Order.prototype.message = function () {
-        return this.amount + " koria " + this.type + " Tilaaja:" + this.buyer;
+        return this.amount + " koria: " + this.type + " Tilaaja:" + this.buyer;
     };
 
     Brew.Order = Order;
