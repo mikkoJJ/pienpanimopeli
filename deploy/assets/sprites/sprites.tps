@@ -4,7 +4,7 @@
         <key>fileFormatVersion</key>
         <int>3</int>
         <key>texturePackerVersion</key>
-        <string>3.6.0</string>
+        <string>3.7.1</string>
         <key>fileName</key>
         <string>Z:/Work/html_sandbox/pienpanimopeli/assets/sprites/sprites.tps</string>
         <key>autoSDSettings</key>
@@ -228,6 +228,9 @@
             <filename>single_sprites/dirt.png</filename>
             <filename>single_sprites/kettle3_with_bubbles.png</filename>
             <filename>single_sprites/money_symbol.png</filename>
+            <filename>single_sprites/kettle4_selected.png</filename>
+            <filename>single_sprites/bottlemachine_step1.png</filename>
+            <filename>single_sprites/bottlemachine_step1_selected.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
@@ -239,5 +242,15 @@
         <uint>1</uint>
         <key>commonDivisorY</key>
         <uint>1</uint>
+        <key>packNormalMaps</key>
+        <false/>
+        <key>autodetectNormalMaps</key>
+        <true/>
+        <key>normalMapFilter</key>
+        <string></string>
+        <key>normalMapSuffix</key>
+        <string></string>
+        <key>normalMapSheetFileName</key>
+        <filename></filename>
     </struct>
 </data>
