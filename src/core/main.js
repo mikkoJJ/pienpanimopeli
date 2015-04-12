@@ -9,6 +9,8 @@
         budget = 50000,
         lauterer,
         fermenter,
+        maturer,
+        bottler,
         lagerStorage,
         porterStorage,
         darkStorage,
@@ -67,21 +69,24 @@
             resourceStorage.base.x = 4 * settings.tileSize;
             resourceStorage.base.y = 0 * settings.tileSize;
             resourceStorage.amount = 5;
+            resourceStorage.name = 'Ohramallasta';
             storageManager = new Brew.StorageManager();
 
             //////////////// PRODUCERS: /////////////////
 
-            lauterer = new Brew.Producer(this.game, 8 * settings.tileSize, 8 * settings.tileSize, 0, 'kettle1', this.isoGroup);
+            lauterer = new Brew.Producer(this.game, 8 * settings.tileSize, 9 * settings.tileSize, 0, 'kettle1', this.isoGroup);
             lauterer.resource = resourceStorage;
-            fermenter = new Brew.Producer(this.game, 8 * settings.tileSize, 5 * settings.tileSize, 0, 'kettle3_with_bubbles', this.isoGroup);
+            fermenter = new Brew.Producer(this.game, 8 * settings.tileSize, 6 * settings.tileSize, 0, 'kettle3_with_bubbles', this.isoGroup);
+            maturer = new Brew.Producer(this.game, 8 * settings.tileSize, 3 * settings.tileSize, 0, 'kettle4', this.isoGroup);
+            bottler = new Brew.Producer(this.game, 8 * settings.tileSize, 0, 0, 'bottlemachine_step1', this.isoGroup);
             
             fermenter.addOption('Tee lageria', 'lagerbutton', 'type', Brew.BeerType.LAGER);
             fermenter.addOption('Tee IPAa', 'ipabutton', 'type', Brew.BeerType.IPA);
             fermenter.addOption('Tee tummaa', 'darkbutton', 'type', Brew.BeerType.DARK);
 
-            Brew.Producer.setChain(lauterer, fermenter);
+            Brew.Producer.setChain(lauterer, fermenter, maturer, bottler);
 
-            fermenter.onBeerFinished.bind(this.beerFinished, this);
+            bottler.onBeerFinished.bind(this.beerFinished, this);
 
 
             //////////////// PERSONS: /////////////////
@@ -329,6 +334,7 @@
             this.messages.update();
 
             storageManager.update();
+            resourceStorage.update();
             //check mouse position and put the cursor on the correct place:
             /*var _pos = new Phaser.Plugin.Isometric.Point3();
             this.game.iso.unproject(this.game.input.activePointer.position, _pos);

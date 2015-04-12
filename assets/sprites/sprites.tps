@@ -228,6 +228,9 @@
             <filename>single_sprites/dirt.png</filename>
             <filename>single_sprites/kettle3_with_bubbles.png</filename>
             <filename>single_sprites/money_symbol.png</filename>
+            <filename>single_sprites/kettle4_selected.png</filename>
+            <filename>single_sprites/bottlemachine_step1.png</filename>
+            <filename>single_sprites/bottlemachine_step1_selected.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

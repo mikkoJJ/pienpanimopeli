@@ -54,6 +54,21 @@
         /** An offset given to the centre of the radial option menu. */
         this.optionOffset = { x: -30, y: -70};
         
+        /** 
+         * A simple event object to hold the beerfinished event, which is fired when this producer finished if it is 
+         * the last producer in the chain.
+         */
+        this.onBeerFinished = {
+            bind: function(callback, ctx) {
+                this._callback = callback;
+                this._ctx = ctx;
+            },
+
+            fire: function(arg) {
+                if( this._callback ) this._callback.call(this._ctx, arg);
+            }
+        };
+        
         /** Which option is selected. */
         this._selectedOption = 0;
         
@@ -107,6 +122,8 @@
             if( !this.next ) {
                 this.onBeerFinished.fire(this.beer);
                 this.end();
+            } else {
+                this.next.begin(this);
             }
         }, this);
         
@@ -120,22 +137,6 @@
     Producer.prototype.end = function() {        
         this.state = Brew.ProducerState.IDLE;
         this.beer = null;
-    };
-
-    
-    /** 
-     * A simple event object to hold the beerfinished event, which is fired when this producer finished if it is 
-     * the last producer in the chain.
-     */
-    Producer.prototype.onBeerFinished = {
-        bind: function(callback, ctx) {
-            this._callback = callback;
-            this._ctx = ctx;
-        },
-        
-        fire: function(arg) {
-            if( this._callback ) this._callback.call(this._ctx, arg);
-        }
     };
     
     
@@ -229,9 +230,9 @@
         if ( this.state == Brew.ProducerState.IDLE ) {
             if ( !this.previous ) {
                 this.begin();    
-            } else if ( this.previous.state == Brew.ProducerState.DONE ) {
+            } /*else if ( this.previous.state == Brew.ProducerState.DONE ) {
                 this.begin(this.previous);
-            } 
+            } */
         }
         if ( this._options.length > 0 ) {
             if ( this.selectedOption >= this._options.length - 1 ) this.selectedOption = 0;
