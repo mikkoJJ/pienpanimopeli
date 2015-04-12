@@ -161,6 +161,9 @@
     };
     
     
+    /**
+     * @property {Number} state the current state of the producer. One of @see Brew.ProducerState.
+     */
     Object.defineProperty(Producer.prototype, 'state', {
         
         get: function() {
@@ -180,6 +183,7 @@
         }
         
     });
+    
     
     /**
      * @property {Number} The index of the option that is currently selected on this producer. For the actual
@@ -202,6 +206,7 @@
         }
         
     });
+    
     
     /**
      * @property {Brew.Option} the producer option object that is currently selected.
