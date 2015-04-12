@@ -194,12 +194,16 @@
      * @param {Function} rejectCallback callback to call when reject button pressed.
      */
     GUI.prototype.addMessage = function (header, message, data, buttonText, buttonCallback, buttonCallbackCtx, rejectCallback) {
+        FB.XFBML.parse(); //need to reparse
+
         var _w = $('<div><div/>')
             .addClass('brew-window brew-message')
             .html('<h2>' + header + '<h2>')
             .append($('<div><div/>')
                 .addClass('brew-message-body brew-window')
                 .html(message)
+                .append(this.__shareButton().data('callback', buttonCallback).data('callbackCtx', buttonCallbackCtx))
+
                 .append(this.__makeButton("Hylkää", function () {
                     var remove = true;
                     if ($(this).data('rejectCallback')) remove = $(this).data('rejectCallback').call($(this).data('callbackCtx'), $(this).parent().parent().data('messageData'));
@@ -246,6 +250,23 @@
         this._messageWindow.toggle('slide', {
             easing: 'easeOutBounce'
         }, 200);
+    };
+
+    //button for facebook sharing
+    GUI.prototype.__shareButton = function (callback) {
+        return $('<div></div>')
+            .addClass('fb-share-button')
+            .data('send', true)
+            .data('href', "localhost:8080/pienpanimopeli/assets/sprites/single_sprites/bottle.png")
+            //  .data('layout', "button-count")
+            .data('action', callback)
+            .css({
+                margin: '0px',
+                float: "right"
+                    //    background: #BFA776;
+                    //    text-align: center;
+            })
+            .click(callback);
     };
 
 
