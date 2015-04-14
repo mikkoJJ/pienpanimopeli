@@ -124,12 +124,7 @@
             }, this, 'letter_new_empty1', 'letter_new_unopened', 'letter_new_empty1', 'letter_new_empty1');
             letter.anchor.setTo(0.5, 0);
 
-            var order = new Order();
-            buyerList.push(order.newBuyer());
-            buyerList.push(order.newBuyer());
-            this.createOrders();
-
-            //    this.time.events.loop(Phaser.Timer.SECOND * 15, this.updateCounter, this);
+            this.createBuyer();
 
             Brew.Budget.create();
             Brew.Budget.moveProgressBar();
@@ -186,18 +181,12 @@
             var warning = "";
             if (mess.title != "Laillinen") {
                 illegalAds++;
-                this.sendBrag('I just scored ', function () {});
+                this.sendBrag(mess.dueText, function () {});
                 if (illegalAds == 5) {
                     Brew.gui.alert("Olet mainostanut liikaa laittomasti. Menetit toimilupasi ja hävisit pelin.");
                     return;
                 } else warning = "Tämä on " + illegalAds + ". laiton mainos";
-            } else {
-                var order = new Order();
-                var tilaaja = order.newBuyer();
-                buyerList.push(tilaaja);
-
-                console.log(buyerList.length);
-            }
+            } else this.createBuyer();
             Brew.gui.alert(mess.dueText + " " + warning);
         },
 
@@ -206,9 +195,12 @@
             FB.ui({
                 method: 'feed',
                 caption: caption,
-                picture: 'localhost:8080/pienpanimopeli/assets/sprites/single_sprites/bottle.png',
+                //   link: 'localhost:8080/pienpanimopeli',
+                picture: 'localhost:8080/pienpanimopeli/assets/sprites/single_sprites/giantcan.png', //ei näy julkaisussa
                 name: 'Testing'
-            }, callback);
+            }, callback); //what to do with response
+
+
         },
 
         //hire an employee
@@ -220,14 +212,16 @@
         //selling beer
         sell: function (order) {
             var storagei;
-            for (var i in storageManager.storages) {
-                //if order type = storage type
-                // storagejen i:t on tyyppiä 0pehmeä, mitä vittua
-                if (storageManager.storages[i].amount >= order.amount) storagei = i;
+
+            for (i in storageManager.storages) { //storageiden omat indexit tulee siinä järjestyksessä kuin niitä valmistetaan eikä riipu oluttyypistä
+                var beerTypeIndex = storageManager.storages[i].type;
+                var name = this.getType(beerTypeIndex);
+                if (name == order.type) storagei = i;
             }
-            if (storagei == undefined) {
-                return false;
-            } else if (order.buyer == "Erkki Virtanen") {
+            if (storageManager.storages[storagei] == undefined) return false;
+
+            if (storageManager.storages[storagei].amount < order.amount) return false;
+            else if (order.buyer == "Erkki Virtanen") {
                 this.budgetHandling(-10);
                 Brew.gui.alert("Yksityishenkilölle myyminen on laitonta! Sait sakot.");
             } else {
@@ -243,6 +237,12 @@
 
         },
 
+        //get name of beertype
+        getType: function (typeIndex) {
+            var types = ["lager", "IPA", "dark"];
+            return types[typeIndex];
+        },
+
         beerFinished: function (beer) {
             /*if (beer.type == Brew.BeerType.LAGER)
                 lagerStorage.amount += 1;
@@ -255,21 +255,22 @@
 
 
         //every buyer sends an order in their own loop
-        createOrders: function () {
-            if (buyerList == 0) {
-                Brew.gui.alert("Menetit kaikki tilaajasi.");
-                return;
-            }
-            this.time.events.loop(Phaser.Timer.SECOND * 15, this.updateOrders, this);
+        createBuyer: function () {
+            var order = new Order();
+            var buyer = order.newBuyer();
+            buyerList.push(buyer);
+            this.time.events.loop(Phaser.Timer.SECOND * 15, this.updateOrders, this, buyer);
         },
 
         /*
          * control orders
          */
-        updateOrders: function () {
-            var buyer = buyerList[Brew.game.rnd.integerInRange(0, buyerList.length - 1)];
+        updateOrders: function (buyer) {
+            if (buyerList == 0) {
+                Brew.gui.alert("Menetit kaikki tilaajasi."); //ei saa tulla uudestaan
+                return;
+            }
 
-            //            buyerList.forEach(function (buyer) {
             if (buyer != undefined) {
                 var order = new Order().random(buyer);
                 orderList.push(order);
@@ -277,26 +278,6 @@
                 Brew.gui.addMessage('Tilaus', order.message(), order, "Myy", this.sell, this, this.remove);
                 letter.frameName = "letter_new_open 2";
             }
-            //          });
-            var secondsToDisappear = 60000; //60 sekuntia
-
-            //remove old orders
-            orderList.forEach(function (order) {
-                if (Brew.game.time.now - order.age > secondsToDisappear) {
-                    var allListElements = $('.brew-message');
-
-                    allListElements.each(function (index) {
-                        if ($(this).data('messageData') == order) {
-                            $(this).remove();
-                            order.buyers.splice(order.getIndex(), 1);
-                            console.log(buyerList.length);
-                            //  console.log(buyerList);
-                            orderList.shift();
-                            return;
-                        }
-                    });
-                }
-            });
         },
 
         //remove rejected buyers
@@ -363,9 +344,25 @@
                 text.setText(budget);
             }
 
-            this.time.events.add(Phaser.Timer.SECOND * 20, function () {
-                new Order().update();
-            }, this);
+            var secondsToDisappear = 60000; //60 sekuntia
+
+            //remove old orders
+            orderList.forEach(function (order) {
+                if (Brew.game.time.now - order.age > secondsToDisappear) {
+                    var allListElements = $('.brew-message');
+
+                    allListElements.each(function (index) {
+                        if ($(this).data('messageData') == order) {
+                            $(this).remove();
+                            order.buyers.splice(order.getIndex(), 1);
+                            console.log(buyerList.length);
+                            //  console.log(buyerList);
+                            orderList.shift();
+                            return;
+                        }
+                    });
+                }
+            });
         },
 
     };
@@ -428,15 +425,13 @@
     };
 
     Order.prototype.newBuyer = function () {
-        return this.staticBuyers[Brew.game.rnd.integerInRange(0, this.staticBuyers.length)];
-    };
-
-    Order.prototype.update = function () {
-        // this.time.events.loop(Phaser.Timer.SECOND * 15, this.updateCounter, this);
+        var buyer = this.staticBuyers[Brew.game.rnd.integerInRange(0, this.staticBuyers.length)];
+        return buyer;
     };
 
     Order.prototype.random = function (buyer) {
-        var types = ["Lager", "Tumma olut", "IPA"];
+
+        var types = ["lager", "IPA", "dark"];
         var amountType = buyer[1];
         var amount = Brew.game.rnd.integerInRange(amountType, amountType + 5);
 

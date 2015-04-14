@@ -32,7 +32,7 @@
      */
     Object.defineProperty(Beer.prototype, 'id', {
         get: function() {
-            return '' + this.type + this.taste;
+            return '' + this.type; // + this.taste;
         }
     });
     

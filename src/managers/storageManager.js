@@ -29,7 +29,7 @@
      * @param {Brew.Beer} beer the beer object to base the storage on.
      */
     StorageManager.prototype.newStorage = function(beer) {
-        var _storage = new Brew.Storage(Brew.game, beer.getSprite(), this._group, beer.name);
+        var _storage = new Brew.Storage(Brew.game, beer.getSprite(), this._group, beer.name, beer.type);
         _storage.base = { x: this.base.x, y: this.base.y, z: this.base.z };
 
         this.base.y += 2 * settings.tileSize;

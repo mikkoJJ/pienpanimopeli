@@ -30,7 +30,7 @@
      * @param {Phaser.Group} group the group to add the sprites in.
      * @param {string} description a human-readable description of what this storage contains.
      */
-    var Storage = function(game, spriteName, group, description) {
+    var Storage = function(game, spriteName, group, description, type) {
         //private vars:
         this._game = game;
         this._group = group;
@@ -48,6 +48,8 @@
         
         /** The "name" of the cases in this storage */
         this.description = description;
+        
+        this.type = type;  
     };
     
     Storage.prototype.constructor = Storage;
