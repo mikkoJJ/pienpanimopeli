@@ -9,5 +9,7 @@ var Brew = {
      */
     game: null,      
 
-    noCursor: false
+    noCursor: false,
+    
+    products: []
 };

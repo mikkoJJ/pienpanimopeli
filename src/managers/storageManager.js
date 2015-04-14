@@ -38,12 +38,16 @@
 
         this._naming = beer.id;        
         
-        Brew.gui.query('Olet kehittänyt uudenlaisen oluen! Anna tuotteelle nimi:', function(ans) {
+        Brew.gui.query('Olet kehittänyt uudenlaisen oluen! Tuottamasi olut on <b>' + beer.description + '</b>! <br /><br />Anna tuotteelle nimi:', function(ans) {
             this.storages[this._naming].name = ans;
+            Brew.products.push(this._naming);
         }, this);        
     };
     
     
+    /**
+     * Update all storages.
+     */
     StorageManager.prototype.update = function() {
         for ( var i in this.storages ) {
             this.storages[i].update();
@@ -51,4 +55,5 @@
     };
     
     Brew.StorageManager = StorageManager;
+    
 })();

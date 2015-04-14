@@ -4,12 +4,14 @@
         LAGER: 0, IPA: 1, DARK: 2
     };
     
+    Brew.BeerTypeDescriptions = [ 'lageria', 'ipaa', 'tummaa olutta' ];
+    
     Brew.BeerSprites = [ 'lager_case', 'porter_case', 'dark_case' ];
     
     
     var Beer = function(type, taste) {
         var _type = type ? type : Brew.BeerType.LAGER;
-        var _taste = taste ? taste : 'Pehmeä';
+        var _taste = taste ? taste : 'pehmeää';
         
         this.type = _type;
         this.taste = _taste;
@@ -36,6 +38,14 @@
         }
     });
     
+    /**
+     * @property {string} description get a text description of this type of beer
+     */
+    Object.defineProperty(Beer.prototype, 'description', {
+        get: function() {
+            return this.taste + ' ' + Brew.BeerTypeDescriptions[this.type];
+        }
+    });
     
 
     Brew.Beer = Beer;

@@ -50,27 +50,13 @@
 
             //////////////// STORAGES: /////////////////
 
-            /*lagerStorage = new Brew.Storage(this.game, 'lager_case', this.isoGroup, 'Lageria');
-            lagerStorage.base.x = 0 * settings.tileSize;
-            lagerStorage.base.y = 0 * settings.tileSize;
-            lagerStorage.amount = 2;
-
-            porterStorage = new Brew.Storage(this.game, 'porter_case', this.isoGroup, 'Portteria');
-            porterStorage.base.x = 0 * settings.tileSize;
-            porterStorage.base.y = 2 * settings.tileSize;
-            porterStorage.amount = 2;
-
-            darkStorage = new Brew.Storage(this.game, 'dark_case', this.isoGroup, 'Tummaa olutta');
-            darkStorage.base.x = 0 * settings.tileSize;
-            darkStorage.base.y = 4 * settings.tileSize;
-            darkStorage.amount = 2;
-            */
             resourceStorage = new Brew.Storage(this.game, 'consumable', this.isoGroup, 'Ohramallasta');
             resourceStorage.base.x = 4 * settings.tileSize;
             resourceStorage.base.y = 0 * settings.tileSize;
             resourceStorage.amount = 5;
             resourceStorage.name = 'Ohramallasta';
             storageManager = new Brew.StorageManager();
+            
 
             //////////////// PRODUCERS: /////////////////
 
@@ -83,6 +69,9 @@
             fermenter.addOption('Tee lageria', 'lagerbutton', 'type', Brew.BeerType.LAGER);
             fermenter.addOption('Tee IPAa', 'ipabutton', 'type', Brew.BeerType.IPA);
             fermenter.addOption('Tee tummaa', 'darkbutton', 'type', Brew.BeerType.DARK);
+            
+            maturer.addOption('Pitkä kypsytys', 'long_brew', 'taste', 'Pehmeää');
+            maturer.addOption('Pitkä kypsytys', 'short_brew', 'taste', 'Kitkerää');
 
             Brew.Producer.setChain(lauterer, fermenter, maturer, bottler);
 
