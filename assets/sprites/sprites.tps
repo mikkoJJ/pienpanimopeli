@@ -237,6 +237,7 @@
             <filename>single_sprites/long_brew_over.png</filename>
             <filename>single_sprites/pipes.png</filename>
             <filename>single_sprites/pipes2.png</filename>
+            <filename>single_sprites/arrow.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

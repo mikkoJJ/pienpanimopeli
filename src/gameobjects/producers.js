@@ -54,6 +54,9 @@
         /** An offset given to the centre of the radial option menu. */
         this.optionOffset = { x: -30, y: -70};
         
+        /** A signal dispatched when the producer is clicked. */
+        this.onClick = new Phaser.Signal();
+        
         /** 
          * A simple event object to hold the beerfinished event, which is fired when this producer finished if it is 
          * the last producer in the chain.
@@ -220,6 +223,17 @@
                 
     });
     
+    /**
+     * @property {Phaser.Plugin.Isometric.Point3} the iso position of the producer
+     */
+    Object.defineProperty(Producer.prototype, 'isoPosition', {
+        
+        get: function() {
+            return this._sprite.isoPosition;
+        }
+                
+    });
+    
     
     /**
      * Event callback to when the Producer sprite is clicked.
@@ -238,6 +252,8 @@
             if ( this.selectedOption >= this._options.length - 1 ) this.selectedOption = 0;
             else this.selectedOption = this.selectedOption + 1;
         }
+        
+        this.onClick.dispatch();
     };
     
     

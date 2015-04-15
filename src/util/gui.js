@@ -146,12 +146,44 @@
         return w;
     };
     
+    
     /**
      * Hide a previously shown info window.
      * @param {jQuery} window the window to hide (returned by showInfo).
      */
     GUI.prototype.hideInfo = function(window) {
-        window.hide({effect: 'scale', origin: ['left', 'center'], duration: 80, complete: function() { $(this).remove() } });    
+        window.hide({effect: 'scale', origin: ['left', 'center'], duration: 80, complete: function() { $(this).remove(); } });    
+    };
+    
+    
+    /**
+     * Shows a tutorial window on the top right corner of the game. If the tutorial window has been created previously, 
+     * calling this updates the message.
+     * 
+     * @param {String} message the message to display. 
+     */
+    GUI.prototype.showTutorialWindow = function(message) {
+        var w;
+        
+        if ( !this._tutorialWindow ) {
+            w = $('<div></div>')
+                .addClass('brew-tutorial-window brew-window')
+                .appendTo(settings.dom)
+                .show({effect: 'slide', duration: 100 });
+        }
+        else w = this._tutorialWindow;
+        
+        w.html(message);
+        
+        this._tutorialWindow = w;
+    };
+    
+    
+    /**
+     * Hide the tutorial window.
+     */
+    GUI.prototype.hideTutorialWindow = function() {
+        this._tutorialWindow.hide({effect: 'slide', duration: 100 });
     };
     
     

@@ -154,7 +154,18 @@
             this.time.events.loop(Phaser.Timer.SECOND * 20, function () {
                 this.cleanUp();
             }, this);
-
+            
+            
+            
+            /////////////////////// TUTORIAL: /////////////////////////
+            
+            this.tutorial = new Brew.Tutorial(this.game, this.isoGroup);
+            this.tutorial.lauterer = lauterer;
+            this.tutorial.fermenter = fermenter;
+            this.tutorial.maturer = maturer;
+            this.tutorial.bottler = bottler;
+            
+            this.tutorial.start();
         },
 
         cleanUp: function () {

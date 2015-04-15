@@ -37,10 +37,9 @@
             
             Brew.game.plugins.add(new Phaser.Plugin.Isometric(Brew.game));
           //  Brew.game.plugins.add(Phaser.Plugin.PathFinderPlugin);
-            this.load.image('kattila', 'assets/sprites/single_sprites/kattila.png');
-            this.load.image('paa_kattila_luonnos', 'assets/sprites/single_sprites/paa_kattila_luonnos.png');
             this.load.atlasJSONHash('sprites', 'assets/sprites/brew_sprites.png', 'assets/sprites/brew_sprites_data.json');
             this.load.json('texts', 'assets/json/texts.json');
+            this.load.json('tutorial', 'assets/json/tutorial.json');
             
             console.log('PRELOAD: Images loaded');
             
