@@ -56,7 +56,7 @@
             resourceStorage.amount = 5;
             resourceStorage.name = 'Ohramallasta';
             storageManager = new Brew.StorageManager();
-            
+
 
             //////////////// PRODUCERS: /////////////////
 
@@ -65,11 +65,11 @@
             fermenter = new Brew.Producer(this.game, 8 * settings.tileSize, 6 * settings.tileSize, 0, 'kettle3_with_bubbles', this.isoGroup);
             maturer = new Brew.Producer(this.game, 8 * settings.tileSize, 3 * settings.tileSize, 0, 'kettle4', this.isoGroup);
             bottler = new Brew.Producer(this.game, 8 * settings.tileSize, 0, 0, 'bottlemachine_step1', this.isoGroup);
-            
+
             fermenter.addOption('Tee lageria', 'lagerbutton', 'type', Brew.BeerType.LAGER);
             fermenter.addOption('Tee IPAa', 'ipabutton', 'type', Brew.BeerType.IPA);
             fermenter.addOption('Tee tummaa', 'darkbutton', 'type', Brew.BeerType.DARK);
-            
+
             maturer.addOption('Pitkä kypsytys', 'long_brew', 'taste', 'Pehmeää');
             maturer.addOption('Pitkä kypsytys', 'short_brew', 'taste', 'Kitkerää');
 
@@ -113,8 +113,6 @@
             }, this, 'letter_new_empty1', 'letter_new_unopened', 'letter_new_empty1', 'letter_new_empty1');
             letter.anchor.setTo(0.5, 0);
 
-            this.createBuyer();
-
             Brew.Budget.create();
             Brew.Budget.moveProgressBar();
             Brew.Budget.update(50000);
@@ -125,10 +123,6 @@
                     spending = $(this).val();
                 });
 
-            this.time.events.loop(Phaser.Timer.SECOND * 20, function () {
-                this.budgetHandling(-spending);
-            }, this);
-
             text = this.add.text(880, 18, budget);
             text.fill = '#FFFFFF';
             text.anchor.setTo(0.5, 0);
@@ -137,6 +131,18 @@
             changeText = this.add.text(880, 45, "");
             changeText.fill = '#FFFFFF';
             changeText.anchor.setTo(0.5, 0);
+
+            //////////////// TIME EVENTS: /////////////////
+
+            var tutorialTime = 0;
+            this.time.events.add(Phaser.Timer.SECOND * tutorialTime, function () {
+    //            this.initialBuyers();
+                //  this.createBuyers();
+            }, this);
+
+            this.time.events.loop(Phaser.Timer.SECOND * 20, function () {
+                this.budgetHandling(-spending);
+            }, this);
 
             this.time.events.loop(Phaser.Timer.SECOND * 20, function () {
                 this.cleanUp();
@@ -205,9 +211,12 @@
             for (i in storageManager.storages) { //storageiden omat indexit tulee siinä järjestyksessä kuin niitä valmistetaan eikä riipu oluttyypistä
                 var beerTypeIndex = storageManager.storages[i].type;
                 var name = this.getType(beerTypeIndex);
+                console.log(storageManager.storages[i].description); //undefined
+
                 if (name == order.type) storagei = i;
             }
             if (storageManager.storages[storagei] == undefined) return false;
+            console.log(storageManager.storages[storagei].description)
 
             if (storageManager.storages[storagei].amount < order.amount) return false;
             else if (order.buyer == "Erkki Virtanen") {
@@ -232,6 +241,7 @@
             return types[typeIndex];
         },
 
+        //add beer and get first orders
         beerFinished: function (beer) {
             /*if (beer.type == Brew.BeerType.LAGER)
                 lagerStorage.amount += 1;
@@ -240,15 +250,28 @@
             if (beer.type == Brew.BeerType.DARK)
                 darkStorage.amount += 1;*/
             storageManager.addBeer(beer, 4);
+            this.initialBuyers();
         },
 
+
+        //first orders has to be little ones
+        initialBuyers: function () {
+            var initial = new Order().initialBuyers();
+            for (i in initial) {
+                buyerList.push(initial[i]);
+                
+                if (storageManager.storages.length > 0) this.time.events.loop(Phaser.Timer.SECOND * 15, this.updateOrders, this, initial[i]);
+            }
+            console.log(buyerList);
+        },
 
         //every buyer sends an order in their own loop
         createBuyer: function () {
             var order = new Order();
             var buyer = order.newBuyer();
             buyerList.push(buyer);
-            this.time.events.loop(Phaser.Timer.SECOND * 15, this.updateOrders, this, buyer);
+            this.time.events.loop(Phaser.Timer.SECOND * 25, this.updateOrders, this, buyer);
+            console.log(buyerList);
         },
 
         /*
@@ -256,12 +279,14 @@
          */
         updateOrders: function (buyer) {
             if (buyerList == 0) {
-                Brew.gui.alert("Menetit kaikki tilaajasi."); //ei saa tulla uudestaan
+                Brew.gui.alert("Menetit kaikki tilaajasi.");
                 return;
             }
 
+            var names = [storageManager.storages[0].description];
+
             if (buyer != undefined) {
-                var order = new Order().random(buyer);
+                var order = new Order().random(buyer, names);
                 orderList.push(order);
 
                 Brew.gui.addMessage('Tilaus', order.message(), order, "Myy", this.sell, this, this.remove);
@@ -385,23 +410,29 @@
 
     Brew.Person = Person;
 
-    var Order = function (type, amount, buyer) {
+    var Order = function (type, amount, buyer, name) {
         this.age = Brew.game.time.now;
         this.type = type;
         this.amount = amount;
         this.buyer = buyer;
+        this.name = name;
 
         this.buyers = buyerList;
 
         var pieni = 1;
         var suuri = 15;
-        this.staticBuyers = [["Alko", suuri], ["Kesko", suuri], ["S-Ryhmä", suuri], ["Hemingways", pieni], ["Vakiopaine", pieni], ["Musta Kynnys", pieni], ["Ale Pub", pieni], ["Erkki Virtanen", pieni]];
+        this.staticBuyers = [["Alko", suuri], ["Kesko", suuri], ["S-Ryhmä", suuri], ["Musta Kynnys", pieni], ["Ale Pub", pieni], ["Erkki Virtanen", pieni]];
 
         this.price = $("#hinta").val();
         $("#hinta")
             .on("blur", function () {
                 this.price = $(this).val();
             });
+    };
+
+    Order.prototype.initialBuyers = function () {
+        var buyers = [["Hemingways", 1], ["Vakiopaine", 1]];
+        return buyers;
     };
 
     Order.prototype.getIndex = function () {
@@ -418,8 +449,7 @@
         return buyer;
     };
 
-    Order.prototype.random = function (buyer) {
-
+    Order.prototype.random = function (buyer, names) {
         var types = ["lager", "IPA", "dark"];
         var amountType = buyer[1];
         var amount = Brew.game.rnd.integerInRange(amountType, amountType + 5);
@@ -427,7 +457,8 @@
         return new Order(
             types[Brew.game.rnd.integerInRange(0, types.length - 1)],
             amount, //amount
-            buyer[0]); //name
+            buyer[0],
+            names[Brew.game.rnd.integerInRange(0, names.length - 1)]); //name
     };
 
     Order.prototype.message = function () {
