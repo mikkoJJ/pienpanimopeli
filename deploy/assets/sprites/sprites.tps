@@ -231,6 +231,12 @@
             <filename>single_sprites/kettle4_selected.png</filename>
             <filename>single_sprites/bottlemachine_step1.png</filename>
             <filename>single_sprites/bottlemachine_step1_selected.png</filename>
+            <filename>single_sprites/short_brew_out.png</filename>
+            <filename>single_sprites/short_brew_over.png</filename>
+            <filename>single_sprites/long_brew_out.png</filename>
+            <filename>single_sprites/long_brew_over.png</filename>
+            <filename>single_sprites/pipes.png</filename>
+            <filename>single_sprites/pipes2.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

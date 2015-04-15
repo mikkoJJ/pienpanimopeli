@@ -39,7 +39,7 @@
     Brew.Main.prototype = {
 
         create: function () {
-            this.game.iso.anchor.setTo(0.5, 0.2);
+            this.game.iso.anchor.setTo(0.5, 0.3);
             this.messages = new Brew.Messages();
 
             this.isoGroup = this.add.group();
@@ -52,7 +52,7 @@
 
             resourceStorage = new Brew.Storage(this.game, 'consumable', this.isoGroup, 'Ohramallasta');
             resourceStorage.base.x = 4 * settings.tileSize;
-            resourceStorage.base.y = 0 * settings.tileSize;
+            resourceStorage.base.y = 8 * settings.tileSize;
             resourceStorage.amount = 5;
             resourceStorage.name = 'Ohramallasta';
             storageManager = new Brew.StorageManager();
@@ -60,11 +60,11 @@
 
             //////////////// PRODUCERS: /////////////////
 
-            lauterer = new Brew.Producer(this.game, 8 * settings.tileSize, 9 * settings.tileSize, 0, 'kettle1', this.isoGroup);
+            lauterer = new Brew.Producer(this.game, 8 * settings.tileSize, 8 * settings.tileSize, 0, 'kettle1', this.isoGroup);
             lauterer.resource = resourceStorage;
-            fermenter = new Brew.Producer(this.game, 8 * settings.tileSize, 6 * settings.tileSize, 0, 'kettle3_with_bubbles', this.isoGroup);
-            maturer = new Brew.Producer(this.game, 8 * settings.tileSize, 3 * settings.tileSize, 0, 'kettle4', this.isoGroup);
-            bottler = new Brew.Producer(this.game, 8 * settings.tileSize, 0, 0, 'bottlemachine_step1', this.isoGroup);
+            fermenter = new Brew.Producer(this.game, 8 * settings.tileSize, 5 * settings.tileSize, 0, 'kettle3_with_bubbles', this.isoGroup);
+            maturer = new Brew.Producer(this.game, 8 * settings.tileSize, 2 * settings.tileSize, 0, 'kettle4', this.isoGroup);
+            bottler = new Brew.Producer(this.game, 5 * settings.tileSize, 2 * settings.tileSize, 0, 'bottlemachine_step1', this.isoGroup);
 
             fermenter.addOption('Tee lageria', 'lagerbutton', 'type', Brew.BeerType.LAGER);
             fermenter.addOption('Tee IPAa', 'ipabutton', 'type', Brew.BeerType.IPA);
@@ -76,9 +76,16 @@
             Brew.Producer.setChain(lauterer, fermenter, maturer, bottler);
 
             bottler.onBeerFinished.bind(this.beerFinished, this);
+            
+            
+            ///((/////////////// DECOR: ////////////////////////
+            
+            var pipes = this.add.isoSprite(7 * settings.tileSize, 2.8 * settings.tileSize, 10, 'sprites', 'pipes2', this.isoGroup);
+            pipes.anchor.set(0.5, 0.5);
+            pipes = this.add.isoSprite(7 * settings.tileSize, 6 * settings.tileSize, 10, 'sprites', 'pipes', this.isoGroup);
+            pipes.anchor.set(0.5, 0.5);
 
-
-            //////////////// PERSONS: /////////////////
+            /////////////////// PERSONS: ///////////////////////
 
             person = new Person(this.game, 1 * settings.tileSize, 4 * settings.tileSize, 10, this.isoGroup, this.floor);
             person2 = new Person(this.game, 1 * settings.tileSize, 7 * settings.tileSize, 10, this.isoGroup, this.floor);
