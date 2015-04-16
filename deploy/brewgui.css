@@ -6,10 +6,17 @@
 .brew-window {
     font-family: 'Press Start 2P';
     font-size: 14pt;
-    background: #f2decb;
+    /*background: #f2decb;*/
+    background: #4153db;
+    border: white double 6px;
+    color: white;
     -moz-user-select: none;
     -webkit-user-select: none;
     -ms-user-select: none;
+}
+
+.brew-window b {
+    color: #00ffff;
 }
 
 .brew-resources {
@@ -66,6 +73,8 @@
 }
 
 .brew-message {
+    background: #f2decb;
+    color: black;
     width: 170px;
     margin: 5px 0px;
     padding: 10px 4px 10px 24px; 
@@ -100,8 +109,34 @@
 
 .brew-info-window {
     font-size: 9pt;
+    color: black;
     position: absolute;    
     background: white;
     padding: 10px;
     display: none;
+}
+
+.brew-info-window b {
+    color: black;
+}
+
+.brew-tutorial-window {
+    font-size: 11pt;
+    position: absolute;
+    top: 20px;
+    right: 150px;
+    width: 480px;
+    margin: 0 auto;
+    padding: 10px 20px;
+}
+
+.brew-window input {
+    display: block;
+    width: 80%;
+    font: 12pt 'Press Start 2P';
+    color: azure;
+    padding: 10px;
+    margin: 15px 0;
+    background: #3141aa;
+    border: none;
 }
