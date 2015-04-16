@@ -160,9 +160,9 @@
      * Shows a tutorial window on the top right corner of the game. If the tutorial window has been created previously, 
      * calling this updates the message.
      * 
-     * @param {String} message the message to display. 
+     * @param {String}  message  the message to display. 
      */
-    GUI.prototype.showTutorialWindow = function(message) {
+    GUI.prototype.showTutorialWindow = function(message, okbuttonCallback, okButtonCallbackContext) {
         var w;
         
         if ( !this._tutorialWindow ) {
@@ -173,6 +173,17 @@
         }
         else w = this._tutorialWindow;
         
+        //w.children('.brew-button').remove();
+        
+        if (okbuttonCallback) {
+            w.append(this.__makeButton('OK', function() {
+                var p = $(this).parent();
+                if (p.data('callback')) p.data('callback').call(p.data('callbackCtx'));
+            }))
+            .data('callback', okbuttonCallback)
+            .data('callbackCtx', okButtonCallbackContext);
+        } 
+                     
         w.html(message);
         
         this._tutorialWindow = w;
@@ -232,7 +243,7 @@
             .addClass('brew-window brew-message')
             .html('<h2>' + header + '<h2>')
             .append($('<div><div/>')
-                .addClass('brew-message-body brew-window')
+                .addClass('brew-message-body')
                 .html(message)
                 .append(this.__shareButton().data('callback', buttonCallback).data('callbackCtx', buttonCallbackCtx))
 

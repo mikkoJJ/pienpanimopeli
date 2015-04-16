@@ -49,13 +49,14 @@
         this.isFinal = false;
         
         /** How long it takes for the producer to finish */
-        this.workDuration = 10;
+        this.workDuration = 20;
         
         /** An offset given to the centre of the radial option menu. */
         this.optionOffset = { x: -30, y: -70};
         
         /** A signal dispatched when the producer is clicked. */
         this.onClick = new Phaser.Signal();
+
         
         /** 
          * A simple event object to hold the beerfinished event, which is fired when this producer finished if it is 

@@ -73,6 +73,8 @@
 }
 
 .brew-message {
+    background: #f2decb;
+    color: black;
     width: 170px;
     margin: 5px 0px;
     padding: 10px 4px 10px 24px; 
@@ -107,10 +109,15 @@
 
 .brew-info-window {
     font-size: 9pt;
+    color: black;
     position: absolute;    
     background: white;
     padding: 10px;
     display: none;
+}
+
+.brew-info-window b {
+    color: black;
 }
 
 .brew-tutorial-window {

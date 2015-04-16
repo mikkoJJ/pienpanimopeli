@@ -58,7 +58,15 @@
                 this.point(pos.x, pos.y, pos.z);
             }
             
-            Brew.gui.showTutorialWindow(this.texts[this.current].text);
+            var callback = null, callbackCtx = null;
+            
+            if (this.texts[this.current].okbutton == "true") {
+                callback = function() {
+                    this.next();
+                };
+                callbackCtx = null;
+            }
+            Brew.gui.showTutorialWindow(this.texts[this.current].text, callback, callbackCtx);
         },
         
         update: function() {
