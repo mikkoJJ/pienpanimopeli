@@ -141,16 +141,18 @@
 
             var rightWall = this.game.add.isoSprite(4.4 * settings.tileSize, 0 * settings.tileSize, 5, 'sprites', "back_wall_right", this.isoGroup);
             rightWall.anchor.setTo(0.5, 0.75);
-            
-            var wall = this.game.add.isoSprite(0 * settings.tileSize,  4.4 * settings.tileSize, 5, 'sprites', "back_wall_left", this.isoGroup);
+
+            var wall = this.game.add.isoSprite(0 * settings.tileSize, 4.4 * settings.tileSize, 5, 'sprites', "back_wall_left", this.isoGroup);
             wall.anchor.setTo(0.5, 0.75);
-            
+
             //////////////// TIME EVENTS: /////////////////
 
-            var tutorialTime = 0;
-            this.time.events.add(Phaser.Timer.SECOND * tutorialTime, function () {
-                this.initialBuyers();
-                //  this.createBuyers();
+            var done = this.time.events.loop(Phaser.Timer.SECOND * 1, function () {
+                if (storageManager.storages.length == 0) return;
+                else {
+                    this.initialBuyers();
+                    this.time.events.remove(done);
+                }
             }, this);
 
             this.time.events.loop(Phaser.Timer.SECOND * 20, function () {
@@ -160,22 +162,21 @@
             this.time.events.loop(Phaser.Timer.SECOND * 20, function () {
                 this.cleanUp();
             }, this);
-            
-            
-            
+
             /////////////////////// TUTORIAL: /////////////////////////
-            
+
             this.tutorial = new Brew.Tutorial(this.game, this.isoGroup);
             this.tutorial.lauterer = lauterer;
             this.tutorial.fermenter = fermenter;
             this.tutorial.maturer = maturer;
             this.tutorial.bottler = bottler;
-            
+
             this.tutorial.start();
         },
 
         cleanUp: function () {
-            var clean = this.add.isoSprite(Brew.game.rnd.integerInRange(50, 200), Brew.game.rnd.integerInRange(50, 200), 100, 'sprites', 'dirt', this.isoGroup);
+            var clean = this.add.isoSprite(Brew.game.rnd.integerInRange(0 * settings.tileSize, 10 * settings.tileSize), Brew.game.rnd.integerInRange(0 * settings.tileSize, 10 * settings.tileSize), 0, 'sprites', 'dirt', this.isoGroup);
+            clean.anchor.setTo(0.5, 1);
             soDirtyEverywhere++;
             if (soDirtyEverywhere % 10 == 0) Brew.gui.alert("Hygieniasi on epäilyttävää. Sait sakot.", this.budgetHandling(-100), this);
 
@@ -232,15 +233,10 @@
         sell: function (order) {
             var storagei;
 
-            for (i in storageManager.storages) { //storageiden omat indexit tulee siinä järjestyksessä kuin niitä valmistetaan eikä riipu oluttyypistä
-                var beerTypeIndex = storageManager.storages[i].type;
-                var name = this.getType(beerTypeIndex);
-                    console.log(storageManager.storages[i].description); //undefined
-
-                if (name == order.type) storagei = i;
+            for (i in Brew.products) {
+                if (Brew.products[i] == order.name) storagei = i;
             }
             if (storageManager.storages[storagei] == undefined) return false;
-            console.log(storageManager.storages[storagei].description)
 
             if (storageManager.storages[storagei].amount < order.amount) return false;
             else if (order.buyer == "Erkki Virtanen") {
@@ -274,7 +270,6 @@
             if (beer.type == Brew.BeerType.DARK)
                 darkStorage.amount += 1;*/
             storageManager.addBeer(beer, 4);
-            this.initialBuyers();
         },
 
 
@@ -283,12 +278,8 @@
             var initial = new Order().initialBuyers();
             for (i in initial) {
                 buyerList.push(initial[i]);
-
-                console.log(storageManager.storages.length + " storagea");
-                //      if (storageManager.storages.length > 0)
                 this.time.events.loop(Phaser.Timer.SECOND * 15, this.updateOrders, this, initial[i]);
             }
-            console.log(buyerList);
         },
 
         //every buyer sends an order in their own loop
@@ -297,7 +288,7 @@
             var buyer = order.newBuyer();
             buyerList.push(buyer);
             this.time.events.loop(Phaser.Timer.SECOND * 25, this.updateOrders, this, buyer);
-            console.log(buyerList);
+            console.log(buyerList + "createbuyer");
         },
 
         /*
@@ -306,12 +297,11 @@
         updateOrders: function (buyer) {
             if (buyerList == 0) {
                 Brew.gui.alert("Menetit kaikki tilaajasi.");
+                this.time.events.removeAll();
                 return;
             }
 
-            var names = Brew.products; //[storageManager.storages[0].description];
-            if (!names) names = ["nimi", "toinen nimi"];
-            console.log(Brew.products + " käyttäjän antamat nimet");
+            var names = Brew.products;
 
             if (buyer != undefined) {
                 var order = new Order().random(buyer, names);

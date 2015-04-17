@@ -5,7 +5,7 @@
     };
     
     var StorageManager = function() {
-        this.storages = {};
+        this.storages = [];
         this.base = { x: 0, y: 0, z: 0 };
     };
     
@@ -39,7 +39,8 @@
         this._naming = beer;        
         
         Brew.gui.query('Olet kehittänyt uudenlaisen oluen! Tuottamasi olut on <b>**' + beer.description + '**</b>! <br /><br />Anna tuotteelle nimi:', function(ans) {
-            var name = ans ? ans : this._naming.description;
+            ans.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+            var name = ans.replace(/</g, "&lt;").replace(/>/g, "&gt;") ? ans.replace(/</g, "&lt;").replace(/>/g, "&gt;") : this._naming.description;
             this.storages[this._naming.id].name = name;
             Brew.products.push(name);
         }, this);        
