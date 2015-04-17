@@ -164,29 +164,26 @@
      */
     GUI.prototype.showTutorialWindow = function(message, okbuttonCallback, okButtonCallbackContext) {
         var w;
-        
-        if ( !this._tutorialWindow ) {
-            w = $('<div></div>')
-                .addClass('brew-tutorial-window brew-window')
-                .appendTo(settings.dom)
-                .show({effect: 'slide', duration: 100 });
-        }
-        else w = this._tutorialWindow;
-        
-        //w.children('.brew-button').remove();
-        
-        if (okbuttonCallback) {
-            w.append(this.__makeButton('OK', function() {
-                var p = $(this).parent();
-                if (p.data('callback')) p.data('callback').call(p.data('callbackCtx'));
-            }))
+
+        w = $('<div></div>')
+            .addClass('brew-tutorial-window brew-window')
+            .append($('<div></div>').addClass('brew-tutorial-content'))
+            .append(this.__makeButton('OK', function() {
+                    var p = $(this).parent();
+                    if (p.data('callback')) p.data('callback').call(p.data('callbackCtx'));
+                }))
             .data('callback', okbuttonCallback)
-            .data('callbackCtx', okButtonCallbackContext);
-        } 
-                     
-        w.html(message);
+            .data('callbackCtx', okButtonCallbackContext)
+            .appendTo(settings.dom)
+            .show({ effect: 'slide', duration: 100 });
         
         this._tutorialWindow = w;
+    };
+    
+    
+    GUI.prototype.setTutorialWindow = function(message) {
+        var w = this._tutorialWindow;
+        w.children('.brew-tutorial-content').html(message);
     };
     
     

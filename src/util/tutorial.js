@@ -17,6 +17,11 @@
          */
         start: function() {
             this.current = -1;
+            
+            Brew.gui.showTutorialWindow('', function() {
+                this.next();
+            }, this);
+            
             this.next();
         },
         
@@ -50,23 +55,15 @@
             
             for ( var i in this.texts[this.current].point ) {
                 var elem = this[this.texts[this.current].point[i]];
-                elem.onClick.add(function() {
+                /*elem.onClick.add(function() {
                     this.next();
-                }, this);    
+                }, this);*/
                 
                 var pos = elem.isoPosition;
                 this.point(pos.x, pos.y, pos.z);
             }
             
-            var callback = null, callbackCtx = null;
-            
-            if (this.texts[this.current].okbutton == "true") {
-                callback = function() {
-                    this.next();
-                };
-                callbackCtx = null;
-            }
-            Brew.gui.showTutorialWindow(this.texts[this.current].text, callback, callbackCtx);
+            Brew.gui.setTutorialWindow(this.texts[this.current].text);
         },
         
         update: function() {

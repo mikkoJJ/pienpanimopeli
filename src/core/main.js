@@ -54,7 +54,7 @@
             resourceStorage.base.x = 4 * settings.tileSize;
             resourceStorage.base.y = 8 * settings.tileSize;
             resourceStorage.amount = 5;
-            resourceStorage.name = 'Ohramallasta';
+            resourceStorage.name = 'Mallasta';
             storageManager = new Brew.StorageManager();
 
 

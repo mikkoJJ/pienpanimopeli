@@ -14,6 +14,11 @@
             "point": ["fermenter", "maturer"],
             "text": "Näillä kattiloilla määritellään, millaista olutta valmistuu. Voit kokeilla laitteiden säätöjen vaikutuksia valmistuvaan olueen.",
             "okbutton": "true"
+        },
+        {
+            "point": [],
+            "text": "Muista pitää myös huolta panimosi siisteydestä! Roskia voi siivota klikkaamalla.",
+            "okbutton": "true"
         }
     ]
 }
