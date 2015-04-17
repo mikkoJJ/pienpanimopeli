@@ -76,10 +76,10 @@
             Brew.Producer.setChain(lauterer, fermenter, maturer, bottler);
 
             bottler.onBeerFinished.bind(this.beerFinished, this);
-            
-            
+
+
             ///((/////////////// DECOR: ////////////////////////
-            
+
             var pipes = this.add.isoSprite(7 * settings.tileSize, 2.8 * settings.tileSize, 10, 'sprites', 'pipes2', this.isoGroup);
             pipes.anchor.set(0.5, 0.5);
             pipes = this.add.isoSprite(7 * settings.tileSize, 6 * settings.tileSize, 10, 'sprites', 'pipes', this.isoGroup);
@@ -139,11 +139,17 @@
             changeText.fill = '#FFFFFF';
             changeText.anchor.setTo(0.5, 0);
 
+            var rightWall = this.game.add.isoSprite(4.4 * settings.tileSize, 0 * settings.tileSize, 5, 'sprites', "back_wall_right", this.isoGroup);
+            rightWall.anchor.setTo(0.5, 0.75);
+            
+            var wall = this.game.add.isoSprite(0 * settings.tileSize,  4.4 * settings.tileSize, 5, 'sprites', "back_wall_left", this.isoGroup);
+            wall.anchor.setTo(0.5, 0.75);
+            
             //////////////// TIME EVENTS: /////////////////
 
             var tutorialTime = 0;
             this.time.events.add(Phaser.Timer.SECOND * tutorialTime, function () {
-    //            this.initialBuyers();
+                this.initialBuyers();
                 //  this.createBuyers();
             }, this);
 
@@ -229,7 +235,7 @@
             for (i in storageManager.storages) { //storageiden omat indexit tulee siinä järjestyksessä kuin niitä valmistetaan eikä riipu oluttyypistä
                 var beerTypeIndex = storageManager.storages[i].type;
                 var name = this.getType(beerTypeIndex);
-                console.log(storageManager.storages[i].description); //undefined
+                    console.log(storageManager.storages[i].description); //undefined
 
                 if (name == order.type) storagei = i;
             }
@@ -277,8 +283,10 @@
             var initial = new Order().initialBuyers();
             for (i in initial) {
                 buyerList.push(initial[i]);
-                
-                if (storageManager.storages.length > 0) this.time.events.loop(Phaser.Timer.SECOND * 15, this.updateOrders, this, initial[i]);
+
+                console.log(storageManager.storages.length + " storagea");
+                //      if (storageManager.storages.length > 0)
+                this.time.events.loop(Phaser.Timer.SECOND * 15, this.updateOrders, this, initial[i]);
             }
             console.log(buyerList);
         },
@@ -301,7 +309,9 @@
                 return;
             }
 
-            var names = [storageManager.storages[0].description];
+            var names = Brew.products; //[storageManager.storages[0].description];
+            if (!names) names = ["nimi", "toinen nimi"];
+            console.log(Brew.products + " käyttäjän antamat nimet");
 
             if (buyer != undefined) {
                 var order = new Order().random(buyer, names);
@@ -439,7 +449,7 @@
 
         var pieni = 1;
         var suuri = 15;
-        this.staticBuyers = [["Alko", suuri], ["Kesko", suuri], ["S-Ryhmä", suuri], ["Musta Kynnys", pieni], ["Ale Pub", pieni], ["Erkki Virtanen", pieni]];
+        this.staticBuyers = [["Alko", suuri], ["Kesko", suuri], ["S-Ryhmä", suuri], ["Musta Kynnys", pieni], ["Ale Pub", pieni], ["Erkki Virtanen", pieni], ["Iso Baari", pieni], ["Pub Rousku", pieni], ["Oluthuone Rymy", pieni], ["Gastropub Lohi", pieni], ["Rappiohuone", pieni], ["Hilkan pubi", pieni]];
 
         this.price = $("#hinta").val();
         $("#hinta")
@@ -480,7 +490,7 @@
     };
 
     Order.prototype.message = function () {
-        return this.amount + " koria: " + this.type + " Tilaaja:" + this.buyer;
+        return this.amount + " koria: " + this.name + " Tilaaja:" + this.buyer;
     };
 
     Brew.Order = Order;

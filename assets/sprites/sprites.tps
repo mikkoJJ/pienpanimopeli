@@ -6,7 +6,7 @@
         <key>texturePackerVersion</key>
         <string>3.7.1</string>
         <key>fileName</key>
-        <string>Z:/Work/html_sandbox/pienpanimopeli/assets/sprites/sprites.tps</string>
+        <string>C:/Users/Elina Keränen/Documents/GitHub/pienpanimopeli/assets/sprites/sprites.tps</string>
         <key>autoSDSettings</key>
         <array>
             <struct type="AutoSDSettings">
@@ -238,6 +238,8 @@
             <filename>single_sprites/pipes.png</filename>
             <filename>single_sprites/pipes2.png</filename>
             <filename>single_sprites/arrow.png</filename>
+            <filename>single_sprites/back_wall_left.png</filename>
+            <filename>single_sprites/back_wall_right.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
