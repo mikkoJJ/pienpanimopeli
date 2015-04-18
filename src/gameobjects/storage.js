@@ -168,6 +168,14 @@
         }
         
     });
+    
+    Object.defineProperty(Storage.prototype, 'isoPosition', {
+        
+        get: function() {
+            return this.base;
+        }
+        
+    });
         
     
     Brew.Storage = Storage;
