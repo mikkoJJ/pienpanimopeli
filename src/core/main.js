@@ -11,9 +11,6 @@
         fermenter,
         maturer,
         bottler,
-        lagerStorage,
-        porterStorage,
-        darkStorage,
         storageManager,
         resourceStorage,
         person,
@@ -77,14 +74,6 @@
 
             bottler.onBeerFinished.bind(this.beerFinished, this);
 
-            this.time.events.loop(Phaser.Timer.SECOND * 0.5, function () {
-                if (bottler.state == Brew.ProducerState.PROCESSING) {
-                    bottler.prosessingId++;
-                    bottler._sprite.frameName = bottler._frame + bottler.prosessingId % 4;
-                }
-          }, this);
-
-
             ///((/////////////// DECOR: ////////////////////////
 
             var pipes = this.add.isoSprite(7 * settings.tileSize, 2.8 * settings.tileSize, 10, 'sprites', 'pipes2', this.isoGroup);
@@ -110,7 +99,6 @@
                     this.ad(mess);
                 }, this);
                 letter.frameName = "letter_new_open 2";
-                //  Brew.gui.toggleSeek();
             }, this, 'seek-employee-symbol', 'seek-employee-symbol');
             seek.anchor.setTo(0.5, 0);
 
@@ -131,11 +119,12 @@
             Brew.Budget.moveProgressBar();
             Brew.Budget.update(50000);
 
-            spending = $("#kulutus").val();
-            $("#kulutus")
-                .on("blur", function () {
-                    spending = $(this).val();
-                });
+            spending = 1000;
+            /*$("#kulutus").val();
+                        $("#kulutus")
+                            .on("blur", function () {
+                                spending = $(this).val();
+                            });*/
 
             text = this.add.text(880, 18, budget);
             text.fill = '#FFFFFF';
@@ -146,7 +135,7 @@
             changeText.fill = '#FFFFFF';
             changeText.anchor.setTo(0.5, 0);
 
-       /*     var rightWall = this.game.add.isoSprite(4.4 * settings.tileSize, 0 * settings.tileSize, 5, 'sprites', "back_wall_right", this.isoGroup);
+            /*     var rightWall = this.game.add.isoSprite(4.4 * settings.tileSize, 0 * settings.tileSize, 5, 'sprites', "back_wall_right", this.isoGroup);
             rightWall.anchor.setTo(0.5, 0.75);
 
             var wall = this.game.add.isoSprite(0 * settings.tileSize, 4.4 * settings.tileSize, 5, 'sprites', "back_wall_left", this.isoGroup);
@@ -154,7 +143,15 @@
 */
             var walls = this.game.add.isoSprite(0.6 * settings.tileSize, 0.6 * settings.tileSize, 125, 'sprites', "back_wall_both", this.isoGroup);
             walls.anchor.setTo(0.5, 0);
+
             //////////////// TIME EVENTS: /////////////////
+
+            this.time.events.loop(Phaser.Timer.SECOND * 0.5, function () {
+                if (bottler.state == Brew.ProducerState.PROCESSING) {
+                    bottler.prosessingId++;
+                    bottler._sprite.frameName = bottler._frame + bottler.prosessingId % 4;
+                }
+            }, this);
 
             var done = this.time.events.loop(Phaser.Timer.SECOND * 1, function () {
                 if (storageManager.storages.length == 0) return;
@@ -168,6 +165,8 @@
                 this.budgetHandling(-spending);
             }, this);
 
+            //initial dirt for tutorial
+            this.cleanUp();
             this.time.events.loop(Phaser.Timer.SECOND * 20, function () {
                 this.cleanUp();
             }, this);
@@ -184,6 +183,7 @@
             this.tutorial.start();
         },
 
+        //add dirt all over game
         cleanUp: function () {
             var clean = this.add.isoSprite(Brew.game.rnd.integerInRange(0 * settings.tileSize, 10 * settings.tileSize), Brew.game.rnd.integerInRange(0 * settings.tileSize, 10 * settings.tileSize), 0, 'sprites', 'dirt', this.isoGroup);
             clean.anchor.setTo(0.5, 1);
@@ -197,10 +197,11 @@
             }, this);
         },
 
+        //buy consumable
         buyMaterials: function () {
-            var price = -$("#aineet").val();
+            var price = -1000; //-$("#aineet").val();
             this.budgetHandling(price);
-            var beerType = Brew.gui.resourceWindow.data('type');
+            //    var beerType = Brew.gui.resourceWindow.data('type');
             resourceStorage.amount += 1;
         },
 
@@ -214,10 +215,16 @@
                 this.sendBrag(mess.dueText, function () {});
                 if (illegalAds == 5) {
                     Brew.gui.alert("Olet mainostanut liikaa laittomasti. Menetit toimilupasi ja hävisit pelin.");
+                    this.gameOver();
                     return;
                 } else warning = "Tämä on " + illegalAds + ". laiton mainos";
             } else this.createBuyer();
             Brew.gui.alert(mess.dueText + " " + warning);
+        },
+
+        //stop timer events, disable stuff, show a restart window or something
+        gameOver: function () {
+            this.time.events.removeAll();
         },
 
         //toimii oikein
@@ -243,32 +250,22 @@
         sell: function (order) {
             var storagei;
 
-            for (i in Brew.products) {
-                if (Brew.products[i] == order.name) storagei = i;
+            for (i in storageManager.storages) {
+                var beerType = storageManager.storages[i].name;
+                if (beerType == order.name) storagei = i;
             }
+
             if (storageManager.storages[storagei] == undefined) return false;
 
             if (storageManager.storages[storagei].amount < order.amount) return false;
             else if (order.buyer == "Erkki Virtanen") {
-                this.budgetHandling(-10);
+                this.budgetHandling(-500);
                 Brew.gui.alert("Yksityishenkilölle myyminen on laitonta! Sait sakot.");
             } else {
                 this.budgetHandling(order.price * order.amount);
                 storageManager.storages[storagei].amount -= order.amount;
-                var index = -1;
-                for (var i = 0, j = orderList.length; i < j; i++) {
-                    if (orderList[i] === order)
-                        index = i;
-                }
-                orderList.splice(index, 1);
+                orderList.splice(order.getIndex(order, orderList), 1);
             }
-
-        },
-
-        //get name of beertype
-        getType: function (typeIndex) {
-            var types = ["lager", "IPA", "dark"];
-            return types[typeIndex];
         },
 
         //add beer and get first orders
@@ -283,12 +280,12 @@
         },
 
 
-        //first orders has to be little ones
+        //first orders has to be small ones
         initialBuyers: function () {
             var initial = new Order().initialBuyers();
             for (i in initial) {
                 buyerList.push(initial[i]);
-                this.time.events.loop(Phaser.Timer.SECOND * 15, this.updateOrders, this, initial[i]);
+                this.time.events.loop(Phaser.Timer.SECOND * 25, this.updateOrders, this, initial[i]);
             }
         },
 
@@ -298,7 +295,6 @@
             var buyer = order.newBuyer();
             buyerList.push(buyer);
             this.time.events.loop(Phaser.Timer.SECOND * 25, this.updateOrders, this, buyer);
-            console.log(buyerList + "createbuyer");
         },
 
         /*
@@ -312,6 +308,7 @@
             }
 
             var names = Brew.products;
+            if (names.length <= 0) return;
 
             if (buyer != undefined) {
                 var order = new Order().random(buyer, names);
@@ -324,8 +321,9 @@
 
         //remove rejected buyers
         remove: function (order) {
-            order.buyers.splice(order.getIndex(), 1);
-            console.log(buyerList);
+            order.buyers.splice(order.getIndex(order.buyer, buyerList), 1);
+            orderList.splice(order.getIndex(order, orderList), 1);
+            Brew.gui.alert("Tilaaja " + order.buyer + " poistui tilaajalistaltasi.");
         },
 
         budgetHandling: function (money) {
@@ -343,6 +341,7 @@
                 Brew.gui.alert("Menetit kaikki rahasi ja hävisit pelin.");
                 Brew.Budget.update(budget);
                 text.setText(budget);
+                this.gameOver();
             } else if (budget >= 100000) {
                 Brew.gui.alert("Liikevoittosi on ilmiömäinen. Voitit pelin!");
                 Brew.Budget.update(budget);
@@ -380,10 +379,8 @@
             this.floor.update();
 
             if (budget <= 100000 && budget >= 0) {
-                //    Brew.Budget.startBudget(budget, text);
                 text.setText(Math.floor(text.number));
             } else {
-                //    Brew.Budget.update(budget);
                 text.setText(budget);
             }
 
@@ -397,13 +394,12 @@
                     allListElements.each(function (index) {
                         if ($(this).data('messageData') == order) {
                             $(this).remove();
-                            order.buyers.splice(order.getIndex(), 1);
-                            console.log(buyerList.length);
-                            //  console.log(buyerList);
+                            order.buyers.splice(order.getIndex(order.buyer, buyerList), 1);
                             orderList.shift();
                             return;
                         }
                     });
+                    Brew.gui.alert("Tilaus vanhentui ja tilaaja " + order.buyer + " poistui tilaajalistaltasi.");
                 }
             });
         },
@@ -452,11 +448,12 @@
         var suuri = 15;
         this.staticBuyers = [["Alko", suuri], ["Kesko", suuri], ["S-Ryhmä", suuri], ["Musta Kynnys", pieni], ["Ale Pub", pieni], ["Erkki Virtanen", pieni], ["Iso Baari", pieni], ["Pub Rousku", pieni], ["Oluthuone Rymy", pieni], ["Gastropub Lohi", pieni], ["Rappiohuone", pieni], ["Hilkan pubi", pieni]];
 
-        this.price = $("#hinta").val();
-        $("#hinta")
-            .on("blur", function () {
-                this.price = $(this).val();
-            });
+        this.price = 500;
+        /*$("#hinta").val();
+                $("#hinta")
+                    .on("blur", function () {
+                        this.price = $(this).val();
+                    });*/
     };
 
     Order.prototype.initialBuyers = function () {
@@ -464,9 +461,9 @@
         return buyers;
     };
 
-    Order.prototype.getIndex = function () {
-        for (var i = 0, j = this.buyers.length; i < j; i++) {
-            if (this.buyers[i] === this.buyer) {
+    Order.prototype.getIndex = function (object, list) {
+        for (var i = 0, j = list.length; i < j; i++) {
+            if (list[i] === object) {
                 return i;
             }
         }

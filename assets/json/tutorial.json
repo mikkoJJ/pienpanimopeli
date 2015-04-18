@@ -4,7 +4,7 @@
             "point": ["lauterer"],
             "text": "Tervetuloa <b>**Pienpanimopeliin**</b>! <br /><br /> Aloita panimosi oluentuotanto käynnistämällä <b>**Mäskikattila**</b>, jossa mallas mäskätään jne.",
             "okbutton": "false"
-        },   
+        },
         {
             "point": ["fermenter", "maturer", "bottler"],
             "text": "Tuotanto on alkanut, ja olutta kuljetetaan <b>**Pääkäymiskattilan**</b> ja <b>**Jälkikäymiskattilan**</b> läpi, jonka jälkeen <b>**Pullottaja**</b> paketoi ne pulloiksi, jotka ovat valmiita myytäviksi!",
@@ -27,7 +27,17 @@
         },
         {
             "point": [],
-            "text": "Kun olet saanut ensimmäiset erät olutta valmistettua, sinulle alkaa tulemaan <b>**tilauksia**</b> kirjeitse. Avaa kirjeet vasemman yläkulman <b>**kirje-kuvakkeesta**</b> ja ala myymään! <br /><br /> Onnea panimotoimintaan!",
+            "text": "Kun olet saanut ensimmäiset erät olutta valmistettua, sinulle alkaa tulla <b>**tilauksia**</b> kirjeitse. Avaa kirjeet vasemman yläkulman <b>**kirje-kuvakkeesta**</b> ja ala myymään!<br /><br />",
+            "okbutton": "true"
+        },
+        {
+            "point": [],
+            "text": "Jos haluat lisää tilaajia, kokeile <b>**mainostaa**</b> valitsemalla <b>**lehti-ilmoitus**</b> oikeasta reunasta.",
+            "okbutton": "true"
+        },
+        {
+            "point": [],
+            "text": "Muista myös pitää huolta, että <b>**budjettisi**</b> pysyy aisoissa. 100 000 saavutettuasi voitat pelin! Onnea panimotoimintaan!",
             "okbutton": "true"
         }
     ]
