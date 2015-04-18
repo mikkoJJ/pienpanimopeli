@@ -88,12 +88,13 @@
 
             //////////////// RIGHT BUTTONS: /////////////////
 
-            var coin = this.add.button(940, 0, 'sprites', function () {}, this, 'money_symbol', 'money_symbol');
+            var coin = this.add.button(940, 5, 'sprites', function () {}, this, 'money_symbol', 'money_symbol');
             coin.anchor.setTo(0.5, 0);
+            coin.scale.set(0.8,0.8);
 
             Brew.gui.resources("Osta 1 erä raaka-aineita", this.buyMaterials, this);
 
-            var seek = this.add.button(900, 75, 'sprites', function () {
+            var seek = this.add.button(910, 75, 'sprites', function () {
                 var mess = new Brew.Messages().getMessage();
                 Brew.gui.addMessage("Mainosta", mess.content, null, "Oi kyllä!", function () {
                     this.ad(mess);
@@ -101,12 +102,14 @@
                 letter.frameName = "letter_new_open 2";
             }, this, 'seek-employee-symbol', 'seek-employee-symbol');
             seek.anchor.setTo(0.5, 0);
+        //    seek.scale.set(0.7,0.7);
 
-            var mallas = this.add.button(900, 190, 'sprites', this.buyMaterials, //function () {
+            var mallas = this.add.button(910, 150, 'sprites', this.buyMaterials, //function () {
                 // Brew.gui.toggleResources();
                 //    },
                 this, 'consumable', 'consumable');
             mallas.anchor.setTo(0.5, 0);
+            mallas.scale.set(1.5,1.5);
 
             //////////////// OTHER STUFF: /////////////////
 
@@ -188,7 +191,7 @@
             var clean = this.add.isoSprite(Brew.game.rnd.integerInRange(0 * settings.tileSize, 10 * settings.tileSize), Brew.game.rnd.integerInRange(0 * settings.tileSize, 10 * settings.tileSize), 0, 'sprites', 'dirt', this.isoGroup);
             clean.anchor.setTo(0.5, 1);
             soDirtyEverywhere++;
-            if (soDirtyEverywhere % 10 == 0) Brew.gui.alert("Hygieniasi on epäilyttävää. Sait sakot.", this.budgetHandling(-100), this);
+            if (soDirtyEverywhere % 10 == 0) Brew.gui.alert("Hygieniasi on epäilyttävää. Sait sakot.", this.budgetHandling(-500), this);
 
             clean.inputEnabled = true;
             clean.events.onInputDown.add(function () {
@@ -212,7 +215,7 @@
             var warning = "";
             if (mess.title != "Laillinen") {
                 illegalAds++;
-                this.sendBrag(mess.dueText, function () {});
+             //   this.sendBrag(mess.dueText, function () {});
                 if (illegalAds == 5) {
                     Brew.gui.alert("Olet mainostanut liikaa laittomasti. Menetit toimilupasi ja hävisit pelin.");
                     this.gameOver();
