@@ -64,7 +64,7 @@
             lauterer.resource = resourceStorage;
             fermenter = new Brew.Producer(this.game, 8 * settings.tileSize, 5 * settings.tileSize, 0, 'kettle3_with_bubbles', this.isoGroup);
             maturer = new Brew.Producer(this.game, 8 * settings.tileSize, 2 * settings.tileSize, 0, 'kettle4', this.isoGroup);
-            bottler = new Brew.Producer(this.game, 5 * settings.tileSize, 2 * settings.tileSize, 0, 'bottlemachine_step1', this.isoGroup);
+            bottler = new Brew.Producer(this.game, 5 * settings.tileSize, 2 * settings.tileSize, 0, 'bottlemachine_step', this.isoGroup);
 
             fermenter.addOption('Tee lageria', 'lagerbutton', 'type', Brew.BeerType.LAGER);
             fermenter.addOption('Tee IPAa', 'ipabutton', 'type', Brew.BeerType.IPA);
@@ -76,6 +76,13 @@
             Brew.Producer.setChain(lauterer, fermenter, maturer, bottler);
 
             bottler.onBeerFinished.bind(this.beerFinished, this);
+
+            this.time.events.loop(Phaser.Timer.SECOND * 0.5, function () {
+                if (bottler.state == Brew.ProducerState.PROCESSING) {
+                    bottler.prosessingId++;
+                    bottler._sprite.frameName = bottler._frame + bottler.prosessingId % 4;
+                }
+          }, this);
 
 
             ///((/////////////// DECOR: ////////////////////////
@@ -139,12 +146,14 @@
             changeText.fill = '#FFFFFF';
             changeText.anchor.setTo(0.5, 0);
 
-            var rightWall = this.game.add.isoSprite(4.4 * settings.tileSize, 0 * settings.tileSize, 5, 'sprites', "back_wall_right", this.isoGroup);
+       /*     var rightWall = this.game.add.isoSprite(4.4 * settings.tileSize, 0 * settings.tileSize, 5, 'sprites', "back_wall_right", this.isoGroup);
             rightWall.anchor.setTo(0.5, 0.75);
 
             var wall = this.game.add.isoSprite(0 * settings.tileSize, 4.4 * settings.tileSize, 5, 'sprites', "back_wall_left", this.isoGroup);
             wall.anchor.setTo(0.5, 0.75);
-
+*/
+            var walls = this.game.add.isoSprite(0.6 * settings.tileSize, 0.6 * settings.tileSize, 125, 'sprites', "back_wall_both", this.isoGroup);
+            walls.anchor.setTo(0.5, 0);
             //////////////// TIME EVENTS: /////////////////
 
             var done = this.time.events.loop(Phaser.Timer.SECOND * 1, function () {
@@ -348,6 +357,7 @@
 
             storageManager.update();
             resourceStorage.update();
+
             //check mouse position and put the cursor on the correct place:
             /*var _pos = new Phaser.Plugin.Isometric.Point3();
             this.game.iso.unproject(this.game.input.activePointer.position, _pos);
