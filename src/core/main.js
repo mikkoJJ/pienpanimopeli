@@ -170,6 +170,7 @@
             this.tutorial.fermenter = fermenter;
             this.tutorial.maturer = maturer;
             this.tutorial.bottler = bottler;
+            this.tutorial.resources = resourceStorage;
 
             this.tutorial.start();
         },

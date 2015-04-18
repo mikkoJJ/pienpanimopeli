@@ -16,8 +16,18 @@
             "okbutton": "true"
         },
         {
+            "point": ["resources"],
+            "text": "Oluen valmistukseen tarvitset <b>**tarvikkeita**</b> kuten ohramallasta ja vettä. Pystyt ostamaan lisää tarvikkeita varastoosi oikean reunan napista.",
+            "okbutton": "true"
+        },
+        {
             "point": [],
             "text": "Muista pitää myös huolta panimosi siisteydestä! Roskia voi siivota klikkaamalla.",
+            "okbutton": "true"
+        },
+        {
+            "point": [],
+            "text": "Kun olet saanut ensimmäiset erät olutta valmistettua, sinulle alkaa tulemaan <b>**tilauksia**</b> kirjeitse. Avaa kirjeet vasemman yläkulman <b>**kirje-kuvakkeesta**</b> ja ala myymään! <br /><br /> Onnea panimotoimintaan!",
             "okbutton": "true"
         }
     ]
