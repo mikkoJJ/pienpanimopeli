@@ -229,8 +229,6 @@
             <filename>single_sprites/kettle3_with_bubbles.png</filename>
             <filename>single_sprites/money_symbol.png</filename>
             <filename>single_sprites/kettle4_selected.png</filename>
-            <filename>single_sprites/bottlemachine_step1.png</filename>
-            <filename>single_sprites/bottlemachine_step1_selected.png</filename>
             <filename>single_sprites/short_brew_out.png</filename>
             <filename>single_sprites/short_brew_over.png</filename>
             <filename>single_sprites/long_brew_out.png</filename>
@@ -238,6 +236,20 @@
             <filename>single_sprites/pipes.png</filename>
             <filename>single_sprites/pipes2.png</filename>
             <filename>single_sprites/arrow.png</filename>
+            <filename>single_sprites/back_wall_left.png</filename>
+            <filename>single_sprites/back_wall_right.png</filename>
+            <filename>single_sprites/bottlemachine_step.png</filename>
+            <filename>single_sprites/bottlemachine_step_selected.png</filename>
+            <filename>single_sprites/bottlemachine_step0.png</filename>
+            <filename>single_sprites/bottlemachine_step1.png</filename>
+            <filename>single_sprites/bottlemachine_step2.png</filename>
+            <filename>single_sprites/bottlemachine_step3.png</filename>
+            <filename>single_sprites/kettle3_with_bubbles0.png</filename>
+            <filename>single_sprites/back_wall_both.png</filename>
+            <filename>single_sprites/seek_button_out.png</filename>
+            <filename>single_sprites/seek_button_over.png</filename>
+            <filename>single_sprites/consumable_button_out.png</filename>
+            <filename>single_sprites/consumable_button_over.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

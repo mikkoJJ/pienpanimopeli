@@ -48,11 +48,16 @@
 
 .brew-button {
     width: 140px;
-    margin: 10px;
+    margin: 10px 10px 10px -10px;
+    padding: 10px 5px;
     float: right;
-    background: #BFA776;
+    background: #264c8e;
     text-align: center;
     cursor: pointer;
+}
+
+.brew-button:hover {
+    background-color: #4375cc;
 }
 
 .brew-messages {
@@ -73,6 +78,7 @@
 }
 
 .brew-message {
+    font-size: 9pt;
     background: #f2decb;
     color: black;
     width: 170px;
@@ -93,7 +99,13 @@
 .brew-message-open {
     left: 0px;
     width: 290px;
-    height: 140px;
+    height: 150px;
+}
+
+.brew-message .brew-button {
+    background-color: #a38365;
+    padding: 4px;
+    font-size: 9pt;
 }
 
 .brew-message-body {
@@ -123,11 +135,10 @@
 .brew-tutorial-window {
     font-size: 11pt;
     position: absolute;
-    top: 20px;
-    right: 150px;
+    bottom: 20px;
+    right: 20px;
     width: 480px;
-    margin: 0 auto;
-    padding: 10px 20px;
+    padding: 30px 20px 10px 20px;
 }
 
 .brew-window input {

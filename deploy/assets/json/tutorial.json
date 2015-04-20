@@ -4,7 +4,7 @@
             "point": ["lauterer"],
             "text": "Tervetuloa <b>**Pienpanimopeliin**</b>! <br /><br /> Aloita panimosi oluentuotanto käynnistämällä <b>**Mäskikattila**</b>, jossa mallas mäskätään jne.",
             "okbutton": "false"
-        },   
+        },
         {
             "point": ["fermenter", "maturer", "bottler"],
             "text": "Tuotanto on alkanut, ja olutta kuljetetaan <b>**Pääkäymiskattilan**</b> ja <b>**Jälkikäymiskattilan**</b> läpi, jonka jälkeen <b>**Pullottaja**</b> paketoi ne pulloiksi, jotka ovat valmiita myytäviksi!",
@@ -13,6 +13,31 @@
         {
             "point": ["fermenter", "maturer"],
             "text": "Näillä kattiloilla määritellään, millaista olutta valmistuu. Voit kokeilla laitteiden säätöjen vaikutuksia valmistuvaan olueen.",
+            "okbutton": "true"
+        },
+        {
+            "point": ["resources"],
+            "text": "Oluen valmistukseen tarvitset <b>**tarvikkeita**</b> kuten ohramallasta ja vettä. Pystyt ostamaan lisää tarvikkeita varastoosi oikean reunan napista.",
+            "okbutton": "true"
+        },
+        {
+            "point": [],
+            "text": "Muista pitää myös huolta panimosi siisteydestä! Roskia voi siivota klikkaamalla.",
+            "okbutton": "true"
+        },
+        {
+            "point": [],
+            "text": "Kun olet saanut ensimmäiset erät olutta valmistettua, sinulle alkaa tulla <b>**tilauksia**</b> kirjeitse. Avaa kirjeet vasemman yläkulman <b>**kirje-kuvakkeesta**</b> ja ala myymään!<br /><br />",
+            "okbutton": "true"
+        },
+        {
+            "point": [],
+            "text": "Jos haluat lisää tilaajia, kokeile <b>**mainostaa**</b> valitsemalla <b>**lehti-ilmoitus**</b> oikeasta reunasta.",
+            "okbutton": "true"
+        },
+        {
+            "point": [],
+            "text": "Muista myös pitää huolta, että <b>**budjettisi**</b> pysyy aisoissa. 100 000 € saavutettuasi voitat pelin! Onnea panimotoimintaan!",
             "okbutton": "true"
         }
     ]
