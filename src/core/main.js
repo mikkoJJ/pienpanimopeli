@@ -51,7 +51,7 @@
             resourceStorage.base.x = 4 * settings.tileSize;
             resourceStorage.base.y = 8 * settings.tileSize;
             resourceStorage.amount = 5;
-            resourceStorage.name = 'Mallasta';
+            resourceStorage.name = 'Tarvikkeita';
             storageManager = new Brew.StorageManager();
 
 
@@ -100,16 +100,15 @@
                     this.ad(mess);
                 }, this);
                 letter.frameName = "letter_new_open 2";
-            }, this, 'seek-employee-symbol', 'seek-employee-symbol');
+            }, this, 'seek_button_over', 'seek_button_out');
             seek.anchor.setTo(0.5, 0);
         //    seek.scale.set(0.7,0.7);
 
             var mallas = this.add.button(910, 150, 'sprites', this.buyMaterials, //function () {
                 // Brew.gui.toggleResources();
                 //    },
-                this, 'consumable', 'consumable');
+                this, 'consumable_button_over', 'consumable_button_out');
             mallas.anchor.setTo(0.5, 0);
-            mallas.scale.set(1.5,1.5);
 
             //////////////// OTHER STUFF: /////////////////
 

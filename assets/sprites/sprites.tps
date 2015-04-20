@@ -6,7 +6,7 @@
         <key>texturePackerVersion</key>
         <string>3.7.1</string>
         <key>fileName</key>
-        <string>C:/Users/Elina Keränen/Documents/GitHub/pienpanimopeli/assets/sprites/sprites.tps</string>
+        <string>Z:/Work/html_sandbox/pienpanimopeli/assets/sprites/sprites.tps</string>
         <key>autoSDSettings</key>
         <array>
             <struct type="AutoSDSettings">
@@ -246,6 +246,10 @@
             <filename>single_sprites/bottlemachine_step3.png</filename>
             <filename>single_sprites/kettle3_with_bubbles0.png</filename>
             <filename>single_sprites/back_wall_both.png</filename>
+            <filename>single_sprites/seek_button_out.png</filename>
+            <filename>single_sprites/seek_button_over.png</filename>
+            <filename>single_sprites/consumable_button_out.png</filename>
+            <filename>single_sprites/consumable_button_over.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

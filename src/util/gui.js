@@ -234,7 +234,7 @@
      * @param {Function} rejectCallback callback to call when reject button pressed.
      */
     GUI.prototype.addMessage = function (header, message, data, buttonText, buttonCallback, buttonCallbackCtx, rejectCallback) {
-        FB.XFBML.parse(); //need to reparse
+        //FB.XFBML.parse(); //need to reparse
 
         var _w = $('<div><div/>')
             .addClass('brew-window brew-message')
