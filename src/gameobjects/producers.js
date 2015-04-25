@@ -94,12 +94,12 @@
         this._sprite.events.onInputOut.add(this._inputOut, this);
         //this._sprite.tint = 0xffaaaa;
 
-        this._indicator = game.add.isoSprite(x, y, z + 140, 'sprites', 'producer_idle', group);
-        this._indicator.anchor.set(0.5, 0.5);
-        this._indicator.pivot.set(0.5, 0.5);
-        game.add.tween(this._indicator).to({
-            isoZ: z + 145
-        }, 1800, Phaser.Easing.Quadratic.InOut, true, 0, -1, true);
+    //    this._indicator = game.add.isoSprite(x, y, z + 140, 'sprites', 'producer_idle', group);
+    //    this._indicator.anchor.set(0.5, 0.5);
+    //    this._indicator.pivot.set(0.5, 0.5);
+    //    game.add.tween(this._indicator).to({
+    //        isoZ: z + 145
+    //    }, 1800, Phaser.Easing.Quadratic.InOut, true, 0, -1, true);
     };
 
     Producer.prototype.constructor = Producer;
@@ -191,7 +191,7 @@
 
         set: function (newState) {
             this._state = newState;
-            this._indicator.frameName = STATE_ICONS[newState];
+      /*      this._indicator.frameName = STATE_ICONS[newState];
             if (newState == Brew.ProducerState.PROCESSING) {
                 this._indicatorTween = this._game.add.tween(this._indicator).to({
                     rotation: Math.PI * 2
@@ -200,7 +200,7 @@
                 this._indicatorTween.stop();
                 this._indicator.rotation = 0;
             }
-        }
+    */    }
 
     });
 

@@ -137,12 +137,6 @@
             changeText.fill = '#FFFFFF';
             changeText.anchor.setTo(0.5, 0);
 
-            /*     var rightWall = this.game.add.isoSprite(4.4 * settings.tileSize, 0 * settings.tileSize, 5, 'sprites', "back_wall_right", this.isoGroup);
-            rightWall.anchor.setTo(0.5, 0.75);
-
-            var wall = this.game.add.isoSprite(0 * settings.tileSize, 4.4 * settings.tileSize, 5, 'sprites', "back_wall_left", this.isoGroup);
-            wall.anchor.setTo(0.5, 0.75);
-*/
             var walls = this.game.add.isoSprite(0.6 * settings.tileSize, 0.6 * settings.tileSize, 125, 'sprites', "back_wall_both", this.isoGroup);
             walls.anchor.setTo(0.5, 0);
 
@@ -203,7 +197,6 @@
         buyMaterials: function () {
             var price = -1000; //-$("#aineet").val();
             this.budgetHandling(price);
-            //    var beerType = Brew.gui.resourceWindow.data('type');
             resourceStorage.amount += 1;
         },
 
@@ -287,7 +280,7 @@
             var initial = new Order().initialBuyers();
             for (i in initial) {
                 buyerList.push(initial[i]);
-                this.time.events.loop(Phaser.Timer.SECOND * 25, this.updateOrders, this, initial[i]);
+                this.time.events.loop(Phaser.Timer.SECOND * 60, this.updateOrders, this, initial[i]);
             }
         },
 
@@ -296,7 +289,7 @@
             var order = new Order();
             var buyer = order.newBuyer();
             buyerList.push(buyer);
-            this.time.events.loop(Phaser.Timer.SECOND * 25, this.updateOrders, this, buyer);
+            this.time.events.loop(Phaser.Timer.SECOND * 60, this.updateOrders, this, buyer);
         },
 
         /*
@@ -386,7 +379,7 @@
                 text.setText(budget);
             }
 
-            var secondsToDisappear = 60000; //60 sekuntia
+            var secondsToDisappear = 59000; //60 sekuntia
 
             //remove old orders
             orderList.forEach(function (order) {
