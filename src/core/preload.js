@@ -17,6 +17,7 @@
             //add necessary game states. 
             //REMEMBER: The state's JS file will have to be included in the HTML file as well.
             this.state.add('Main', Brew.Main);
+            this.state.add('Menu', Brew.Menu);
         },
 
         /**
@@ -64,7 +65,7 @@
          * @public
          */
         update: function () {
-            this.state.start('Main');
+            this.state.start('Menu');
         }
     };
 
