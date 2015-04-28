@@ -250,6 +250,9 @@
             <filename>single_sprites/seek_button_over.png</filename>
             <filename>single_sprites/consumable_button_out.png</filename>
             <filename>single_sprites/consumable_button_over.png</filename>
+            <filename>single_sprites/logo.png</filename>
+            <filename>single_sprites/pelaa_over.png</filename>
+            <filename>single_sprites/pelaa_up.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
