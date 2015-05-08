@@ -30,7 +30,7 @@
             this.credits = this.add.text(this.camera.width, this.playbutton.y + 200, credits, { fill: '#999' });
             this.credits.font = 'Press Start 2P';
             this.credits.fontSize = 20;
-            this.add.tween(this.credits).to({ x: -2000 }, 30000, Phaser.Easing.Linear.None, true, 0, -1);
+            this.add.tween(this.credits).to({ x: -2000 }, 10000, Phaser.Easing.Linear.None, true, 0, -1);
         },
         
         play: function() {

@@ -140,6 +140,13 @@
             var walls = this.game.add.isoSprite(0.6 * settings.tileSize, 0.6 * settings.tileSize, 125, 'sprites', "back_wall_both", this.isoGroup);
             walls.anchor.setTo(0.5, 0);
 
+            var music = this.game.add.audio('tausta');
+            music.loop = true;
+            music.play();
+            music.onLoop.add(function () {
+                music.play();
+            }, this);
+
             //////////////// TIME EVENTS: /////////////////
 
             this.time.events.loop(Phaser.Timer.SECOND * 0.5, function () {
@@ -297,10 +304,33 @@
          */
         updateOrders: function (buyer) {
             if (buyerList == 0) {
+                var allListElements = $('.brew-message');
+                allListElements.each(function (index) {
+                    $(this).remove();
+                });
                 Brew.gui.alert("Menetit kaikki tilaajasi.");
                 this.time.events.removeAll();
                 return;
             }
+
+            var secondsToDisappear = 60000; //60 sekuntia
+
+            //remove old orders
+            orderList.forEach(function (order) {
+                if (Brew.game.time.now - order.age > secondsToDisappear) {
+                    var allListElements = $('.brew-message');
+
+                    allListElements.each(function (index) {
+                        if ($(this).data('messageData') == order) {
+                            $(this).remove();
+                            order.buyers.splice(order.getIndex(order.buyer, buyerList), 1);
+                            orderList.shift();
+                            return;
+                        }
+                    });
+                    Brew.gui.alert("Tilaus vanhentui ja tilaaja " + order.buyer + " poistui tilaajalistaltasi.");
+                }
+            });
 
             var names = Brew.products;
             if (names.length <= 0) return;
@@ -319,6 +349,15 @@
             order.buyers.splice(order.getIndex(order.buyer, buyerList), 1);
             orderList.splice(order.getIndex(order, orderList), 1);
             Brew.gui.alert("Tilaaja " + order.buyer + " poistui tilaajalistaltasi.");
+            if (buyerList == 0) {
+                var allListElements = $('.brew-message');
+                allListElements.each(function (index) {
+                    $(this).remove();
+                });
+                Brew.gui.alert("Menetit kaikki tilaajasi.");
+                this.time.events.removeAll();
+                return;
+            }
         },
 
         budgetHandling: function (money) {
@@ -379,24 +418,6 @@
                 text.setText(budget);
             }
 
-            var secondsToDisappear = 59000; //60 sekuntia
-
-            //remove old orders
-            orderList.forEach(function (order) {
-                if (Brew.game.time.now - order.age > secondsToDisappear) {
-                    var allListElements = $('.brew-message');
-
-                    allListElements.each(function (index) {
-                        if ($(this).data('messageData') == order) {
-                            $(this).remove();
-                            order.buyers.splice(order.getIndex(order.buyer, buyerList), 1);
-                            orderList.shift();
-                            return;
-                        }
-                    });
-                    Brew.gui.alert("Tilaus vanhentui ja tilaaja " + order.buyer + " poistui tilaajalistaltasi.");
-                }
-            });
         },
 
     };

@@ -41,6 +41,7 @@
             this.load.atlasJSONHash('sprites', 'assets/sprites/brew_sprites.png', 'assets/sprites/brew_sprites_data.json');
             this.load.json('texts', 'assets/json/texts.json');
             this.load.json('tutorial', 'assets/json/tutorial.json');
+            this.load.audio('tausta', ['assets/audio/tausta.mp3', 'assets/audio/tausta.ogg']);
             
             console.log('PRELOAD: Images loaded');
             

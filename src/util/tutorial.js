@@ -62,14 +62,17 @@
                 var pos = elem.isoPosition;
                 this.point(pos.x, pos.y, pos.z);
             }
-            
-            Brew.gui.setTutorialWindow(this.texts[this.current].text);
+            Brew.gui.setTutorialWindow(this.texts[this.current].text, this.stop, this);
         },
         
-        update: function() {
+        update: function() {       
+        },
+        
+        stop: function() {
+            this.group.destroy();
+            Brew.gui.hideTutorialWindow();
             
-            
-        }
+        },
         
     };
     

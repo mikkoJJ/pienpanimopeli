@@ -135,78 +135,107 @@
      * @param   {Str}    message the message to display
      * @returns {jQuery} the showed window
      */
-    GUI.prototype.showInfo = function(x, y, message) {
+    GUI.prototype.showInfo = function (x, y, message) {
         var w = $('<div></div>')
             .addClass('brew-info-window brew-window')
             .appendTo(settings.dom)
-            .css({left: x, top: y})
+            .css({
+                left: x,
+                top: y
+            })
             .html(message)
-            .show({effect: 'scale', origin: ['left', 'center'], duration: 80 });
-        
+            .show({
+                effect: 'scale',
+                origin: ['left', 'center'],
+                duration: 80
+            });
+
         return w;
     };
-    
-    
+
+
     /**
      * Hide a previously shown info window.
      * @param {jQuery} window the window to hide (returned by showInfo).
      */
-    GUI.prototype.hideInfo = function(window) {
-        window.hide({effect: 'scale', origin: ['left', 'center'], duration: 80, complete: function() { $(this).remove(); } });    
+    GUI.prototype.hideInfo = function (window) {
+        window.hide({
+            effect: 'scale',
+            origin: ['left', 'center'],
+            duration: 80,
+            complete: function () {
+                $(this).remove();
+            }
+        });
     };
-    
-    
+
+
     /**
-     * Shows a tutorial window on the top right corner of the game. If the tutorial window has been created previously, 
+     * Shows a tutorial window on the top right corner of the game. If the tutorial window has been created previously,
      * calling this updates the message.
-     * 
-     * @param {String}  message  the message to display. 
+     *
+     * @param {String}  message  the message to display.
      */
-    GUI.prototype.showTutorialWindow = function(message, okbuttonCallback, okButtonCallbackContext) {
+    GUI.prototype.showTutorialWindow = function (message, okbuttonCallback, okButtonCallbackContext) {
         var w;
 
         w = $('<div></div>')
             .addClass('brew-tutorial-window brew-window')
             .append($('<div></div>').addClass('brew-tutorial-content'))
-            .append(this.__makeButton('OK', function() {
-                    var p = $(this).parent();
-                    if (p.data('callback')) p.data('callback').call(p.data('callbackCtx'));
-                }))
-            .data('callback', okbuttonCallback)
+            .append(this.__makeButton('OK', function () {
+                var p = $(this).parent();
+                if (p.data('callback')) p.data('callback').call(p.data('callbackCtx'));
+            }))
+
+        .data('callback', okbuttonCallback)
             .data('callbackCtx', okButtonCallbackContext)
             .appendTo(settings.dom)
-            .show({ effect: 'slide', duration: 100 });
-        
+            .show({
+                effect: 'slide',
+                duration: 100
+            });
+
         this._tutorialWindow = w;
     };
-    
-    
-    GUI.prototype.setTutorialWindow = function(message) {
+
+
+    GUI.prototype.setTutorialWindow = function (message, okbuttonCallback, okButtonCallbackContext) {
         var w = this._tutorialWindow;
-        w.children('.brew-tutorial-content').html(message);
+        w.children('.brew-tutorial-content').html(message).append(this.__makeButton('Piilota tutoriaali', function () {
+                var p = $(this).parent();
+                if (p.data('callback')) p.data('callback').call(p.data('callbackCtx'));
+            }))
+            .data('callback', okbuttonCallback)
+            .data('callbackCtx', okButtonCallbackContext);
     };
-    
-    
+
+
     /**
      * Hide the tutorial window.
      */
-    GUI.prototype.hideTutorialWindow = function() {
-        this._tutorialWindow.hide({effect: 'slide', duration: 100 });
+    GUI.prototype.hideTutorialWindow = function () {
+        this._tutorialWindow.hide({
+            effect: 'slide',
+            duration: 100
+        });
     };
-    
-    
+
+
     /**
-     * Show a query window to the user. The user can input text as an answer to the query, and the input 
+     * Show a query window to the user. The user can input text as an answer to the query, and the input
      * will be given as a parameter to the callback function.
      * @param {String}   message     The message to display with the query
      * @param {Function} callback    Function called when the user clicks the OK button.
      * @param {Object}   callbackCtx the context in which to call the callback
      */
-    GUI.prototype.query = function(message, callback, callbackCtx) {
+    GUI.prototype.query = function (message, callback, callbackCtx) {
         $('<div><div/>')
             .addClass('brew-window brew-alert')
             .html(message)
-            .append( $('<input/>').attr({ type: 'text', id: 'brew-query' }) )
+            .append($('<input/>').attr({
+                type: 'text',
+                id: 'brew-query'
+            }))
             .append(this.__makeButton('OK', function () {
                 var p = $(this).parent();
                 var answer = p.children('#brew-query').val();
