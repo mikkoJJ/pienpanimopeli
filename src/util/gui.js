@@ -201,10 +201,11 @@
 
     GUI.prototype.setTutorialWindow = function (message, okbuttonCallback, okButtonCallbackContext) {
         var w = this._tutorialWindow;
-        w.children('.brew-tutorial-content').html(message).append(this.__makeButton('Piilota tutoriaali', function () {
+        w.children('.brew-tutorial-content').html(message).append(this.__makeButton('X', function () {
                 var p = $(this).parent();
                 if (p.data('callback')) p.data('callback').call(p.data('callbackCtx'));
-            }))
+            }).addClass('brew-hidebutton')                                                                  
+            )
             .data('callback', okbuttonCallback)
             .data('callbackCtx', okButtonCallbackContext);
     };
@@ -271,17 +272,18 @@
             .append($('<div><div/>')
                 .addClass('brew-message-body')
                 .html(message)
-                .append(this.__shareButton().data('callback', buttonCallback).data('callbackCtx', buttonCallbackCtx))
-
-                .append(this.__makeButton("Hylkää", function () {
-                    var remove = true;
-                    if ($(this).data('rejectCallback')) remove = $(this).data('rejectCallback').call($(this).data('callbackCtx'), $(this).parent().parent().data('messageData'));
-                    if (remove !== false) $(this).parent().parent().hide('fold', 200, 'easeInBack', function () {
-                        $(this).parent().parent().remove();
-                    });
-                    else e.stopPropagation();
-                }).data('rejectCallback', rejectCallback))
+                //.append(this.__shareButton().data('callback', buttonCallback).data('callbackCtx', buttonCallbackCtx))
             )
+            .append(this.__makeButton("X", function () {
+                        var remove = true;
+                        if ($(this).data('rejectCallback')) remove = $(this).data('rejectCallback').call($(this).data('callbackCtx'), $(this).parent().data('messageData'));
+                        if (remove !== false) $(this).parent().hide('fold', 200, 'easeInBack', function () {
+                            $(this).parent().parent().remove();
+                        });
+                        else e.stopPropagation();
+                    }, null, 'cancel').data('rejectCallback', rejectCallback)
+                    .css( { display: 'none' })
+            )       
             .click(this.__messageWindowClicked)
             .hover(this.__messageWindowHover, this.__messageWindowHover)
             .data('messageData', data)
@@ -302,7 +304,8 @@
                     else e.stopPropagation();
                 })
                 .css({
-                    display: 'none'
+                    display: 'none',
+                    'font-size': '12pt'
                 })
                 .data('callback', buttonCallback)
                 .data('callbackCtx', buttonCallbackCtx)
@@ -343,7 +346,6 @@
     GUI.prototype.__makeButton = function (text, callback) {
         return $('<div></div>')
             .addClass('brew-button')
-            .addClass('jotain')
             .text(text)
             .click(callback);
     };

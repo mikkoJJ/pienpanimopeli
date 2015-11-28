@@ -42,6 +42,8 @@
             this.load.json('texts', 'assets/json/texts.json');
             this.load.json('tutorial', 'assets/json/tutorial.json');
             this.load.audio('tausta', ['assets/audio/tausta.mp3', 'assets/audio/tausta.ogg']);
+            this.load.audiosprite('sfx', ['assets/audio/sfx.ogg', 'assets/audio/sfx.mp3'], 'assets/audio/sfx.json');
+            
             
             console.log('PRELOAD: Images loaded');
             

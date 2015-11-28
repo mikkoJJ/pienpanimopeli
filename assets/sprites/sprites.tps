@@ -4,7 +4,7 @@
         <key>fileFormatVersion</key>
         <int>3</int>
         <key>texturePackerVersion</key>
-        <string>3.7.1</string>
+        <string>4.0.1</string>
         <key>fileName</key>
         <string>Z:/Work/html_sandbox/pienpanimopeli/assets/sprites/sprites.tps</string>
         <key>autoSDSettings</key>
@@ -28,7 +28,7 @@
             </struct>
         </array>
         <key>allowRotation</key>
-        <true/>
+        <false/>
         <key>premultiplyAlpha</key>
         <false/>
         <key>shapeDebug</key>
@@ -43,6 +43,8 @@
         <false/>
         <key>pvrCompressionQuality</key>
         <enum type="SettingsBase::PvrCompressionQuality">PVR_QUALITY_NORMAL</enum>
+        <key>atfCompressData</key>
+        <false/>
         <key>mipMapMinSize</key>
         <uint>32768</uint>
         <key>etc1CompressionQuality</key>
@@ -160,7 +162,7 @@
             <string></string>
         </struct>
         <key>autoAliasEnabled</key>
-        <true/>
+        <false/>
         <key>trimSpriteNames</key>
         <true/>
         <key>prependSmartFolderName</key>
@@ -173,14 +175,16 @@
             <double>1</double>
             <key>scaleMode</key>
             <enum type="ScaleMode">Smooth</enum>
-            <key>innerPadding</key>
-            <uint>0</uint>
             <key>extrude</key>
             <uint>0</uint>
             <key>trimThreshold</key>
             <uint>1</uint>
+            <key>trimMargin</key>
+            <uint>1</uint>
             <key>trimMode</key>
             <enum type="SpriteSettings::TrimMode">None</enum>
+            <key>tracerTolerance</key>
+            <int>200</int>
             <key>heuristicMask</key>
             <false/>
             <key>pivotPoint</key>
@@ -191,23 +195,16 @@
             <filename>single_sprites/bottle.png</filename>
             <filename>single_sprites/cook.png</filename>
             <filename>single_sprites/floor.png</filename>
-            <filename>single_sprites/letter.png</filename>
-            <filename>single_sprites/letter_open.png</filename>
             <filename>single_sprites/mies.png</filename>
             <filename>single_sprites/select.png</filename>
             <filename>single_sprites/sell.png</filename>
             <filename>single_sprites/seek-employee-symbol.png</filename>
-            <filename>single_sprites/fermenter.png</filename>
             <filename>single_sprites/lager_case.png</filename>
             <filename>single_sprites/porter_case.png</filename>
             <filename>single_sprites/dark_case.png</filename>
-            <filename>single_sprites/letter_new_empty1.png</filename>
-            <filename>single_sprites/letter_new_open 2.png</filename>
-            <filename>single_sprites/letter_new_unopened.png</filename>
             <filename>single_sprites/lager_case_selected.png</filename>
             <filename>single_sprites/porter_case_selected.png</filename>
             <filename>single_sprites/dark_case_selected.png</filename>
-            <filename>single_sprites/fermenter_selected.png</filename>
             <filename>single_sprites/mies_selected.png</filename>
             <filename>single_sprites/consumable.png</filename>
             <filename>single_sprites/consumable_selected.png</filename>
@@ -218,7 +215,6 @@
             <filename>single_sprites/kettle1.png</filename>
             <filename>single_sprites/kettle1_selected.png</filename>
             <filename>single_sprites/kettle3_with_bubbles_selected.png</filename>
-            <filename>single_sprites/kettle2.png</filename>
             <filename>single_sprites/darkbutton_out.png</filename>
             <filename>single_sprites/darkbutton_over.png</filename>
             <filename>single_sprites/ipabutton_out.png</filename>
@@ -253,6 +249,8 @@
             <filename>single_sprites/logo.png</filename>
             <filename>single_sprites/pelaa_over.png</filename>
             <filename>single_sprites/pelaa_up.png</filename>
+            <filename>single_sprites/messages_bg.psd</filename>
+            <filename>single_sprites/moneybar.psd</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

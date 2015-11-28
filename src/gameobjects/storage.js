@@ -135,7 +135,7 @@
                                                             this.base.z + settings.tileWidth * settings.pileHeight)
                                                       );
             
-            this._info = Brew.gui.showInfo(infoPosition.x - 100, infoPosition.y + 50, '<b>' + this.name + ':</b> ' + this.amount);
+            this._info = Brew.gui.showInfo(infoPosition.x - 100, infoPosition.y + 50, '<b>' + this.name + ':</b> ' + this.amount + '<br />' + this.description);
         } 
         
         if ( !_mouse && this._selected ) {

@@ -1,0 +1,1 @@
+audiosprite --output assets/audio/sfx --export mp3,ogg assets/audio/audiosprite_raw/*

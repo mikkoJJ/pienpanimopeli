@@ -56,7 +56,7 @@
             x: -30,
             y: -70
         };
-
+        
         /** A signal dispatched when the producer is clicked. */
         this.onClick = new Phaser.Signal();
 
@@ -92,6 +92,9 @@
         this._sprite.events.onInputDown.add(this._inputDown, this);
         this._sprite.events.onInputOver.add(this._inputOver, this);
         this._sprite.events.onInputOut.add(this._inputOut, this);
+        
+        this._sprite.input.pixelPerfectClick = true;
+        this._sprite.input.pixelPerfectOver = true;
         //this._sprite.tint = 0xffaaaa;
 
     //    this._indicator = game.add.isoSprite(x, y, z + 140, 'sprites', 'producer_idle', group);

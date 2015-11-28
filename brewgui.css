@@ -18,6 +18,7 @@
     /*background: #f2decb;*/
     background: #4153db;
     border: white double 6px;
+    line-height: 1.2em;
     color: white;
     -moz-user-select: none;
     -webkit-user-select: none;
@@ -56,17 +57,38 @@
 }  
 
 .brew-button {
-    width: 140px;
-    margin: 10px 10px 10px -10px;
+    width: 160px;
+    margin: 10px 10px 10px 10px;
     padding: 10px 5px;
     float: right;
     background: #264c8e;
     text-align: center;
     cursor: pointer;
+    text-shadow: 2px 2px 0 #071a4c;
+    border-bottom: #152d68 solid 4px;
+    border-right: #152d68 solid 4px;
+    border-top: #152d68 solid 2px;
+    border-left: #152d68 solid 2px;
+}
+
+.brew-hidebutton {
+    width: 20px;
+    font-size: 7pt;
+    position: absolute;
+    top: -30px;
+    right: -20px;
 }
 
 .brew-button:hover {
     background-color: #4375cc;
+}
+
+.brew-button:active {
+    border-bottom-width: 2px;
+    border-right-width: 2px;
+    border-top-width: 4px;
+    border-left-width: 4px;
+    
 }
 
 .brew-messages {
@@ -75,7 +97,6 @@
     left: -5px;
     top: 100px;
     width: 200px;
-    display: none;
 }
 
 .brew-messages h2 {
@@ -88,7 +109,7 @@
 
 .brew-message {
     font-size: 9pt;
-    background: #f2decb;
+    background: #824819;
     color: black;
     width: 170px;
     margin: 5px 0px;
@@ -99,7 +120,30 @@
     z-index: 2;
     position: relative;
     overflow: visible;
+    border: #442105 solid 6px;
+    box-shadow: 3px 3px 0 #2c1502;
 }
+
+.brew-message .brew-button {
+    width: 40px;
+    float: left;
+    border-color: #634325;
+    background-color: #a38365;
+    padding: 4px;
+    font-size: 9pt;
+    text-shadow: none;
+}
+
+.brew-message .brew-button:hover {
+    background: #936942;
+}
+
+/*.brew-message .brew-button:active {
+    border-bottom: none;
+    border-right: none;
+    border-left: #634325 solid 4px;
+    border-top: #634325 solid 4px;
+}*/
 
 .brew-message-extended {
     left: 0px;
@@ -109,12 +153,6 @@
     left: 0px;
     width: 290px;
     height: 150px;
-}
-
-.brew-message .brew-button {
-    background-color: #a38365;
-    padding: 4px;
-    font-size: 9pt;
 }
 
 .brew-message-body {
@@ -148,6 +186,7 @@
     right: 20px;
     width: 480px;
     padding: 30px 20px 10px 20px;
+    text-shadow: 2px 2px 0 black;
 }
 
 .brew-window input {
@@ -159,4 +198,10 @@
     margin: 15px 0;
     background: #3141aa;
     border: none;
+}
+
+.cancel {
+    position: absolute;
+    top: -10px;
+    right: -10px;
 }
