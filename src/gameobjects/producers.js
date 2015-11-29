@@ -22,8 +22,11 @@
      * @param {number} frame - the sprite frame reference to this producer's sprite
      * @param {number} group - the (iso) group in which to put this sprite.
      */
-    var Producer = function (game, x, y, z, frame, group) {
+    var Producer = function (game, x, y, z, frame, group, name) {
 
+        /** The type of the producer*/
+        this.name = name;
+        
         /** The encapsulated sprite: */
         this._sprite = game.add.isoSprite(x, y, z, 'sprites', frame, group);
 
@@ -274,6 +277,7 @@
         }
 
         this.onClick.dispatch();
+        Brew.gui.hideInfo(this._info);
     };
 
 
@@ -303,6 +307,7 @@
                 y: toY
             }, 300, Phaser.Easing.Cubic.Out, true);
         }
+        this._info = Brew.gui.showInfo(this._sprite.x - 50, this._sprite.y + 15, this.name);
     };
 
     /**
@@ -319,6 +324,7 @@
             option.x = this._sprite.x + this.optionOffset.x;
             option.y = this._sprite.y + this.optionOffset.y;
         }
+        Brew.gui.hideInfo(this._info);
     };
 
 

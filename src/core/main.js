@@ -58,11 +58,11 @@
 
             //////////////// PRODUCERS: /////////////////
 
-            lauterer = new Brew.Producer(this.game, 9 * settings.tileSize, 8 * settings.tileSize, 0, 'kettle1', this.isoGroup);
+            lauterer = new Brew.Producer(this.game, 9 * settings.tileSize, 8 * settings.tileSize, 0, 'kettle1', this.isoGroup, "Mäskikattila");
             lauterer.resource = resourceStorage;
-            fermenter = new Brew.Producer(this.game, 9 * settings.tileSize, 5 * settings.tileSize, 0, 'kettle3_with_bubbles', this.isoGroup);
-            maturer = new Brew.Producer(this.game, 9 * settings.tileSize, 2 * settings.tileSize, 0, 'kettle4', this.isoGroup);
-            bottler = new Brew.Producer(this.game, 6 * settings.tileSize, 2 * settings.tileSize, 0, 'bottlemachine_step', this.isoGroup);
+            fermenter = new Brew.Producer(this.game, 9 * settings.tileSize, 5 * settings.tileSize, 0, 'kettle3_with_bubbles', this.isoGroup, "Pääkäymiskattila");
+            maturer = new Brew.Producer(this.game, 9 * settings.tileSize, 2 * settings.tileSize, 0, 'kettle4', this.isoGroup, "Jälkikäymiskattila");
+            bottler = new Brew.Producer(this.game, 6 * settings.tileSize, 2 * settings.tileSize, 0, 'bottlemachine_step', this.isoGroup, "Pullottaja");
 
             fermenter.addOption('Tee lageria', 'lagerbutton', 'type', Brew.BeerType.LAGER);
             fermenter.addOption('Tee IPAa', 'ipabutton', 'type', Brew.BeerType.IPA);
@@ -197,10 +197,21 @@
             clean.anchor.setTo(0.5, 1);
             soDirtyEverywhere++;
             if (soDirtyEverywhere % 10 == 0) Brew.gui.alert("Hygieniasi on epäilyttävää. Sait sakot.", this.budgetHandling(-500), this);
-
             clean.inputEnabled = true;
+      
+            var tween = Brew.game.add.tween(clean.scale).to({x: 1.1, y: 1.1}, 200, Phaser.Easing.Linear.None, false, 0, 10, true);
+            clean.events.onInputOver.add(function () {tween.start();});
+      //      clean.events.onInputOut.add(function () {tween.stop();});
             clean.events.onInputDown.add(function () {
-                clean.destroy();
+                tween.stop();
+                Brew.game.add.tween(clean.scale).to({x: 0.1, y: 0.1}, 800, Phaser.Easing.Linear.None, true, 0, 1, true);
+                
+                var swish = this.game.add.audio('swishes');
+                swish.volume = 0.4;
+                swish.play();
+                this.time.events.add(Phaser.Timer.SECOND * 0.8, function () {
+                    clean.destroy();
+                });
                 soDirtyEverywhere--;
             }, this);
         },
