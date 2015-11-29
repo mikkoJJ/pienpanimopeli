@@ -43,6 +43,7 @@
             this.load.json('tutorial', 'assets/json/tutorial.json');
             this.load.audio('tausta', ['assets/audio/tausta.mp3', 'assets/audio/tausta.ogg']);
             this.load.audio('swishes', ['assets/audio/audiosprite_raw/swishes.mp3']);
+            this.load.audio('bubbles', ['assets/audio/audiosprite_raw/bubbling.mp3']);
             this.load.audiosprite('sfx', ['assets/audio/sfx.ogg', 'assets/audio/sfx.mp3'], 'assets/audio/sfx.json');
             
             

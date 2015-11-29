@@ -121,11 +121,15 @@
         if (from) {
             beer = from.beer;
             from.end();
-        } else
+        } else {
             beer = new Brew.Beer();
+        }
 
         if (this.resource) {
             this.resource.amount -= 1;
+            var b = this._game.add.audio('bubbles');
+            b.volume = 1.5;
+            b.play();
         }
 
         this.beer = beer;
