@@ -32,19 +32,20 @@
                 font: '40pt bold "Press Start 2P"',
                 fill: '#FFFFFF'
             });
-
+            
+            var _af = '';
+            if ( typeof BREW_ASSETS_FOLDER !== 'undefined') _af = BREW_ASSETS_FOLDER;
+        
             this.progress.anchor.set(0.5);
             this.progress.fixedToCamera = true;
             
             Brew.game.plugins.add(new Phaser.Plugin.Isometric(Brew.game));
           //  Brew.game.plugins.add(Phaser.Plugin.PathFinderPlugin);
-            this.load.atlasJSONHash('sprites', 'assets/sprites/brew_sprites.png', 'assets/sprites/brew_sprites_data.json');
-            this.load.json('texts', 'assets/json/texts.json');
-            this.load.json('tutorial', 'assets/json/tutorial.json');
-            this.load.audio('tausta', ['assets/audio/tausta.mp3', 'assets/audio/tausta.ogg']);
-            this.load.audio('swishes', ['assets/audio/audiosprite_raw/swishes.mp3']);
-            this.load.audio('bubbles', ['assets/audio/audiosprite_raw/bubbling.mp3']);
-            this.load.audiosprite('sfx', ['assets/audio/sfx.ogg', 'assets/audio/sfx.mp3'], 'assets/audio/sfx.json');
+            this.load.atlasJSONHash('sprites', _af + 'assets/sprites/brew_sprites.png', _af +  'assets/sprites/brew_sprites_data.json');
+            this.load.json('texts', _af + 'assets/json/texts.json');
+            this.load.json('tutorial', _af + 'assets/json/tutorial.json');
+            this.load.audio('tausta', [_af + 'assets/audio/tausta.mp3', _af + 'assets/audio/tausta.ogg']);
+            this.load.audiosprite('sfx', [_af + 'assets/audio/sfx.ogg', _af + 'assets/audio/sfx.mp3'], _af + 'assets/audio/sfx.json');
             
             
             console.log('PRELOAD: Images loaded');

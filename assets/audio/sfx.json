@@ -4,24 +4,34 @@
     "assets/audio/sfx.ogg"
   ],
   "spritemap": {
-    "ding": {
+    "bubbling": {
       "start": 0,
-      "end": 1.4166893424036282,
+      "end": 1.6515873015873015,
+      "loop": false
+    },
+    "ding": {
+      "start": 3,
+      "end": 4.416689342403628,
       "loop": false
     },
     "kilahdus": {
-      "start": 3,
-      "end": 3.835918367346939,
+      "start": 6,
+      "end": 6.835918367346939,
       "loop": false
     },
     "lyhin_kilahdus": {
-      "start": 5,
-      "end": 5.101587301587301,
+      "start": 8,
+      "end": 8.101587301587301,
       "loop": false
     },
     "lyhyt_kilahdus": {
-      "start": 7,
-      "end": 7.6269387755102045,
+      "start": 10,
+      "end": 10.626938775510204,
+      "loop": false
+    },
+    "swishes": {
+      "start": 12,
+      "end": 12.31453514739229,
       "loop": false
     }
   }

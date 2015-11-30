@@ -2,7 +2,7 @@
 
     var settings = {
         //the div under which windows are placed:
-        dom: '#game',
+        dom: '#pienpanimopeli',
         messagesAnimationSpeed: 100,
         messagesHoverSpeed: 100
     };

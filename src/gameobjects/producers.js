@@ -127,9 +127,7 @@
 
         if (this.resource) {
             this.resource.amount -= 1;
-            var b = this._game.add.audio('bubbles');
-            b.volume = 1.5;
-            b.play();
+            Brew.sfx.play('bubbling');
         }
 
         this.beer = beer;
@@ -153,7 +151,7 @@
         }, this);
 
         this.state = Brew.ProducerState.PROCESSING;
-        this._sprite.frameName = this._frameProsessing;
+        //this._sprite.frameName = this._frameProsessing;
 
     };
 

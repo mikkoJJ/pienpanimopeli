@@ -42,7 +42,7 @@ Brew.Booter.prototype = {
 
 // Here we actually start the game, ie. boot up the Booter
 (function () {
-    var game = new Phaser.Game(960, 720, Phaser.AUTO, 'game');
+    var game = new Phaser.Game(960, 720, Phaser.AUTO, 'pienpanimopeli');
     game.state.add('Booter', Brew.Booter, true);
     
     Brew.game = game;

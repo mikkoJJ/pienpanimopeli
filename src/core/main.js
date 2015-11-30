@@ -206,9 +206,7 @@
                 tween.stop();
                 Brew.game.add.tween(clean.scale).to({x: 0.1, y: 0.1}, 800, Phaser.Easing.Linear.None, true, 0, 1, true);
                 
-                var swish = this.game.add.audio('swishes');
-                swish.volume = 0.4;
-                swish.play();
+                Brew.sfx.play('swishes');
                 this.time.events.add(Phaser.Timer.SECOND * 0.8, function () {
                     clean.destroy();
                 });
