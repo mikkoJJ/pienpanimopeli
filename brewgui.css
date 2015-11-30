@@ -1,6 +1,7 @@
 #pienpanimopeli {
     overflow: hidden;
     height: 720px;
+    width: 960px;
     position: relative;
 }
 

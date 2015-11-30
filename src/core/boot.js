@@ -23,7 +23,6 @@ Brew.Booter.prototype = {
               families: ['VT323', 'Press Start 2P']
             }
         });
-        console.log('BOOT: Web fonts loaded.');
         return;
     },
    
