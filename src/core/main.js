@@ -13,8 +13,6 @@
         bottler,
         storageManager,
         resourceStorage,
-        person,
-        person2,
         floor,
         spending,
         text,
@@ -409,8 +407,6 @@
 
             storageManager.update();
             resourceStorage.update();
-
-            this.floor.update();
 
             if (budget <= 100000 && budget >= 0) {
                 text.setText(Math.floor(text.number));

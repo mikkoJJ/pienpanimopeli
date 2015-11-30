@@ -9,7 +9,7 @@
 
         {
             "title": "Tienvarsi",
-            "content": "Mainosta tienvarsimainoksella",
+            "content": "Tienvarsimainos",
             "due": 1000,
             "dueText": "Yleisillä paikoilla mainostaminen on laitonta.<p style='font-size:70%'> (Alkoholilaki 33.2 §:n 9 kohta ja 33.5 §)</p>"
             },
@@ -54,7 +54,7 @@
             },
         {
             "title": "Laillinen",
-            "content": "Sponsoroi paikallista lentopallojoukkuetta",
+            "content": "Sponsoroi paikallista lentopalloseuraa",
             "due": 10000,
             "dueText": "Mainostit onnistuneesti!"
             },
